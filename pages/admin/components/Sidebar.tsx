@@ -17,7 +17,7 @@ const Sidebar = () => {
       </div>
       <div className="flex flex-col items-center gap-8 text-slate-500">
         <SidebarIcon icon={<IoNotificationsOutline />} isActive={false} notifications={2} />
-        <Avatar image="paulo.jpg" />
+        <Avatar image="/paulo.jpg" />
       </div>
     </div>
   );

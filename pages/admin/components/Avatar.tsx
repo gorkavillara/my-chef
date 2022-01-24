@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image"
 
 type AvatarProps = {
   image: string;
@@ -7,7 +8,7 @@ type AvatarProps = {
 const Avatar = ({ image }: AvatarProps) => {
   return (
     <div className="w-12 h-12 rounded-full overflow-hidden">
-      <img src={image} alt={image} />
+      <Image src={image} alt={image} width={200} height={250} layout="intrinsic" />
     </div>
   );
 };
