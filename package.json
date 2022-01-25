@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "firebase": "^9.6.4",
     "next": "12.0.8",
     "react": "17.0.2",
     "react-animated-modal": "^1.1.1",
