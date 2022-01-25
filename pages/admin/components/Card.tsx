@@ -1,40 +1,21 @@
 import React, { useEffect, useState } from "react";
-import dishes from "../../../utils/dishes";
-import Toggle from "./StatesToggle";
 import StatesToggle from "./StatesToggle";
-import { IoPeopleOutline } from "react-icons/io5";
 import Rodal from "rodal";
 import "rodal/lib/rodal.css";
 import CanvasDraw from "react-canvas-draw";
+import { Booking, Dish } from "../../../models";
+import AllergiesList from "./AllergiesList";
 
-interface Dish {
-  name: string;
-  side: boolean;
-  wine: boolean;
-  juice: boolean;
-  sideStatus: string;
-  wineStatus: string;
-  juiceStatus: string;
-  done: boolean;
-}
-
-const Card = () => {
+const Card = ({ booking }: { booking: Booking }) => {
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<boolean>(false);
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<string>("");
 
+  const time = new Date(booking.time.seconds * 1000);
+
   useEffect(() => {
-    const newDishes = dishes.map((dish) => {
-      return {
-        ...dish,
-        sideStatus: dish.side === true ? "pending" : "unnecessary",
-        wineStatus: dish.wine === true ? "pending" : "unnecessary",
-        juiceStatus: dish.juice === true ? "pending" : "unnecessary",
-        done: false,
-      };
-    });
-    setActiveDishes(newDishes);
+    setActiveDishes(booking.menu.dishes);
   }, []);
 
   const handleCloseModal = () => {
@@ -78,47 +59,47 @@ const Card = () => {
   return (
     <>
       <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-        <div className="grid grid-cols-2">
-          <label className="p-2">
-            <span className="font-semibold">PAX</span>
-            {/* <input type="text" value="2" className="w-full" /> */}
+        <div className="grid grid-cols-2 p-1">
+          <label className="p-1">
+            <span className="font-semibold">PAX: </span>
+            <span>{booking.pax}</span>
           </label>
-          <label className="p-2">
-            <span className="font-semibold">NAME</span>
-            {/* <input type="text" value="Mr/Ms Wright" className="w-full" /> */}
+          <label className="p-1">
+            <span className="font-semibold">TABLE: </span>
+            <span>{booking.table}</span>
           </label>
-          <label className="p-2">
-            <span className="font-semibold">TABLE</span>
-            {/* <input type="text" value="4, 5" className="w-full" /> */}
+          <label className="p-1 flex gap-1 flex-wrap">
+            <span className="font-semibold">NAME: </span>
+            <span>{booking.name}</span>
           </label>
-          <div onClick={() => showModal("allergies")} className="p-2">
-            <span className="font-semibold">ALLERGIES</span>
-            {/* <input type="text" value="Hola" className="w-full" /> */}
+          <div onClick={() => showModal("allergies")} className="p-1 flex gap-1 flex-wrap">
+            <span className="font-semibold">ALLERGIES:</span>
+            {booking.allergies ? (
+              <AllergiesList allergies={booking.allergies} />
+            ) : (
+              "none"
+            )}
           </div>
-          <label className="p-2">
-            <span className="font-semibold">TIME</span>
-            {/* <input type="text" value="14:00" className="w-full" /> */}
+          <label className="p-1 flex gap-1 flex-wrap">
+            <span className="font-semibold">TIME:</span>
+            <span>{time.toLocaleTimeString("es-ES")}</span>
           </label>
-          <label className="p-2">
+          <label className="p-1 flex gap-1 flex-wrap">
             <span className="font-semibold">NATIONALITY</span>
-            {/* <input type="text" value="English" className="w-full" /> */}
+            <span>{booking.nationality}</span>
           </label>
-          <label className="p-2">
+          <label className="p-1 flex gap-1 flex-wrap">
             <span className="font-semibold">MENU</span>
-            {/* <input type="text" value="Classic" className="w-full" /> */}
+            <span>{booking.menu.name}</span>
           </label>
-          <label className="p-2">
+          <label className="p-1 flex gap-1 flex-wrap">
             <span className="font-semibold">NOTES</span>
-            {/* <input
-            type="text"
-            value="They told me there is something about"
-            className="w-full"
-          /> */}
+            <span>{booking.notes}</span>
           </label>
         </div>
         <div className="border-t">
           {activeDishes.map((dish, i) => (
-            <div key={i} className="flex py-1 px-2 gap-2 items-center">
+            <div key={i} className="flex py-1 px-2 gap-1 items-center">
               <StatesToggle
                 status={dish.sideStatus}
                 onClick={() => toggleStatus("side", i)}
@@ -143,18 +124,15 @@ const Card = () => {
         <div className="flex border-t">
           <div className="flex-grow p-2">
             <h1 className="text-sm font-semibold">Notes</h1>
-            <span>Hola</span>
+            <span className="text-sm">{booking.notes}</span>
           </div>
           <div
             onClick={() => setGreeted(!greeted)}
-            className={`p-2 transition ${
+            className={`p-2 flex transition items-center ${
               greeted ? "text-white bg-green-400" : "border-l text-slate-600"
             }`}
           >
             <h1 className="text-sm font-semibold">Welcome</h1>
-            {/* <button>
-            <IoPeopleOutline />
-          </button> */}
           </div>
         </div>
       </div>
