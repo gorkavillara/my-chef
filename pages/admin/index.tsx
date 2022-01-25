@@ -1,4 +1,9 @@
-import React, { useState, createContext } from "react";
+import React, {
+  useState,
+  createContext,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import MainDashboard from "./components/MainDashboard";
 import RightBar from "./components/RightBar";
 import Sidebar from "./components/Sidebar";
@@ -7,6 +12,8 @@ import Head from "next/head";
 interface ContextInterface {
   route?: string;
   bookings?: object[];
+  setRoute?: Dispatch<SetStateAction<string>>;
+  setBookings?: Dispatch<SetStateAction<object[]>>;
 }
 
 export const AdminContext = createContext<ContextInterface>({});
