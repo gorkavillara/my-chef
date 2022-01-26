@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StatesToggle from "./StatesToggle";
-import Rodal from "rodal";
-import "rodal/lib/rodal.css";
-import CanvasDraw from "react-canvas-draw";
 import { Booking, Dish } from "../../../models";
 import AllergiesList from "./AllergiesList";
+import { AdminContext } from "..";
 
 const Card = ({ booking }: { booking: Booking }) => {
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<boolean>(false);
-  const [activeModal, setActiveModal] = useState<boolean>(false);
-  const [modalContent, setModalContent] = useState<string>("");
-
+  const { openModal } = useContext(AdminContext);
   const time = new Date(booking.time.seconds * 1000);
 
   useEffect(() => {
     setActiveDishes(booking.menu.dishes);
   }, []);
-
-  const handleCloseModal = () => {
-    setActiveModal(false);
-  };
-
-  const showModal = (content: string) => {
-    setModalContent(content);
-    setActiveModal(true);
-  };
 
   const toggleStatus = (category: string, i: number) => {
     const newDishes = activeDishes;
@@ -72,10 +59,13 @@ const Card = ({ booking }: { booking: Booking }) => {
             <span className="font-semibold">NAME: </span>
             <span>{booking.name}</span>
           </label>
-          <div onClick={() => showModal("allergies")} className="p-1 flex gap-1 flex-wrap">
+          <div
+            onClick={() => openModal("allergies", booking.allergies)}
+            className="p-1 flex gap-1 flex-wrap"
+          >
             <span className="font-semibold">ALLERGIES:</span>
             {booking.allergies ? (
-              <AllergiesList allergies={booking.allergies} />
+              <AllergiesList allergies={booking.allergies} style="display" />
             ) : (
               "none"
             )}
@@ -136,15 +126,6 @@ const Card = ({ booking }: { booking: Booking }) => {
           </div>
         </div>
       </div>
-      <Rodal
-        visible={activeModal}
-        onClose={handleCloseModal}
-        animation="flip"
-        width={800}
-        height={600}
-      >
-        <CanvasDraw canvasWidth={800} canvasHeight={400} />
-      </Rodal>
     </>
   );
 };

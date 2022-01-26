@@ -5,16 +5,13 @@ import React, {
   SetStateAction,
   useEffect,
 } from "react";
-import MainDashboard from "./components/MainDashboard";
-import RightBar from "./components/RightBar";
-import Sidebar from "./components/Sidebar";
-import Head from "next/head";
 import axios from "axios";
-import Rodal from "rodal";
-import "rodal/lib/rodal.css";
-import { Booking } from "../../models";
+import Head from "next/head";
+import MainDashboard from "./components/MainDashboard";
+import Sidebar from "./components/Sidebar";
+import { Booking, Store } from "../../models";
 import { initializeBookings } from "../../controllers/BookingsController";
-import FormNewBooking from "./components/FormNewBooking";
+import ModalController from "./components/ModalController";
 
 interface ContextInterface {
   route?: string;
@@ -22,6 +19,7 @@ interface ContextInterface {
   setRoute?: Dispatch<SetStateAction<string>>;
   setBookings?: Dispatch<SetStateAction<object[]>>;
   openModal?: Function;
+  store?: Store;
 }
 
 export const AdminContext = createContext<ContextInterface>({});
@@ -31,6 +29,8 @@ const Admin = () => {
   const [bookings, setBookings] = useState<object[]>([]);
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<string>("");
+  const [modalData, setModalData] = useState<object>({});
+  const [store, setStore] = useState<Store>();
 
   useEffect(() => {
     axios
@@ -42,17 +42,18 @@ const Admin = () => {
         const newBookings: Booking[] = initializeBookings(
           r.data.stores[0].bookings
         );
+        setStore(r.data.stores[0]);
         setBookings(newBookings);
       })
       .catch((e) => console.log(e));
   }, []);
 
-  const openModal = (content: string) => {
+  const openModal = (content: string, data: object = {}) => {
     setModalContent(content);
+    setModalData(data);
     setActiveModal(true);
   };
   const closeModal = () => {
-    setModalContent("");
     setActiveModal(false);
   };
 
@@ -64,22 +65,19 @@ const Admin = () => {
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <AdminContext.Provider
-        value={{ route, setRoute, bookings, setBookings, openModal }}
+        value={{ route, setRoute, bookings, setBookings, openModal, store }}
       >
         <div className="flex h-screen w-screen bg-slate-100">
           <Sidebar />
           <MainDashboard />
         </div>
       </AdminContext.Provider>
-      <Rodal
+      <ModalController
         visible={activeModal}
         onClose={closeModal}
-        animation="slideUp"
-        width={800}
-        height={600}
-      >
-        {modalContent === "newBooking" && <FormNewBooking />}
-      </Rodal>
+        modalContent={modalContent}
+        data={modalData}
+      />
     </>
   );
 };
