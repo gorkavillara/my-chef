@@ -42,7 +42,7 @@ const TableRow = ({ selected, toggleSelected, name, deleteItem, editItem }) => (
 );
 
 const Table = ({
-  items,
+  items = [],
   deleteItems,
   selectedTables,
   toggleSelected,
