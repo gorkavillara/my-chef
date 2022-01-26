@@ -94,88 +94,90 @@ const FormNewBooking = ({ store }: { store: Store }) => {
   };
 
   return (
-    <div className="flex flex-col flex-grow justify-between">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
-          disabled={loading}
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={booking.name}
-          onChange={(e) => setBooking({ ...booking, name: e.target.value })}
-        />
-        <Input
-          disabled={loading}
-          type="number"
-          name="pax"
-          placeholder="Pax"
-          value={booking.pax}
-          onChange={(e) => setBooking({ ...booking, pax: e.target.value })}
-        />
-        <Input
-          disabled={loading}
-          type="select"
-          name="nationality"
-          placeholder="Nationality"
-          value={booking.nationality}
-          options={nationalities}
-          onChange={(e) =>
-            setBooking({ ...booking, nationality: e.target.value })
-          }
-        />
-        <Input
-          disabled={loading}
-          type="select"
-          name="menu"
-          placeholder="Menu"
-          value={menuName}
-          options={menus}
-          onChange={(e) => setMenu(e)}
-        />
-        <Input
-          disabled={loading}
-          type="select"
-          name="table"
-          placeholder="Table"
-          value={booking.table}
-          options={store.tables.map((table) => table.name)}
-          onChange={(e) => setBooking({ ...booking, table: e.target.value })}
-        />
-        <Input
-          disabled={loading}
-          type="datetime"
-          name="time"
-          placeholder="Time"
-          value={booking.time}
-          onChange={(e) => setBooking({ ...booking, time: e })}
-        />
-        <Input
-          disabled={loading}
-          type="chip-select"
-          name="allergies"
-          placeholder="allergies"
-          value={booking.allergies}
-          options={allergies}
-          containerClassName="col-span-2"
-          onChange={(e: string) => toggleAllergy(e)}
-        />
+    store && (
+      <div className="flex flex-col flex-grow justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            disabled={loading}
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={booking.name}
+            onChange={(e) => setBooking({ ...booking, name: e.target.value })}
+          />
+          <Input
+            disabled={loading}
+            type="number"
+            name="pax"
+            placeholder="Pax"
+            value={booking.pax}
+            onChange={(e) => setBooking({ ...booking, pax: e.target.value })}
+          />
+          <Input
+            disabled={loading}
+            type="select"
+            name="nationality"
+            placeholder="Nationality"
+            value={booking.nationality}
+            options={nationalities}
+            onChange={(e) =>
+              setBooking({ ...booking, nationality: e.target.value })
+            }
+          />
+          <Input
+            disabled={loading}
+            type="select"
+            name="menu"
+            placeholder="Menu"
+            value={menuName}
+            options={menus}
+            onChange={(e) => setMenu(e)}
+          />
+          <Input
+            disabled={loading}
+            type="select"
+            name="table"
+            placeholder="Table"
+            value={booking.table}
+            options={store.tables.map((table) => table.name)}
+            onChange={(e) => setBooking({ ...booking, table: e.target.value })}
+          />
+          <Input
+            disabled={loading}
+            type="datetime"
+            name="time"
+            placeholder="Time"
+            value={booking.time}
+            onChange={(e) => setBooking({ ...booking, time: e })}
+          />
+          <Input
+            disabled={loading}
+            type="chip-select"
+            name="allergies"
+            placeholder="allergies"
+            value={booking.allergies}
+            options={allergies}
+            containerClassName="col-span-2"
+            onChange={(e: string) => toggleAllergy(e)}
+          />
+        </div>
+        <button
+          className="m-6 btn-primary-green"
+          onClick={submitNewBooking}
+          disabled={!isCompleted() || loading}
+        >
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <Loading /> Submitting...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <IoRocket /> Submit
+            </span>
+          )}
+        </button>
       </div>
-      <button
-        className="m-6 btn-primary-green"
-        onClick={submitNewBooking}
-        disabled={!isCompleted() || loading}
-      >
-        {loading ? (
-          <span className="flex items-center gap-2">
-            <Loading /> Submitting...
-          </span>
-        ) : (
-          <span className="flex items-center gap-2">
-            <IoRocket /> Submit
-          </span>
-        )}
-      </button>
-    </div>
+    )
   );
 };
 

@@ -32,8 +32,12 @@ const NotesModal = ({
       <div className="p-0 border flex justify-center">
         <CanvasDraw
           ref={canvasRef}
-          canvasWidth={window.innerWidth * 0.8}
-          canvasHeight={window.innerHeight * 0.4}
+          canvasWidth={
+            typeof window !== "undefined" ? window.innerWidth * 0.8 : 10
+          }
+          canvasHeight={
+            typeof window !== "undefined" ? window.innerHeight * 0.4 : 10
+          }
           brushRadius={2}
           lazyRadius={1}
           brushColor="#222"

@@ -5,7 +5,7 @@ import Input from "../forms/Input";
 const TablesModal = ({ store, editTable = null }) => {
   const emptyTable = {
     name: "",
-    store_id: store.id,
+    store_id: store ? store.id : "",
   };
   const [newTable, setNewTable] = useState<Table>(
     editTable ? editTable : emptyTable
