@@ -11,7 +11,9 @@ const Card = ({ booking }: { booking: Booking }) => {
   const time = new Date(booking.time.seconds * 1000);
 
   useEffect(() => {
-    setActiveDishes(booking.menu.dishes);
+    const { menu } = booking;
+    const { dishes } = menu;
+    setActiveDishes(dishes);
   }, []);
 
   const toggleStatus = (category: string, i: number) => {

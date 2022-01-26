@@ -9,13 +9,16 @@ import {
 import CircleButton from "./CircleButton";
 import Avatar from "./Avatar";
 import { AdminContext } from "..";
+import Image from "next/image";
 
 const Sidebar = () => {
   const { route, setRoute, openModal, store } = useContext(AdminContext);
   return (
     <div className="fixed left-0 h-full w-20 bg-white flex flex-col py-8 px-2 items-center justify-between">
       <div className="flex flex-col items-center">
-        <img src="favicon_256x256.png" className="mb-8" />
+        <picture className="mb-8">
+          <Image src="/favicon_256x256.png" width={256} height={256} alt="icon" />
+        </picture>
         <CircleButton onClick={() => openModal("newBooking", { store })} />
         <div className="flex flex-col items-center text-slate-500 gap-4">
           <SidebarIcon
