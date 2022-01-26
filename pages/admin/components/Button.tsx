@@ -3,10 +3,11 @@ import React, { MouseEventHandler } from "react";
 type ButtonProps = {
   style?: string;
   onClick?: MouseEventHandler;
-  children?: string;
+  children?: any;
   loading?: boolean;
   disabled?: boolean;
   className?: string;
+  color?: string;
 };
 
 const Button = ({
@@ -16,14 +17,17 @@ const Button = ({
   loading = false,
   disabled = false,
   className = "",
+  color = "green",
 }: ButtonProps) => {
+  const btnClassName = `btn-${style}-${color}`
+  console.log(btnClassName);
   return (
     <>
       {style === "primary" && (
         <button
-          className={`${
+          className={`${btnClassName} ${
             loading && "animate-pulse"
-          } px-4 py-1 border-2 transition border-green-400 bg-green-400 hover:border-green-500 hover:bg-green-500 active:border-green-600 active:bg-green-600 focus:ring disabled:opacity-40 ring-green-200 text-white rounded-lg outline-none ${className}`}
+          } ${className}`}
           onClick={onClick}
           disabled={disabled || loading}
         >
@@ -32,9 +36,9 @@ const Button = ({
       )}
       {style === "secondary" && (
         <button
-          className={`${
+          className={`${btnClassName} ${
             loading && "animate-pulse"
-          } px-4 py-1 border-2 transition border-green-500 text-green-500 hover:border-green-600 hover:text-green-600 active:bg-green-600 active:text-white focus:ring disabled:opacity-40 ring-green-200 bg-transparent rounded-lg outline-none ${className}`}
+          }  ${className}`}
           onClick={onClick}
           disabled={disabled || loading}
         >
@@ -43,9 +47,7 @@ const Button = ({
       )}
       {style === "tertiary" && (
         <button
-          className={`${
-            loading && "animate-pulse"
-          } px-4 py-1 transition text-green-500 hover:border-green-600 hover:text-green-600 active:bg-green-600 active:text-white focus:ring disabled:opacity-40 ring-green-200 bg-transparent rounded-lg outline-none ${className}`}
+          className={`btn-tertiary ${loading && "animate-pulse"} ${className}`}
           onClick={onClick}
           disabled={disabled || loading}
         >

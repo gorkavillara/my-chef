@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import Head from "next/head";
-import MainDashboard from "./components/MainDashboard";
+import MainDashboard from "./views/MainDashboard";
 import Sidebar from "./components/Sidebar";
 import { Booking, Store } from "../../models";
 import { initializeBookings } from "../../controllers/BookingsController";
@@ -19,6 +19,7 @@ interface ContextInterface {
   setRoute?: Dispatch<SetStateAction<string>>;
   setBookings?: Dispatch<SetStateAction<object[]>>;
   openModal?: Function;
+  closeModal?: Function;
   store?: Store;
 }
 
@@ -43,10 +44,23 @@ const Admin = () => {
           r.data.stores[0].bookings
         );
         setStore(r.data.stores[0]);
-        setBookings(newBookings);
       })
       .catch((e) => console.log(e));
   }, []);
+
+  useEffect(() => {
+    if (!store) return;
+    axios
+      .post("/api/bookings", {
+        action: "getByStore",
+        store,
+      })
+      .then((r) => {
+        const newBookings: Booking[] = initializeBookings(r.data.bookings);
+        setBookings(newBookings);
+      })
+      .catch((e) => console.log(e));
+  }, [store]);
 
   const openModal = (content: string, data: object = {}) => {
     setModalContent(content);
@@ -65,7 +79,15 @@ const Admin = () => {
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <AdminContext.Provider
-        value={{ route, setRoute, bookings, setBookings, openModal, store }}
+        value={{
+          route,
+          setRoute,
+          bookings,
+          setBookings,
+          openModal,
+          closeModal,
+          store,
+        }}
       >
         <div className="flex h-screen w-screen bg-slate-100">
           <Sidebar />

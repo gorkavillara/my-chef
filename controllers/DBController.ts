@@ -1,12 +1,15 @@
 import { db } from "./firebase-config";
 import {
+  addDoc,
   doc,
   updateDoc,
   getDocs,
   collection,
   arrayUnion,
+  query,
+  where,
 } from "firebase/firestore";
-import { User, Store } from "../models";
+import { User, Store, Booking } from "../models";
 
 export const getStoresByUserEmail = async ({
   userEmail,
@@ -25,6 +28,13 @@ export const getStoresByUserEmail = async ({
   );
   return { stores, role: user.role };
 };
+export const getBookingsByStore = async ({ id }: { id: string }) => {
+  const q = query(collection(db, "bookings"), where("store_id", "==", id));
+  const querySnapshot = await getDocs(q);
+  let bookings = [];
+  querySnapshot.forEach((doc) => bookings.push({ ...doc.data(), id: doc.id }));
+  return { bookings };
+};
 
 export const addNewMenu = async ({
   store,
@@ -38,4 +48,31 @@ export const addNewMenu = async ({
     menus: arrayUnion(menu),
   });
   return true;
+};
+
+export const addNewBooking = async ({
+  booking,
+  store,
+}: {
+  booking: Booking;
+  store: Store;
+}) => {
+  const r = await addDoc(collection(db, "bookings"), {
+    ...booking,
+    store_id: store.id,
+  });
+  console.log(r);
+  return { booking };
+};
+
+export const saveNotesUrl = async ({
+  url,
+  booking,
+  store,
+}: {
+  url: string;
+  booking: Booking;
+  store: Store;
+}) => {
+  if (url === "") return false;
 };

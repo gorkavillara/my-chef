@@ -2,8 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .shadow-up {
+        box-shadow: 0 -10px 10px rgba(0, 0, 0, 0.1)
+    }
+}
+
 @layer components {
-    .btn-primary {
-        @apply px-4 py-1 bg-green-400 text-white rounded;
+    .btn-primary-green {
+        @apply flex gap-2 items-center justify-center px-4 py-1 border-2 transition border-green-400 bg-green-400 hover:border-green-500 hover:bg-green-500 active:border-green-600 active:bg-green-600 focus:ring disabled:opacity-40 ring-green-200 text-white rounded-lg outline-none 
+    }
+    .btn-primary-red {
+        @apply flex gap-2 items-center justify-center px-4 py-1 border-2 transition border-red-400 bg-red-400 hover:border-red-500 hover:bg-red-500 active:border-red-600 active:bg-red-600 focus:ring disabled:opacity-40 ring-red-200 text-white rounded-lg outline-none 
+    }
+
+    .btn-secondary-green {
+        @apply flex gap-2 items-center justify-center px-4 py-1 border-2 transition border-green-400 text-green-400 hover:border-green-500 hover:text-green-500 active:bg-green-500 active:text-white focus:ring disabled:opacity-40 ring-green-200 bg-transparent rounded-lg outline-none
+    }
+    .btn-secondary-red {
+        @apply flex gap-2 items-center justify-center px-4 py-1 border-2 transition border-red-400 text-red-400 hover:border-red-600 hover:text-red-500 active:bg-red-500 active:text-white focus:ring disabled:opacity-40 ring-red-200 bg-transparent rounded-lg outline-none
+    }
+
+    .btn-tertiary-green {
+        @apply flex gap-2 items-center justify-center px-4 py-1 transition text-green-400 hover:text-green-500 active:bg-green-500 active:text-white focus:ring disabled:opacity-40 ring-green-200 bg-transparent rounded-lg outline-none
+    }
+    .btn-tertiary-red {
+        @apply flex gap-2 items-center justify-center px-4 py-1 transition text-red-400 hover:text-red-500 active:bg-red-500 active:text-white focus:ring disabled:opacity-40 ring-red-200 bg-transparent rounded-lg outline-none
     }
 }

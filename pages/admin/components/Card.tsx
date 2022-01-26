@@ -7,7 +7,7 @@ import { AdminContext } from "..";
 const Card = ({ booking }: { booking: Booking }) => {
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<boolean>(false);
-  const { openModal } = useContext(AdminContext);
+  const { openModal, store } = useContext(AdminContext);
   const time = booking ? new Date(booking.time.seconds * 1000) : new Date();
 
   useEffect(() => {
@@ -85,20 +85,25 @@ const Card = ({ booking }: { booking: Booking }) => {
               <span className="font-semibold">MENU</span>
               <span>{booking.menu.name}</span>
             </label>
-            <label className="p-1 flex gap-1 flex-wrap">
+            <div
+              className="p-1 flex gap-1 flex-wrap"
+              onClick={() => openModal("notes", { booking, store })}
+            >
               <span className="font-semibold">NOTES</span>
               <span>{booking.notes}</span>
-            </label>
+            </div>
           </div>
           <div className="border-t">
             {activeDishes.map((dish, i) => (
-              <div key={i} className="flex py-1 px-2 gap-1 items-center">
+              <div key={i} className="flex p-2 gap-4 items-center">
                 <StatesToggle
                   status={dish.sideStatus}
                   onClick={() => toggleStatus("side", i)}
                 />
                 <span
-                  className={`flex-grow ${dish.done && "italic line-through"}`}
+                  className={`flex-grow text-lg ${
+                    dish.done && "italic line-through"
+                  }`}
                   onClick={() => toggleStatus("general", i)}
                 >
                   {dish.name}
@@ -115,7 +120,10 @@ const Card = ({ booking }: { booking: Booking }) => {
             ))}
           </div>
           <div className="flex border-t">
-            <div className="flex-grow p-2">
+            <div
+              className="flex-grow p-2"
+              onClick={() => openModal("notes", { booking, store })}
+            >
               <h1 className="text-sm font-semibold">Notes</h1>
               <span className="text-sm">{booking.notes}</span>
             </div>

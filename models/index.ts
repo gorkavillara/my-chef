@@ -7,13 +7,14 @@ export interface User {
 }
 
 export interface Booking {
+  id: string;
   allergies?: string[];
   name: string;
   nationality: string;
   notes: string;
   pax: number;
   table: Table;
-  time: Timestamp;
+  time: any;
   menu: Menu;
 }
 

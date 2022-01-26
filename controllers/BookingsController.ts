@@ -1,6 +1,6 @@
 import { Booking } from "../models";
 
-export const getBookingsByStore = ({ id }: { id: string }) => {};
+export const getBookingsByStore = async ({ id }: { id: string }) => {};
 
 export const initializeBookings = (bookings: Booking[]): Booking[] => {
   const bkngs: Booking[] = bookings;

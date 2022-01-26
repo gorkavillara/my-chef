@@ -1,8 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { Timestamp } from "firebase/firestore";
+import React, { useState, useContext } from "react";
+import { IoRocket } from "react-icons/io5";
+import { AdminContext } from "../..";
 import { Store } from "../../../../models";
-import Button from "../Button";
 import Input from "../forms/Input";
+import Loading from "../Loading";
 
 const allergies = [
   "Crustacean",
@@ -47,6 +50,8 @@ const FormNewBooking = ({ store }: { store: Store }) => {
   const [menuName, setMenuName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { closeModal } = useContext(AdminContext);
+
   const menus = store ? store.menus.map((menu) => menu.name) : [];
 
   const setMenu = (e) => {
@@ -67,10 +72,14 @@ const FormNewBooking = ({ store }: { store: Store }) => {
   const submitNewBooking = () => {
     setLoading(true);
     axios
-      .post("/api/bookings", { action: "newBooking", booking })
+      .post("/api/bookings", {
+        action: "newBooking",
+        booking: { ...booking, time: Timestamp.fromDate(booking.time) },
+        store,
+      })
       .then((r) => {
         setLoading(false);
-        console.log(r);
+        closeModal();
       })
       .catch((e) => console.log(e));
   };
@@ -125,6 +134,15 @@ const FormNewBooking = ({ store }: { store: Store }) => {
         />
         <Input
           disabled={loading}
+          type="select"
+          name="table"
+          placeholder="Table"
+          value={booking.table}
+          options={store.tables.map((table) => table.name)}
+          onChange={(e) => setBooking({ ...booking, table: e.target.value })}
+        />
+        <Input
+          disabled={loading}
           type="datetime"
           name="time"
           placeholder="Time"
@@ -142,14 +160,21 @@ const FormNewBooking = ({ store }: { store: Store }) => {
           onChange={(e: string) => toggleAllergy(e)}
         />
       </div>
-      <Button
-        className="m-6"
+      <button
+        className="m-6 btn-primary-green"
         onClick={submitNewBooking}
-        loading={loading}
-        disabled={!isCompleted()}
+        disabled={!isCompleted() || loading}
       >
-        Submit
-      </Button>
+        {loading ? (
+          <span className="flex items-center gap-2">
+            <Loading /> Submitting...
+          </span>
+        ) : (
+          <span className="flex items-center gap-2">
+            <IoRocket /> Submit
+          </span>
+        )}
+      </button>
     </div>
   );
 };

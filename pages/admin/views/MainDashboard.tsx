@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import TablesView from "../views/TablesView";
-import ChartsView from "../views/ChartsView";
-import ComponentsView from "../views/ComponentsView";
+import TablesView from "./TablesView";
+import ChartsView from "./ChartsView";
 import { AdminContext } from "..";
+import SettingsView from "./SettingsView";
 
 const MainDashboard = () => {
   const { route } = useContext(AdminContext);
@@ -10,7 +10,7 @@ const MainDashboard = () => {
     <div className="ml-20 flex-grow bg-slate-100 min-h-screen">
       {route === "tables" && <TablesView />}
       {route === "charts" && <ChartsView />}
-      {route === "settings" && <ComponentsView />}
+      {route === "settings" && <SettingsView />}
     </div>
   );
 };

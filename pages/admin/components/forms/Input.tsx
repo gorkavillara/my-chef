@@ -40,7 +40,7 @@ const Input = ({
           </span>
           <select
             disabled={disabled}
-            className={`input-contact disabled:opacity-25 col-span-2 ring-indigo-200 cursor-pointer pb-6 border-b border-slate-700 ${inputClassName}`}
+            className={`input-contact disabled:opacity-25 col-span-2 ring-indigo-200 cursor-pointer pb-6 border-b border-slate-700 outline-none ${inputClassName}`}
             placeholder={placeholder}
             onChange={onChange}
             name={name}
@@ -125,6 +125,7 @@ const Input = ({
             showTimeSelect
             timeIntervals={15}
             dateFormat="MMMM d, yyyy h:mm aa"
+            className="w-full border-b border-slate-700 pb-6 outline-none"
           />
         </label>
       )}
