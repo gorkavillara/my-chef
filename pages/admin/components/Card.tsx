@@ -46,8 +46,8 @@ const Card = ({ booking }: { booking: Booking }) => {
     setActiveDishes([...newDishes]);
   };
   return (
-    booking && (
-      <>
+    <>
+      {booking ? (
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
           <div className="grid grid-cols-2 p-1">
             <label className="p-1">
@@ -129,8 +129,10 @@ const Card = ({ booking }: { booking: Booking }) => {
             </div>
           </div>
         </div>
-      </>
-    )
+      ) : (
+        <h1>Cargando...</h1>
+      )}
+    </>
   );
 };
 
