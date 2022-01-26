@@ -47,7 +47,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
   const [menuName, setMenuName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const menus = store.menus.map((menu) => menu.name);
+  const menus = store ? store.menus.map((menu) => menu.name) : [];
 
   const setMenu = (e) => {
     setMenuName(e.target.value);

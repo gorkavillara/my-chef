@@ -8,7 +8,7 @@ const Card = ({ booking }: { booking: Booking }) => {
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<boolean>(false);
   const { openModal } = useContext(AdminContext);
-  const time = new Date(booking.time.seconds * 1000);
+  const time = booking ? new Date(booking.time.seconds * 1000) : new Date();
 
   useEffect(() => {
     const { menu } = booking;
