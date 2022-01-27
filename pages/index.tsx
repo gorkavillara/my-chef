@@ -1,8 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Admin from "./admin"
+import { useState } from "react";
+import Admin from "./admin";
+import LoginPage from "./admin/views/LoginPage";
 
 const Home: NextPage = () => {
+  const [user, setUser] = useState(null);
   return (
     <div>
       <Head>
@@ -11,7 +14,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon_256x256.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
-      <Admin />
+      {user ? <Admin /> : <LoginPage setUser={setUser} />}
     </div>
   );
 };
