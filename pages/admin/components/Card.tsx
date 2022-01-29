@@ -109,7 +109,7 @@ const Card = ({ booking }: { booking: Booking }) => {
               <span>{booking.notes}</span>
             </div>
           </div>
-          {booking.status === "open" && (
+          {(booking.status === "open" || booking.status === "closed") && (
             <div className="border-t">
               <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
                 <span>
@@ -150,7 +150,7 @@ const Card = ({ booking }: { booking: Booking }) => {
               ))}
             </div>
           )}
-          {booking.status === "open" && (
+          {(booking.status === "open" || booking.status === "closed") && (
             <div className="flex border-t">
               <div
                 className="flex-grow p-2"
