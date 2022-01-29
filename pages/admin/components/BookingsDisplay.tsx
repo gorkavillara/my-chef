@@ -21,7 +21,7 @@ const BookingsDisplay = ({
                   <Card booking={booking} key={i} />
                 ))
             ) : (
-              <h1>Cargando</h1>
+              <h1>Cargando...</h1>
             )}
           </div>
           <div className="flex flex-col col-span-1 gap-4 sm:border-l-2 sm:pl-2">
