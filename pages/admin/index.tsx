@@ -71,6 +71,8 @@ const Admin = () => {
     setActiveModal(false);
   };
 
+  console.log({closeModal})
+
   return (
     <>
       <Head>

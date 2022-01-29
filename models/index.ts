@@ -16,6 +16,8 @@ export interface Booking {
   table: Table;
   time: any;
   menu: Menu;
+  status: string;
+  handwrittenNotesUrl?: string;
 }
 
 export interface Table {

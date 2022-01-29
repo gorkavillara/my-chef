@@ -46,6 +46,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
     table: "",
     time: new Date(),
     menu: {},
+    status: "waiting",
   });
   const [menuName, setMenuName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);

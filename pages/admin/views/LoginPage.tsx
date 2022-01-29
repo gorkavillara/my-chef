@@ -121,15 +121,10 @@ const LoginPage = ({ setUser }) => {
               Welcome to My Rapid Chef
             </h1>
             <div className="flex gap-6">
-              <div className="bg-gray-200 rounded-lg p-3 text-3xl text-slate-800">
-                <IoLogoGoogle />
-              </div>
-              <div className="bg-gray-200 rounded-lg p-3 text-3xl text-slate-800">
-                <IoLogoApple />
-              </div>
-              <div className="bg-gray-200 rounded-lg p-3 text-3xl text-slate-800">
-                <IoLogoFacebook />
-              </div>
+              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4">
+                <img src={'/GLogo.svg'} />
+                <span>Log In with Google</span>
+              </button>
             </div>
             <div className="my-4 flex items-center gap-4 w-full sm:w-96">
               <div className="border-t border-slate-200 flex-grow"></div>
@@ -193,15 +188,10 @@ const LoginPage = ({ setUser }) => {
           <>
             <h1 className="text-xl">Sign Up below</h1>
             <div className="flex gap-6">
-              <div className="bg-gray-200 rounded-lg p-3 text-3xl text-slate-800">
-                <IoLogoGoogle />
-              </div>
-              <div className="bg-gray-200 rounded-lg p-3 text-3xl text-slate-800">
-                <IoLogoApple />
-              </div>
-              <div className="bg-gray-200 rounded-lg p-3 text-3xl text-slate-800">
-                <IoLogoFacebook />
-              </div>
+              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4">
+                <img src={'/GLogo.svg'} />
+                <span>Sign Up with Google</span>
+              </button>
             </div>
             <div className="my-4 flex items-center gap-4 w-full sm:w-96">
               <div className="border-t border-slate-200 flex-grow"></div>

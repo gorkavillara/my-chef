@@ -11,9 +11,9 @@ export const initializeBookings = (bookings: Booking[]): Booking[] => {
     const dishes = menu.dishes.map((dish) => {
       return {
         ...dish,
-        sideStatus: dish.side === true ? "pending" : "unnecessary",
-        wineStatus: dish.wine === true ? "pending" : "unnecessary",
-        juiceStatus: dish.juice === true ? "pending" : "unnecessary",
+        sideStatus: dish.side === true ? "necessary" : "unnecessary",
+        wineStatus: dish.wine === true ? "necessary" : "unnecessary",
+        juiceStatus: dish.juice === true ? "necessary" : "unnecessary",
         done: false,
       };
     });

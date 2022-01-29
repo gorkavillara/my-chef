@@ -1,24 +1,34 @@
 import axios from "axios";
-import React, { useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { IoArrowUndo, IoSave, IoTrashBin } from "react-icons/io5";
+import { AdminContext } from "../..";
 import { Booking, Store } from "../../../../models";
 
 const NotesModal = ({
   notes = "",
   booking,
-  store,
+  closeModal
 }: {
   notes: string;
   booking: Booking;
-  store: Store;
+  closeModal: Function;
 }) => {
+  const [newNotes, setNewNotes] = useState(notes);
   const canvasRef = useRef(null);
   const saveDraw = () => {
     const url = canvasRef.current.getDataURL();
     axios
-      .post("/api/bookings", { action: "saveNotesUrl", url, booking, store })
-      .then((r) => console.log(r))
+      .post("/api/bookings", {
+        action: "saveNotes",
+        newNotes,
+        handwrittenNotesUrl: url,
+        booking,
+      })
+      .then((r) => {
+        console.log(r);
+        closeModal();
+      })
       .catch((e) => console.log(e));
   };
   const undoDraw = () => canvasRef.current.undo();
@@ -26,7 +36,11 @@ const NotesModal = ({
   return (
     <div className="flex flex-col gap-4">
       <h1 className="font-semibold text-lg">Notes</h1>
-      <span>{notes}</span>
+      <input
+        value={newNotes}
+        onChange={(e) => setNewNotes(e.target.value)}
+        className="input-text"
+      />
       <div className="w-full border-t"></div>
       <h1 className="font-semibold text-lg">Handwritten</h1>
       <div className="p-0 border flex justify-center">
@@ -44,7 +58,7 @@ const NotesModal = ({
           hideInterface
         />
       </div>
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-4 flex-wrap">
         <button className="btn-secondary-red" onClick={eraseDraw}>
           <IoTrashBin />
           Erase

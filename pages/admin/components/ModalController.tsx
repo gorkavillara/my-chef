@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import CanvasDraw from "react-canvas-draw";
 import Rodal from "rodal";
 import "rodal/lib/rodal.css";
+import { AdminContext } from "..";
 import Button from "./Button";
 import AllergiesModal from "./modals/AllergiesModal";
 import NewBooking from "./modals/NewBooking";
@@ -21,6 +22,7 @@ const ModalController = ({
   modalContent,
   data,
 }: ModalProps) => {
+  console.log({ onClose });
   const modalConfig = {
     animation: "slideUp",
     width: typeof window !== "undefined" ? window.innerWidth * 0.8 : 800,
@@ -63,7 +65,7 @@ const ModalController = ({
         <NotesModal
           notes={data.booking.notes}
           booking={data.booking}
-          store={data.store}
+          closeModal={onClose}
         />
       )}
       {modalContent === "tables" && <TablesModal store={data.store} />}

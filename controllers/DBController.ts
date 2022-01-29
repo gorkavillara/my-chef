@@ -8,6 +8,7 @@ import {
   arrayUnion,
   query,
   where,
+  setDoc,
 } from "firebase/firestore";
 import { User, Store, Booking } from "../models";
 
@@ -61,7 +62,6 @@ export const addNewBooking = async ({
     ...booking,
     store_id: store.id,
   });
-  console.log(r);
   return { booking };
 };
 
@@ -75,4 +75,23 @@ export const saveNotesUrl = async ({
   store: Store;
 }) => {
   if (url === "") return false;
+};
+
+export const saveNotes = async ({
+  handwrittenNotesUrl,
+  booking,
+  newNotes,
+}: {
+  handwrittenNotesUrl: string;
+  booking: Booking;
+  newNotes: string;
+}) => {
+  if (handwrittenNotesUrl === "") return false;
+  const newBooking = {
+    ...booking,
+    notes: newNotes,
+    handwrittenNotesUrl,
+  };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  return { booking: newBooking };
 };
