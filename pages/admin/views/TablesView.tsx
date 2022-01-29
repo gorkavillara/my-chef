@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AdminContext } from "..";
 import Card from "../components/Card";
 import { Booking } from "../../../models";
 
 const TablesView = () => {
+  const [filter, setFilter] = useState("all");
   const { bookings, setBookings } = useContext(AdminContext);
   const today = new Date();
   return (
@@ -12,6 +13,42 @@ const TablesView = () => {
         <h1 className="font-semibold text-lg">
           Bookings: {today.toLocaleDateString("es-ES")}
         </h1>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setFilter("all")}
+            className={`${
+              filter === "all" ? "btn-primary-blue" : "btn-secondary-blue"
+            }`}
+          >
+            All ({bookings.length})
+          </button>
+          <button
+            onClick={() => setFilter("open")}
+            className={`${
+              filter === "open" ? "btn-primary-blue" : "btn-secondary-blue"
+            }`}
+          >
+            Open (
+            {
+              bookings.filter((booking: Booking) => booking.status === "open")
+                .length
+            }
+            )
+          </button>
+          <button
+            onClick={() => setFilter("closed")}
+            className={`${
+              filter === "closed" ? "btn-primary-blue" : "btn-secondary-blue"
+            }`}
+          >
+            Closed (
+            {
+              bookings.filter((booking: Booking) => booking.status === "closed")
+                .length
+            }
+            )
+          </button>
+        </div>
         <h1 className="hidden sm:block font-semibold text-lg">
           Pending Bookings
         </h1>
@@ -27,9 +64,7 @@ const TablesView = () => {
           )}
         </div>
         <div className="flex flex-col col-span-1 gap-4 sm:border-l-2 sm:pl-2">
-          <h1 className="sm:hidden font-semibold text-lg">
-            Pending Bookings
-          </h1>
+          <h1 className="sm:hidden font-semibold text-lg">Pending Bookings</h1>
           {bookings ? (
             bookings
               .filter((booking: Booking) => booking.status === "waiting")

@@ -28,6 +28,7 @@ const NotesModal = ({
       .then((r) => {
         console.log(r);
         closeModal();
+        // Reiniciar sólo esta comanda
       })
       .catch((e) => console.log(e));
   };
