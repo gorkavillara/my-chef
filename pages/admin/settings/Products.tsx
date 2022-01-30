@@ -4,12 +4,8 @@ import { AdminContext } from "..";
 import ProductTable from "../components/ProductTable";
 
 const Products = () => {
-  const { store, setStore } = useContext(AdminContext);
-  return (
-    <div className="">
-      <ProductTable products={store.products} />
-    </div>
-  );
+  const { store } = useContext(AdminContext);
+  return <>{store ? <ProductTable products={store.products} /> : null}</>;
 };
 
 export default Products;

@@ -4,12 +4,8 @@ import { AdminContext } from "..";
 import DishTable from "../components/DishTable";
 
 const Dishes = () => {
-  const { store, setStore } = useContext(AdminContext);
-  return (
-    <div className="">
-      <DishTable dishes={store.dishes} />
-    </div>
-  );
+  const { store } = useContext(AdminContext);
+  return <>{store ? <DishTable dishes={store.dishes} /> : null}</>;
 };
 
 export default Dishes;

@@ -39,53 +39,55 @@ export default function DishTable({ dishes }) {
           </button>
         </div>
       </div>
-      <div>
-        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-          <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-            <table className="min-w-full leading-normal">
-              <thead>
-                <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Allergies
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {dishes
-                  .filter((dish: Dish) => {
-                    return search === "" ? true : dish.name.includes(search);
-                  })
-                  .map((dish: Dish, i: number) => (
-                    <tr key={i} onClick={() => openModal("editDish", dish)}>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white">
-                        <div className="flex items-center">
-                          <div className="ml-3">
-                            <p className="text-gray-900 whitespace-no-wrap">
-                              {dish.name}
-                            </p>
+      {dishes ? (
+        <div>
+          <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+            <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+              <table className="min-w-full leading-normal">
+                <thead>
+                  <tr>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Name
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Allergies
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dishes
+                    .filter((dish: Dish) => {
+                      return search === "" ? true : dish.name.includes(search);
+                    })
+                    .map((dish: Dish, i: number) => (
+                      <tr key={i} onClick={() => openModal("editDish", dish)}>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white">
+                          <div className="flex items-center">
+                            <div className="ml-3">
+                              <p className="text-gray-900 whitespace-no-wrap">
+                                {dish.name}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {dish.allergies.length > 0 ? (
-                          <AllergiesList
-                            allergies={dish.allergies}
-                            style="table"
-                          />
-                        ) : (
-                          "-"
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          {dish.allergies.length > 0 ? (
+                            <AllergiesList
+                              allergies={dish.allergies}
+                              style="table"
+                            />
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }

@@ -3,8 +3,8 @@ import { BsPlusCircle } from "react-icons/bs";
 import { AdminContext } from "..";
 
 const Menus = () => {
-  const { store, setStore } = useContext(AdminContext);
-  return (
+  const { store } = useContext(AdminContext);
+  return store ? (
     <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {store.menus?.map((menu, i) => (
         <div key={i} className="p-4 flex flex-col gap-4 shadow rounded">
@@ -17,7 +17,7 @@ const Menus = () => {
         <span>Add Menu</span>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default Menus;
