@@ -8,13 +8,14 @@ import { Booking, Store } from "../../../../models";
 const NotesModal = ({
   notes = "",
   booking,
-  closeModal
+  closeModal,
 }: {
   notes: string;
   booking: Booking;
   closeModal: Function;
 }) => {
   const [newNotes, setNewNotes] = useState(notes);
+  const { bookings, setBookings } = useContext(AdminContext);
   const canvasRef = useRef(null);
   const saveDraw = () => {
     const url = canvasRef.current.getDataURL();
@@ -26,9 +27,12 @@ const NotesModal = ({
         booking,
       })
       .then((r) => {
-        console.log(r);
+        setBookings(
+          bookings.map((book: Booking) =>
+            book.id === booking.id ? r.data.booking : book
+          )
+        );
         closeModal();
-        // Reiniciar sólo esta comanda
       })
       .catch((e) => console.log(e));
   };
@@ -44,11 +48,11 @@ const NotesModal = ({
       />
       <div className="w-full border-t"></div>
       <h1 className="font-semibold text-lg">Handwritten</h1>
-      <div className="p-0 border flex justify-center">
+      <div className="p-2 border flex justify-center">
         <CanvasDraw
           ref={canvasRef}
           canvasWidth={
-            typeof window !== "undefined" ? window.innerWidth * 0.8 : 10
+            typeof window !== "undefined" ? window.innerWidth * 0.7 : 10
           }
           canvasHeight={
             typeof window !== "undefined" ? window.innerHeight * 0.4 : 10

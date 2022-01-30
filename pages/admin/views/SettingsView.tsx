@@ -50,7 +50,7 @@ const NavMenu = ({ route, setRoute }) => (
 );
 
 const SettingsView = () => {
-  const [route, setRoute] = useState("main");
+  const [route, setRoute] = useState("menus");
   const { store, openModal } = useContext(AdminContext);
   return (
     <div className="min-h-full w-full flex flex-col">

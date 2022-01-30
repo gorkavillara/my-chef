@@ -29,7 +29,7 @@ const TablesModalMultiple = () => {
       .catch((e) => console.error(e));
   };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <h1 className="text-2xl text-gray-800 font-bold">Add multiple tables</h1>
       <div className="border-t border-indigo-500"></div>
       <label className="flex flex-col gap-2">

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AdminContext } from "..";
 import { Dish } from "../../../models";
 import AllergiesList from "./AllergiesList";
+import CompanionList from "./CompanionList";
 
 export default function DishTable({ dishes }) {
   const { openModal } = useContext(AdminContext);
@@ -52,6 +53,9 @@ export default function DishTable({ dishes }) {
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       Allergies
                     </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Companions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -79,6 +83,9 @@ export default function DishTable({ dishes }) {
                           ) : (
                             "-"
                           )}
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <CompanionList dish={dish} />
                         </td>
                       </tr>
                     ))}

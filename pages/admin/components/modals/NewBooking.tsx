@@ -8,7 +8,7 @@ const NewBooking = ({
   store: Store;
 }) => {
   return store ? (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full">
       <h1 className="font-semibold text-lg mb-6">Create New Booking</h1>
       <FormNewBooking store={store} />
     </div>

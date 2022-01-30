@@ -127,3 +127,20 @@ export const saveNotes = async ({
   await setDoc(doc(db, "bookings", booking.id), newBooking);
   return { booking: newBooking };
 };
+
+export const editBookingStatus = async ({
+  booking,
+  bookings,
+  newStatus,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  newStatus: string;
+}) => {
+  const newBooking = { ...booking, status: newStatus };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};

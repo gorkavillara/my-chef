@@ -1,12 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  GiCrabClaw,
-  GiTrashCan,
-  GiWaterSplash,
-  GiWineGlass,
-} from "react-icons/gi";
-import { MdEdit } from "react-icons/md";
-import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
+import { GiCrabClaw, GiWaterSplash, GiWineGlass } from "react-icons/gi";
+import { HiOutlinePlus } from "react-icons/hi";
 import { BsThreeDots } from "react-icons/bs";
 import StatesToggle from "./StatesToggle";
 import { Booking, Dish } from "../../../models";
@@ -172,11 +166,14 @@ const Card = ({ booking }: { booking: Booking }) => {
             </div>
           )}
           {booking.status === "waiting" && (
-            <div className="flex border-t bg-green-400 text-white justify-center items-center text-lg py-4">
+            <div
+              className="flex border-t bg-green-400 text-white justify-center items-center text-lg py-4 cursor-pointer active:bg-green-500"
+              onClick={() => openModal("openBooking", booking)}
+            >
               Open Table
             </div>
           )}
-          {booking.status === "open" && (
+          {(booking.status === "open" || booking.status === "closed") && (
             <div
               className="absolute right-2 top-2 w-8 h-8 cursor-pointer transition flex justify-center items-center bg-white text-slate-800 hover:bg-gray-400 hover:text-white rounded-full bisel"
               onClick={() => setActivePopup(!activePopup)}
@@ -187,24 +184,24 @@ const Card = ({ booking }: { booking: Booking }) => {
           <div
             className={`absolute top-8 right-2 transition ${
               !activePopup && "scale-0"
-            } bg-gray-100 flex flex-col rounded shadow py-2`}
+            } bg-gray-100 flex flex-col rounded shadow overflow-hidden`}
           >
-            {/* <h3
-              className="hover:bg-gray-400 hover:text-white px-6 cursor-pointer flex gap-2 items-center"
-              onClick={null}
-            >
-              <MdEdit /> Editar
-            </h3> */}
-            <h3
-              className="text-red-600 hover:bg-red-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center"
-              onClick={() =>
-                confirm(
-                  `Are you sure you want to close booking ${booking.table}?`
-                ) && null
-              }
-            >
-              <HiOutlinePlus className="rotate-45" /> Close
-            </h3>
+            {booking.status === "open" && (
+              <h3
+                className="text-red-600 hover:bg-red-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
+                onClick={() => openModal("closeBooking", booking)}
+              >
+                <HiOutlinePlus className="rotate-45" /> Close
+              </h3>
+            )}
+            {booking.status === "closed" && (
+              <h3
+                className="text-green-600 hover:bg-green-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
+                onClick={() => openModal("openBooking", booking)}
+              >
+                <HiOutlinePlus /> Reopen
+              </h3>
+            )}
           </div>
         </div>
       ) : (

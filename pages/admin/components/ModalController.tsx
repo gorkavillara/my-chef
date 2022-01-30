@@ -1,21 +1,43 @@
-import React, { useContext } from "react";
-import CanvasDraw from "react-canvas-draw";
-import Rodal from "rodal";
-import "rodal/lib/rodal.css";
-import { AdminContext } from "..";
-import Button from "./Button";
+import React from "react";
 import AllergiesModal from "./modals/AllergiesModal";
 import DishesModal from "./modals/DishesModal";
 import NewBooking from "./modals/NewBooking";
 import NotesModal from "./modals/NotesModal";
 import TablesModal from "./modals/TablesModal";
 import TablesModalMultiple from "./modals/TablesModalMultiple";
+import MenusModal from "./modals/MenusModal";
+import { AnimatePresence, motion } from "framer-motion";
+import BookingsDisplay from "./BookingsDisplay";
+import CloseBooking from "./modals/CloseBooking";
+import OpenBooking from "./modals/OpenBooking";
+import { HiOutlinePlus } from "react-icons/hi";
 
 type ModalProps = {
   visible: boolean;
-  onClose: Function;
+  onClose: any;
   modalContent: string;
   data?: any;
+};
+
+const dropIn = {
+  hidden: {
+    y: "-100vh",
+    opacity: 0,
+  },
+  visible: {
+    y: "5vh",
+    opacity: 1,
+    transition: {
+      duration: 0.1,
+      type: "spring",
+      damping: 25,
+      stiffness: 500,
+    },
+  },
+  exit: {
+    y: "100vh",
+    opacity: 0,
+  },
 };
 
 const ModalController = ({
@@ -24,56 +46,48 @@ const ModalController = ({
   modalContent,
   data,
 }: ModalProps) => {
-  const modalConfig = {
-    animation: "slideUp",
-    width: typeof window !== "undefined" ? window.innerWidth * 0.8 : 800,
-    height: typeof window !== "undefined" ? window.innerHeight * 0.8 : 800,
-  };
-  if (modalContent !== "") {
-    modalConfig.width =
-      typeof window !== "undefined" ? window.innerWidth * 0.8 : 10;
-    modalConfig.height =
-      typeof window !== "undefined" ? window.innerHeight * 0.8 : 10;
-  }
-  if (modalContent === "allergies") {
-    modalConfig.width =
-      typeof window !== "undefined" ? window.innerWidth * 0.4 : 10;
-    modalConfig.height =
-      typeof window !== "undefined" ? window.innerHeight * 0.4 : 10;
-  }
-  if (modalContent === "newBooking") {
-    modalConfig.width = window.innerWidth * 0.8;
-    modalConfig.height = window.innerHeight * 0.8;
-    modalConfig.animation = "flip";
-  }
-  if (modalContent === "notes") {
-    modalConfig.width = window.innerWidth * 0.8;
-    modalConfig.height = window.innerHeight * 0.8;
-    modalConfig.animation = "flip";
-  }
   return (
-    <Rodal
-      visible={visible}
-      onClose={onClose}
-      animation={modalConfig.animation}
-      width={modalConfig.width}
-      height={modalConfig.height}
-      className="flex justify-center items-center"
-    >
-      {modalContent === "newBooking" && <NewBooking store={data.store} />}
-      {modalContent === "allergies" && <AllergiesModal allergies={data} />}
-      {modalContent === "notes" && (
-        <NotesModal
-          notes={data.booking.notes}
-          booking={data.booking}
-          closeModal={onClose}
-        />
-      )}
-      {modalContent === "tables" && <TablesModal />}
-      {modalContent === "tables-multiple" && <TablesModalMultiple />}
-      {modalContent === "newDish" && <DishesModal />}
-      {modalContent === "editDish" && <DishesModal editDish={data} />}
-    </Rodal>
+    <AnimatePresence initial={false} exitBeforeEnter>
+      {visible ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-start z-50 overflow-scroll"
+          onClick={onClose}
+        >
+          <motion.div
+            variants={dropIn}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="bg-white flex justify-center items-center p-6 rounded-lg w-5/6 sm:w-3/4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {modalContent === "newBooking" && <NewBooking store={data.store} />}
+            {modalContent === "allergies" && (
+              <AllergiesModal allergies={data} />
+            )}
+            {modalContent === "notes" && (
+              <NotesModal
+                notes={data.booking.notes}
+                booking={data.booking}
+                closeModal={onClose}
+              />
+            )}
+            {modalContent === "tables" && <TablesModal />}
+            {modalContent === "tables-multiple" && <TablesModalMultiple />}
+            {modalContent === "newDish" && <DishesModal />}
+            {modalContent === "editDish" && <DishesModal editDish={data} />}
+            {modalContent === "newMenu" && <MenusModal />}
+            {modalContent === "editMenu" && <MenusModal editMenu={data} />}
+            {modalContent === "closeBooking" && <CloseBooking booking={data} />}
+            {modalContent === "openBooking" && <OpenBooking booking={data} />}
+            <button onClick={onClose}><HiOutlinePlus className="rotate-45 text-slate-700 text-2xl font-bold absolute top-5 right-5" /></button>
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 };
 
