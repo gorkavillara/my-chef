@@ -35,6 +35,23 @@ const Admin = () => {
   const [store, setStore] = useState<Store>();
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener("popstate", (event) => {
+      event.preventDefault();
+      setRoute("tables");
+      closeModal();
+    });
+    return () => {
+      window.removeEventListener("popstate", (event) => {
+        event.preventDefault();
+        setRoute("tables");
+        closeModal();
+      });
+    };
+  });
+
+  useEffect(() => {
     axios
       .post("/api/stores", {
         action: "getByEmail",

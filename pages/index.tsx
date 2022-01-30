@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Admin from "./admin";
 import LoginPage from "./admin/views/LoginPage";
 
