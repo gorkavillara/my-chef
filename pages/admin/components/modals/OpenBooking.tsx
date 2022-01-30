@@ -13,7 +13,7 @@ const OpenBooking = ({ booking }) => {
       })
       .catch((e) => console.error(e));
   };
-  return (
+  return booking ? (
     <div className="w-full flex flex-col gap-4 text-center items-center">
       <span className="text-lg">
         Are you sure you want to open booking {booking.table}?
@@ -22,7 +22,7 @@ const OpenBooking = ({ booking }) => {
         Yes, open it!
       </button>
     </div>
-  );
+  ) : null;
 };
 
 export default OpenBooking;

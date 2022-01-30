@@ -3,7 +3,7 @@ import { Dish } from "../../../models";
 import { GiCrabClaw, GiWaterSplash, GiWineGlass } from "react-icons/gi";
 
 const CompanionList = ({ dish }: { dish: Dish }) => {
-  return (
+  return dish ? (
     <div className="flex gap-1 flex-wrap">
       <div
         className={`flex gap-1 items-center p-1 rounded text-2xl ${
@@ -33,7 +33,7 @@ const CompanionList = ({ dish }: { dish: Dish }) => {
         <GiWaterSplash />
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default CompanionList;
