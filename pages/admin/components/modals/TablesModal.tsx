@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { AdminContext } from "../..";
 import { Table } from "../../../../models";
 import Input from "../forms/Input";
 
-const TablesModal = ({ store, editTable = null }) => {
+const TablesModal = ({ editTable = null }) => {
+  const { store, setStore, closeModal } = useContext(AdminContext);
   const emptyTable = {
     name: "",
     store_id: store ? store.id : "",
@@ -10,6 +13,15 @@ const TablesModal = ({ store, editTable = null }) => {
   const [newTable, setNewTable] = useState<Table>(
     editTable ? editTable : emptyTable
   );
+  const registerTable = () => {
+    axios
+      .post("/api/tables", { action: "register", table: newTable, store })
+      .then((r) => {
+        setStore({ ...r.data.store });
+        closeModal();
+      })
+      .catch((e) => console.error(e));
+  };
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-lg font-semibold">
@@ -24,7 +36,7 @@ const TablesModal = ({ store, editTable = null }) => {
       />
       <button
         className="btn-primary-green mx-6"
-        onClick={() => console.log(newTable)}
+        onClick={registerTable}
         disabled={newTable.name === ""}
       >
         {editTable ? "Update table" : "Add Table"}

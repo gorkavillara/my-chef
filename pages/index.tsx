@@ -14,7 +14,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon_256x256.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
-      {user ? <Admin /> : <LoginPage setUser={setUser} />}
+      {process.env.NODE_ENV === "development" || user ? (
+        <Admin />
+      ) : (
+        <LoginPage setUser={setUser} />
+      )}
     </div>
   );
 };

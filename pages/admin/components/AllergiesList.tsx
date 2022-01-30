@@ -31,6 +31,15 @@ const AllergiesList = ({
               {allergy}
             </span>
           ))}
+        {style === "table" &&
+          allergies?.map((allergy, i) => (
+            <span
+              key={i}
+              className="bg-red-400 text-white py-1 px-2 rounded-full"
+            >
+              {allergy}
+            </span>
+          ))}
       </div>
     )
   );

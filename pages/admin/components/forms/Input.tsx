@@ -129,6 +129,26 @@ const Input = ({
           />
         </label>
       )}
+      {type === "toggle" && (
+        <label
+          className={`flex items-center gap-4 mx-6 ${containerClassName}`}
+          onClick={onChange}
+        >
+          <span className={`uppercase text-lg ${labelClassName}`}>
+            {`${title}${required ? "*" : ""}`}
+          </span>
+          <span className="relative">
+            <span className={`block w-10 h-6 ${
+                value === true ? "bg-green-500" : "bg-slate-400"
+              } bg-green-300 rounded-full shadow-inner transition duration-300 ease-in-out`}></span>
+            <span
+              className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 bg-white ${
+                value === true && "translate-x-full"
+              } focus-within:shadow-outline transition-transform duration-300 ease-in-out`}
+            ></span>
+          </span>
+        </label>
+      )}
     </>
   );
 };

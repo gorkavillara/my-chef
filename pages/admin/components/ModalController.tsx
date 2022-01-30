@@ -5,9 +5,11 @@ import "rodal/lib/rodal.css";
 import { AdminContext } from "..";
 import Button from "./Button";
 import AllergiesModal from "./modals/AllergiesModal";
+import DishesModal from "./modals/DishesModal";
 import NewBooking from "./modals/NewBooking";
 import NotesModal from "./modals/NotesModal";
 import TablesModal from "./modals/TablesModal";
+import TablesModalMultiple from "./modals/TablesModalMultiple";
 
 type ModalProps = {
   visible: boolean;
@@ -22,7 +24,6 @@ const ModalController = ({
   modalContent,
   data,
 }: ModalProps) => {
-  console.log({ onClose });
   const modalConfig = {
     animation: "slideUp",
     width: typeof window !== "undefined" ? window.innerWidth * 0.8 : 800,
@@ -68,10 +69,10 @@ const ModalController = ({
           closeModal={onClose}
         />
       )}
-      {modalContent === "tables" && <TablesModal store={data.store} />}
-      {modalContent === "tables-multiple" && (
-        <AllergiesModal allergies={data} />
-      )}
+      {modalContent === "tables" && <TablesModal />}
+      {modalContent === "tables-multiple" && <TablesModalMultiple />}
+      {modalContent === "newDish" && <DishesModal />}
+      {modalContent === "editDish" && <DishesModal editDish={data} />}
     </Rodal>
   );
 };

@@ -34,10 +34,19 @@ export interface Dish {
   side: boolean;
   wine: boolean;
   juice: boolean;
+  products?: Product[];
+  allergies?: string[];
+  description?: string;
+  recipe?: string;
   sideStatus?: string;
   wineStatus?: string;
   juiceStatus?: string;
   done?: boolean;
+}
+
+export interface Product {
+  name: string;
+  allergies?: string[];
 }
 
 export interface Store {
@@ -50,4 +59,6 @@ export interface Store {
     subscription: string;
   };
   tables?: Table[];
+  products?: Product[];
+  dishes?: Dish[];
 }

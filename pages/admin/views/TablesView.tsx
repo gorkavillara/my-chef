@@ -6,6 +6,7 @@ import BookingsDisplay from "../components/BookingsDisplay";
 const TablesView = () => {
   const [filter, setFilter] = useState("all");
   const { bookings, setBookings } = useContext(AdminContext);
+  const vals = useContext(AdminContext);
   const today = new Date();
   return (
     <>

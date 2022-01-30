@@ -21,6 +21,7 @@ interface ContextInterface {
   openModal?: Function;
   closeModal?: Function;
   store?: Store;
+  setStore?: Dispatch<SetStateAction<Store>>;
 }
 
 export const AdminContext = createContext<ContextInterface>({});
@@ -70,9 +71,6 @@ const Admin = () => {
   const closeModal = () => {
     setActiveModal(false);
   };
-
-  console.log({closeModal})
-
   return (
     <>
       <Head>
@@ -89,19 +87,20 @@ const Admin = () => {
           openModal,
           closeModal,
           store,
+          setStore,
         }}
       >
         <div className="flex h-screen w-screen bg-slate-100">
           <Sidebar />
           <MainDashboard />
         </div>
+        <ModalController
+          visible={activeModal}
+          onClose={closeModal}
+          modalContent={modalContent}
+          data={modalData}
+        />
       </AdminContext.Provider>
-      <ModalController
-        visible={activeModal}
-        onClose={closeModal}
-        modalContent={modalContent}
-        data={modalData}
-      />
     </>
   );
 };

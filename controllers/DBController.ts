@@ -10,7 +10,39 @@ import {
   where,
   setDoc,
 } from "firebase/firestore";
-import { User, Store, Booking } from "../models";
+import { User, Store, Booking, Dish } from "../models";
+
+export const registerNewTable = async ({ table, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  await updateDoc(storeRef, {
+    tables: arrayUnion(table),
+  });
+  const newStore = { ...store, tables: [...store.tables, table] };
+  return { store: newStore };
+};
+
+export const registerMultipleTables = async ({ tables, store }) => {
+  const newStore = { ...store, tables: [...store.tables, ...tables] };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
+export const registerNewDish = async ({ dish, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  await updateDoc(storeRef, {
+    dishes: arrayUnion(dish),
+  });
+  const newStore = { ...store, dishes: [...store.dishes, dish] };
+  return { store: newStore };
+};
+
+export const updateDish = async ({ dish, store }) => {
+  const dishes = store.dishes.map((d: Dish) =>
+    d.name === dish.name ? dish : d
+  );
+  const newStore = { ...store, dishes };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
 
 export const getStoresByUserEmail = async ({
   userEmail,
