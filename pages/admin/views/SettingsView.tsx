@@ -55,38 +55,39 @@ const SettingsView = () => {
   return (
     <div className="min-h-full w-full flex flex-col">
       <h1 className="font-semibold text-lg p-6">Settings</h1>
-      <main className="flex-grow flex flex-col bg-slate-100 px-6 pb-6">
-        <NavMenu route={route} setRoute={setRoute} />
-        <div className="flex-grow flex flex-col w-full h-full">
-          <div
-            className={`p-6 bg-white flex-grow shadow-lg w-full rounded-b rounded-r ${
-              route !== "main" ? "rounded" : ""
-            } shadow-up flex flex-col gap-4`}
-          >
-            {route === "main" && (
-              <>
-                <h1 className="font-semibold text-lg">Public Info</h1>
-              </>
-            )}
-            {route === "tables" && (
-              <>
-                <div className="flex justify-between mb-2">
-                  <div className="flex gap-4 items-center">
-                    <h1 className="font-semibold text-lg">Tables</h1>
-                    <button
-                      onClick={() => openModal("tables", { store })}
-                      className="btn-primary-green"
-                    >
-                      + Add Table
-                    </button>
-                    <button
-                      onClick={() => openModal("tables-multiple")}
-                      className="btn-primary-green"
-                    >
-                      + Add Multiple
-                    </button>
-                  </div>
-                  {/* <div className="flex gap-2">
+      {store ? (
+        <main className="flex-grow flex flex-col bg-slate-100 px-6 pb-6">
+          <NavMenu route={route} setRoute={setRoute} />
+          <div className="flex-grow flex flex-col w-full h-full">
+            <div
+              className={`p-6 bg-white flex-grow shadow-lg w-full rounded-b rounded-r ${
+                route !== "main" ? "rounded" : ""
+              } shadow-up flex flex-col gap-4`}
+            >
+              {route === "main" && (
+                <>
+                  <h1 className="font-semibold text-lg">Public Info</h1>
+                </>
+              )}
+              {route === "tables" && (
+                <>
+                  <div className="flex justify-between mb-2">
+                    <div className="flex gap-4 items-center">
+                      <h1 className="font-semibold text-lg">Tables</h1>
+                      <button
+                        onClick={() => openModal("tables", { store })}
+                        className="btn-primary-green"
+                      >
+                        + Add Table
+                      </button>
+                      <button
+                        onClick={() => openModal("tables-multiple")}
+                        className="btn-primary-green"
+                      >
+                        + Add Multiple
+                      </button>
+                    </div>
+                    {/* <div className="flex gap-2">
                     <button
                       disabled={selectedTables.length === 0}
                       color="red"
@@ -100,36 +101,37 @@ const SettingsView = () => {
                       Eliminar
                     </button>
                   </div> */}
-                </div>
-                <Table
-                  items={store.tables}
-                  deleteItems={() => console.log("delete")}
-                  selectedTables={[]}
-                  toggleSelected={() => console.log("toggle")}
-                  editItem={() => console.log("edit")}
-                />
-              </>
-            )}
-            {route === "menus" && (
-              <>
-                <h1 className="font-semibold text-lg">Menus</h1>
-                <Menus />
-              </>
-            )}
-            {route === "dishes" && (
-              <>
-                <h1 className="font-semibold text-lg">Dishes</h1>
-                <Dishes />
-              </>
-            )}
-            {route === "users" && (
-              <>
-                <h1 className="font-semibold text-lg">Users</h1>
-              </>
-            )}
+                  </div>
+                  <Table
+                    items={store.tables}
+                    deleteItems={() => console.log("delete")}
+                    selectedTables={[]}
+                    toggleSelected={() => console.log("toggle")}
+                    editItem={() => console.log("edit")}
+                  />
+                </>
+              )}
+              {route === "menus" && (
+                <>
+                  <h1 className="font-semibold text-lg">Menus</h1>
+                  <Menus />
+                </>
+              )}
+              {route === "dishes" && (
+                <>
+                  <h1 className="font-semibold text-lg">Dishes</h1>
+                  <Dishes />
+                </>
+              )}
+              {route === "users" && (
+                <>
+                  <h1 className="font-semibold text-lg">Users</h1>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      ) : null}
     </div>
   );
 };
