@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import SidebarIcon from "./SidebarIcon";
 import {
   IoAlbumsOutline,
   IoNotificationsOutline,
   IoBarChartOutline,
   IoOptionsOutline,
+  IoCalendarClearOutline,
 } from "react-icons/io5";
 import CircleButton from "./CircleButton";
 import Avatar from "./Avatar";
@@ -20,7 +21,7 @@ const Sidebar = () => {
           <Image src="/favicon_256x256.png" width={256} height={256} alt="icon" />
         </picture>
         <CircleButton onClick={() => openModal("newBooking", { store })} />
-        <div className="flex flex-col items-center text-slate-500 gap-4">
+        <div className="flex flex-col items-center text-slate-500 gap-6">
           <SidebarIcon
             icon={<IoAlbumsOutline />}
             isActive={route === "tables"}
@@ -30,6 +31,11 @@ const Sidebar = () => {
             icon={<IoBarChartOutline />}
             isActive={route === "charts"}
             onClick={() => setRoute("charts")}
+          />
+          <SidebarIcon
+            icon={<IoCalendarClearOutline />}
+            isActive={route === "calendar"}
+            onClick={() => setRoute("calendar")}
           />
         </div>
       </div>
