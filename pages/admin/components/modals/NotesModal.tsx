@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { IoArrowUndo, IoSave, IoTrashBin } from "react-icons/io5";
 import { AdminContext } from "../..";
-import { Booking, Store } from "../../../../models";
+import { Booking } from "../../../../models";
 
 const NotesModal = ({
   notes = "",
