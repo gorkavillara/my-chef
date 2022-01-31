@@ -38,7 +38,7 @@ const NotesModal = ({
   };
   const undoDraw = () => canvasRef.current.undo();
   const eraseDraw = () => canvasRef.current.eraseAll();
-  return (
+  return booking ? (
     <div className="flex flex-col gap-4">
       <h1 className="font-semibold text-lg">Notes</h1>
       <input
@@ -84,7 +84,7 @@ const NotesModal = ({
         </button>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default NotesModal;
