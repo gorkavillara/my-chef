@@ -144,3 +144,20 @@ export const editBookingStatus = async ({
   );
   return { bookings: newBookings };
 };
+
+export const editBookingAllergies = async ({
+  booking,
+  bookings,
+  newAllergies,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  newAllergies: string[];
+}) => {
+  const newBooking = { ...booking, allergies: newAllergies };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};

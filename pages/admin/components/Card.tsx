@@ -73,7 +73,7 @@ const Card = ({ booking }: { booking: Booking }) => {
               <span>{booking.name}</span>
             </label>
             <div
-              onClick={() => openModal("allergies", booking.allergies)}
+              onClick={() => openModal("allergies", booking)}
               className="p-1 flex gap-1 flex-wrap"
             >
               <span className="font-semibold">ALLERGIES:</span>
@@ -126,8 +126,12 @@ const Card = ({ booking }: { booking: Booking }) => {
                   />
                   <span
                     className={`flex-grow text-lg ${
-                      dish.done && "italic line-through"
-                    }`}
+                      dish.allergies?.some(
+                        (all) => booking.allergies?.indexOf(all) >= 0
+                      )
+                        ? "text-red-500"
+                        : ""
+                    } ${dish.done && "italic line-through"}`}
                     onClick={() => changeStatus("general", i)}
                   >
                     {dish.name}
@@ -153,16 +157,18 @@ const Card = ({ booking }: { booking: Booking }) => {
                 <h1 className="text-sm font-semibold">Notes</h1>
                 <span className="text-sm">{booking.notes}</span>
               </div>
-              <div
-                onClick={() => setGreeted(!greeted)}
-                className={`p-2 flex transition items-center ${
-                  greeted
-                    ? "text-white bg-green-400"
-                    : "border-l text-slate-600"
-                }`}
-              >
-                <h1 className="text-sm font-semibold">Welcome</h1>
-              </div>
+              {booking.status === "open" && (
+                <div
+                  onClick={() => setGreeted(!greeted)}
+                  className={`p-2 flex transition items-center ${
+                    greeted
+                      ? "text-white bg-green-400"
+                      : "border-l text-slate-600"
+                  }`}
+                >
+                  <h1 className="text-sm font-semibold">Welcome</h1>
+                </div>
+              )}
             </div>
           )}
           {booking.status === "waiting" && (

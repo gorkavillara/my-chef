@@ -7,7 +7,6 @@ import TablesModal from "./modals/TablesModal";
 import TablesModalMultiple from "./modals/TablesModalMultiple";
 import MenusModal from "./modals/MenusModal";
 import { AnimatePresence, motion } from "framer-motion";
-import BookingsDisplay from "./BookingsDisplay";
 import CloseBooking from "./modals/CloseBooking";
 import OpenBooking from "./modals/OpenBooking";
 import { HiOutlinePlus } from "react-icons/hi";
@@ -66,7 +65,7 @@ const ModalController = ({
           >
             {modalContent === "newBooking" && <NewBooking store={data.store} />}
             {modalContent === "allergies" && (
-              <AllergiesModal allergies={data} />
+              <AllergiesModal allergies={data.allergies} booking={data} />
             )}
             {modalContent === "notes" && (
               <NotesModal
@@ -83,7 +82,9 @@ const ModalController = ({
             {modalContent === "editMenu" && <MenusModal editMenu={data} />}
             {modalContent === "closeBooking" && <CloseBooking booking={data} />}
             {modalContent === "openBooking" && <OpenBooking booking={data} />}
-            <button onClick={onClose}><HiOutlinePlus className="rotate-45 text-slate-700 text-2xl font-bold absolute top-5 right-5" /></button>
+            <button onClick={onClose}>
+              <HiOutlinePlus className="rotate-45 text-slate-700 text-2xl font-bold absolute top-5 right-5" />
+            </button>
           </motion.div>
         </motion.div>
       ) : null}

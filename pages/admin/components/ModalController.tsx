@@ -36,7 +36,9 @@ const ModalController = ({
       onClose={onClose}
     >
       {modalContent === "newBooking" && <NewBooking store={data.store} />}
-      {modalContent === "allergies" && <AllergiesModal allergies={data} />}
+      {modalContent === "allergies" && (
+        <AllergiesModal allergies={data.allergies} booking={data} />
+      )}
       {modalContent === "notes" && (
         <NotesModal
           notes={data.booking.notes}

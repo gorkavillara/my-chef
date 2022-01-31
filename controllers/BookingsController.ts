@@ -3,6 +3,7 @@ import { Booking } from "../models";
 export const getBookingsByStore = async ({ id }: { id: string }) => {};
 
 export const initializeBookings = (bookings: Booking[]): Booking[] => {
+  if (!bookings) return;
   const bkngs: Booking[] = bookings;
   let newBookings = bkngs;
   bkngs.forEach((booking, i) => {
