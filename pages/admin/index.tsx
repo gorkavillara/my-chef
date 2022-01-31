@@ -34,20 +34,20 @@ const Admin = () => {
   const [modalData, setModalData] = useState<object>({});
   const [store, setStore] = useState<Store>();
 
+  const goBackFunction = (event) => {
+    event.preventDefault();
+    setRoute("tables");
+    closeModal();
+  };
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.history.pushState(null, null, window.location.pathname);
-    window.addEventListener("popstate", (event) => {
-      event.preventDefault();
-      setRoute("tables");
-      closeModal();
-    });
+    window.addEventListener("popstate", goBackFunction);
+    window.addEventListener("beforeunload", goBackFunction);
     return () => {
-      window.removeEventListener("popstate", (event) => {
-        event.preventDefault();
-        setRoute("tables");
-        closeModal();
-      });
+      window.removeEventListener("popstate", goBackFunction);
+      window.removeEventListener("beforeunload", goBackFunction);
     };
   });
 

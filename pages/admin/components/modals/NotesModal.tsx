@@ -45,6 +45,7 @@ const NotesModal = ({
         value={newNotes}
         onChange={(e) => setNewNotes(e.target.value)}
         className="input-text"
+        autoFocus={false}
       />
       <div className="w-full border-t"></div>
       <h1 className="font-semibold text-lg">Handwritten</h1>

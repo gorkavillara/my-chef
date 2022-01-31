@@ -6,6 +6,10 @@ import LoginPage from "./admin/views/LoginPage";
 
 const Home: NextPage = () => {
   const [user, setUser] = useState(null);
+  useEffect(() => {
+    const us = localStorage.getItem("authUser");
+    setUser(JSON.parse(us));
+  });
   return (
     <div>
       <Head>
@@ -14,7 +18,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon_256x256.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
-      {process.env.NODE_ENV === "development" || user ? (
+      {user ? (
         <Admin />
       ) : (
         <LoginPage setUser={setUser} />

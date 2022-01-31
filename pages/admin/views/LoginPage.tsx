@@ -36,6 +36,9 @@ const LoginPage = ({ setUser }) => {
     setErrorCode("");
   }, [route]);
 
+  const saveUserInStorage = (user) =>
+    localStorage.setItem("authUser", JSON.stringify(user));
+
   const login = async () => {
     const { email, password } = newUser;
     setLoading(true);
@@ -45,6 +48,7 @@ const LoginPage = ({ setUser }) => {
         const user = userCredential.user;
         setLoading(false);
         setUser(user);
+        saveUserInStorage(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -122,7 +126,7 @@ const LoginPage = ({ setUser }) => {
             </h1>
             <div className="flex gap-6">
               <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4">
-                <img src={'/GLogo.svg'} />
+                <img src={"/GLogo.svg"} />
                 <span>Log In with Google</span>
               </button>
             </div>
@@ -189,7 +193,7 @@ const LoginPage = ({ setUser }) => {
             <h1 className="text-xl">Sign Up below</h1>
             <div className="flex gap-6">
               <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4">
-                <img src={'/GLogo.svg'} />
+                <img src={"/GLogo.svg"} />
                 <span>Sign Up with Google</span>
               </button>
             </div>
