@@ -18,12 +18,12 @@ const NotesModal = ({
   const { bookings, setBookings } = useContext(AdminContext);
   const canvasRef = useRef(null);
   const saveDraw = () => {
-    const url = canvasRef.current.getDataURL();
+    const url = canvasRef.current.getSaveData();
     axios
       .post("/api/bookings", {
         action: "saveNotes",
         newNotes,
-        handwrittenNotesUrl: url,
+        handwrittenNotesUrl: JSON.stringify(url),
         booking,
       })
       .then((r) => {
@@ -60,6 +60,12 @@ const NotesModal = ({
           brushRadius={2}
           lazyRadius={1}
           brushColor="#222"
+          immediateLoading={true}
+          saveData={
+            booking.handwrittenNotesUrl
+              ? JSON.parse(booking.handwrittenNotesUrl)
+              : null
+          }
           hideInterface
         />
       </div>
