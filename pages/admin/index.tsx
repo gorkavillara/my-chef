@@ -49,7 +49,7 @@ const Admin = () => {
       window.removeEventListener("popstate", goBackFunction);
       window.removeEventListener("beforeunload", goBackFunction);
     };
-  });
+  }, []);
 
   useEffect(() => {
     axios

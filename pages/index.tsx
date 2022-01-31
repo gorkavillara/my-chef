@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     const us = localStorage.getItem("authUser");
     setUser(JSON.parse(us));
-  });
+  }, []);
   return (
     <div>
       <Head>
