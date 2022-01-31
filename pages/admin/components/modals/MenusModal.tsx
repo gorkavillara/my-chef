@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { HiOutlinePlus } from "react-icons/hi";
 import { AdminContext } from "../..";
 import { Menu } from "../../../../models";
 import AllergiesList from "../AllergiesList";
@@ -13,6 +14,7 @@ const MenusModal = ({ editMenu = null }) => {
     dishes: [],
   };
   const [newMenu, setNewMenu] = useState<Menu>(editMenu ? editMenu : emptyMenu);
+  const [emptyDish, setEmptyDish] = useState(null);
   const registerMenu = () => {
     const action = editMenu === null ? "register" : "update";
     axios
@@ -22,6 +24,10 @@ const MenusModal = ({ editMenu = null }) => {
         closeModal();
       })
       .catch((e) => console.error(e));
+  };
+  const addDish = () => {
+    setNewMenu({ ...newMenu, dishes: [...newMenu.dishes, emptyDish] });
+    setEmptyDish(null);
   };
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -53,27 +59,74 @@ const MenusModal = ({ editMenu = null }) => {
               <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Companions
               </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Actions
+              </th>
             </thead>
-            {newMenu.dishes?.map((dish, i) => (
-              <tr key={i}>
-                <td className="px-5 py-2">{dish.name}</td>
-                <td className="px-5 py-2">
-                  <AllergiesList allergies={dish.allergies} style="modal" />
-                </td>
-                <td className="px-5 py-2">
-                  <CompanionList dish={dish} />
+            <tbody>
+              {newMenu.dishes?.map((dish, i) => (
+                <tr key={i}>
+                  <td className="px-5 py-2">{dish.name}</td>
+                  <td className="px-5 py-2">
+                    <AllergiesList allergies={dish.allergies} style="modal" />
+                  </td>
+                  <td className="px-5 py-2">
+                    <CompanionList dish={dish} />
+                  </td>
+                  <td className="px-5 py-2">
+                    <button
+                      className="w-full flex justify-center items-center"
+                      onClick={() =>
+                        setNewMenu({
+                          ...newMenu,
+                          dishes: newMenu.dishes.filter((d, j) => j !== i),
+                        })
+                      }
+                    >
+                      <HiOutlinePlus className="text-2xl font-semibold text-red-500 rotate-45" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {emptyDish !== null && (
+                <tr>
+                  <td colSpan={4} className="px-2 py-2 gap-2 justify-between">
+                    <div className="flex gap-4">
+                      <select
+                        className="w-full border rounded p-2"
+                        onChange={(e) =>
+                          setEmptyDish(
+                            store.dishes.find(
+                              (dish) => dish.name === e.target.value
+                            )
+                          )
+                        }
+                      >
+                        {store.dishes?.map((dish, i) => (
+                          <option key={i} value={dish.name}>
+                            {dish.name}
+                          </option>
+                        ))}
+                      </select>
+                      <button className="btn-primary-green" onClick={addDish}>
+                        Add
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              <tr className="my-4">
+                <td colSpan={4} className="py-2">
+                  <button
+                    disabled={emptyDish !== null}
+                    className="bg-slate-100 py-2 w-full text-center font-semibold rounded-lg active:bg-slate-200 disabled:opacity-25"
+                    onClick={() => setEmptyDish(store.dishes[0])}
+                  >
+                    Add Dish
+                  </button>
                 </td>
               </tr>
-            ))}
-
-            <tr className="my-4">
-              <td
-                colSpan={3}
-                className="bg-slate-100 py-2 text-center font-semibold rounded-lg active:bg-slate-200"
-              >
-                Add Dish
-              </td>
-            </tr>
+            </tbody>
           </table>
         </div>
         <button

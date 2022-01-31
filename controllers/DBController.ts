@@ -10,7 +10,7 @@ import {
   where,
   setDoc,
 } from "firebase/firestore";
-import { User, Store, Booking, Dish } from "../models";
+import { User, Store, Booking, Dish, Menu } from "../models";
 
 export const registerNewTable = async ({ table, store }) => {
   const storeRef = doc(db, "stores", store.id);
@@ -40,6 +40,22 @@ export const updateDish = async ({ dish, store }) => {
     d.name === dish.name ? dish : d
   );
   const newStore = { ...store, dishes };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
+
+export const registerNewMenu = async ({ menu, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  await updateDoc(storeRef, {
+    menus: arrayUnion(menu),
+  });
+  const newStore = { ...store, menus: [...store.menus, menu] };
+  return { store: newStore };
+};
+
+export const updateMenu = async ({ menu, store }) => {
+  const menus = store.menus.map((m: Menu) => (m.name === menu.name ? menu : m));
+  const newStore = { ...store, menus };
   await setDoc(doc(db, "stores", store.id), newStore);
   return { store: newStore };
 };
