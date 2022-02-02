@@ -18,6 +18,7 @@ export interface Booking {
   menu: Menu;
   status: string;
   handwrittenNotesUrl?: string;
+  pairings?: Pairing[];
 }
 
 export interface Table {
@@ -49,6 +50,11 @@ export interface Product {
   allergies?: string[];
 }
 
+export interface Pairing {
+  name: string;
+  color: string;
+}
+
 export interface Store {
   id: string;
   bookings?: Booking[];
@@ -61,4 +67,5 @@ export interface Store {
   tables?: Table[];
   products?: Product[];
   dishes?: Dish[];
+  pairings?: Pairing[];
 }

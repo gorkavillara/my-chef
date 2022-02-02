@@ -13,6 +13,7 @@ import BookingsDisplay from "./BookingsDisplay";
 import CloseBooking from "./modals/CloseBooking";
 import OpenBooking from "./modals/OpenBooking";
 import { HiOutlinePlus } from "react-icons/hi";
+import PairingsModal from "./modals/PairingsModal";
 
 type ModalProps = {
   visible: boolean;
@@ -54,6 +55,7 @@ const ModalController = ({
       {modalContent === "editMenu" && <MenusModal editMenu={data} />}
       {modalContent === "closeBooking" && <CloseBooking booking={data} />}
       {modalContent === "openBooking" && <OpenBooking booking={data} />}
+      {modalContent === "pairings" && <PairingsModal booking={data} />}
     </Modal>
   );
 };

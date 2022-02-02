@@ -6,6 +6,7 @@ import {
   saveNotes,
   editBookingStatus,
   editBookingAllergies,
+  setPairings,
 } from "../../../controllers/DBController";
 
 const Bookings = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,6 +19,7 @@ const Bookings = async (req: NextApiRequest, res: NextApiResponse) => {
     newAllergies,
     booking,
     bookings,
+    pairings
   } = req.body;
   if (action === "getByStore") {
     const r = await getBookingsByStore({ id: store.id });
@@ -43,6 +45,9 @@ const Bookings = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(r);
   } else if (action === "updateAllergies") {
     const r = await editBookingAllergies({ booking, bookings, newAllergies });
+    return res.status(200).json(r);
+  } else if (action === "setPairings") {
+    const r = await setPairings({ booking, bookings, pairings });
     return res.status(200).json(r);
   }
   return res.status(404).json(req.body);

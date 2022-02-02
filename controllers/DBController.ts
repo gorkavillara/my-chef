@@ -10,7 +10,7 @@ import {
   where,
   setDoc,
 } from "firebase/firestore";
-import { User, Store, Booking, Dish, Menu } from "../models";
+import { User, Store, Booking, Dish, Menu, Pairing } from "../models";
 
 export const registerNewTable = async ({ table, store }) => {
   const storeRef = doc(db, "stores", store.id);
@@ -171,6 +171,23 @@ export const editBookingAllergies = async ({
   newAllergies: string[];
 }) => {
   const newBooking = { ...booking, allergies: newAllergies };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
+export const setPairings = async ({
+  booking,
+  bookings,
+  pairings,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  pairings: Pairing[];
+}) => {
+  const newBooking = { ...booking, pairings };
   await setDoc(doc(db, "bookings", booking.id), newBooking);
   const newBookings = bookings.map((book) =>
     book.id === booking.id ? newBooking : book

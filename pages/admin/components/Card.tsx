@@ -3,14 +3,17 @@ import { GiCrabClaw, GiWaterSplash, GiWineGlass } from "react-icons/gi";
 import { HiOutlinePlus } from "react-icons/hi";
 import { BsThreeDots } from "react-icons/bs";
 import StatesToggle from "./StatesToggle";
-import { Booking, Dish } from "../../../models";
+import { Booking, Dish, Pairing } from "../../../models";
 import AllergiesList from "./AllergiesList";
+import Color from "./Color";
 import { AdminContext } from "..";
+import { default as DishDisplay } from "./Dish";
 
 const Card = ({ booking }: { booking: Booking }) => {
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<boolean>(false);
   const [activePopup, setActivePopup] = useState<boolean>(false);
+  const [pairing, setPairing] = useState<Pairing>({ name: "", color: "" });
   const { openModal, store } = useContext(AdminContext);
   const time = booking ? new Date(booking.time.seconds * 1000) : new Date();
 
@@ -58,7 +61,13 @@ const Card = ({ booking }: { booking: Booking }) => {
   return (
     <>
       {booking ? (
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden relative">
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden relative flex flex-col">
+          <div
+            className={`${
+              activePopup ? "absolute" : "hidden"
+            } top-0 left-0 w-full h-full z-40`}
+            onClick={() => setActivePopup(false)}
+          ></div>
           <div className="grid grid-cols-2 p-1">
             <label className="p-1">
               <span className="font-semibold">PAX: </span>
@@ -91,65 +100,33 @@ const Card = ({ booking }: { booking: Booking }) => {
               <span className="font-semibold">NATIONALITY: </span>
               <span>{booking.nationality}</span>
             </label>
-            <label className="p-1 flex gap-1 flex-wrap">
-              <span className="font-semibold">MENU: </span>
-              <span>{booking.menu.name}</span>
-            </label>
-            <div
-              className="p-1 flex gap-1 flex-wrap"
-              onClick={() => openModal("notes", { booking, store })}
-            >
-              <span className="font-semibold">NOTES: </span>
-              <span>{booking.notes}</span>
-            </div>
           </div>
           {(booking.status === "open" || booking.status === "closed") && (
             <div className="border-t">
               <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
-                <span>
+                <span className="p-1">
                   <GiCrabClaw />
                 </span>
-                <div className="flex items-center gap-4">
-                  <span>
-                    <GiWineGlass />
-                  </span>
-                  <span>
-                    <GiWaterSplash />
-                  </span>
-                </div>
+                <button
+                  className={`${
+                    booking.pairings
+                      ? booking.pairings?.length === 0
+                        ? "bg-red-100 animate-pulse"
+                        : "bg-green-100"
+                      : "bg-red-100 animate-pulse"
+                  } p-1 rounded-lg`}
+                  onClick={() => openModal("pairings", booking)}
+                >
+                  <GiWineGlass />
+                </button>
               </div>
               {activeDishes.map((dish, i) => (
-                <div key={i} className="flex py-1 px-2 gap-4 items-center">
-                  <StatesToggle
-                    status={dish.sideStatus}
-                    onClick={() => changeStatus("side", i)}
-                  />
-                  <span
-                    className={`flex-grow text-lg ${
-                      dish.allergies?.some(
-                        (all) => booking.allergies?.indexOf(all) >= 0
-                      )
-                        ? "text-red-500"
-                        : ""
-                    } ${dish.done && "italic line-through"}`}
-                    onClick={() => changeStatus("general", i)}
-                  >
-                    {dish.name}
-                  </span>
-                  <StatesToggle
-                    status={dish.wineStatus}
-                    onClick={() => changeStatus("wine", i)}
-                  />
-                  <StatesToggle
-                    status={dish.juiceStatus}
-                    onClick={() => changeStatus("juice", i)}
-                  />
-                </div>
+                <DishDisplay key={i} dish={dish} booking={booking} />
               ))}
             </div>
           )}
           {(booking.status === "open" || booking.status === "closed") && (
-            <div className="flex border-t">
+            <div className="flex flex-grow border-t">
               <div
                 className="flex-grow p-2"
                 onClick={() => openModal("notes", { booking, store })}
@@ -163,7 +140,7 @@ const Card = ({ booking }: { booking: Booking }) => {
                   className={`p-2 flex transition items-center ${
                     greeted
                       ? "text-white bg-green-400"
-                      : "border-l text-slate-600"
+                      : "border-l text-slate-600 bg-red-100 animate-pulse"
                   }`}
                 >
                   <h1 className="text-sm font-semibold">Welcome</h1>
@@ -181,16 +158,16 @@ const Card = ({ booking }: { booking: Booking }) => {
           )}
           {(booking.status === "open" || booking.status === "closed") && (
             <div
-              className="absolute right-2 top-2 w-8 h-8 cursor-pointer transition flex justify-center items-center bg-white text-slate-800 hover:bg-gray-400 hover:text-white rounded-full bisel"
+              className="absolute right-0 top-1 w-8 h-8 cursor-pointer transition flex justify-center items-center text-slate-800 hover:bg-gray-400 hover:text-white rounded-full z-50"
               onClick={() => setActivePopup(!activePopup)}
             >
-              <BsThreeDots />
+              <BsThreeDots className="rotate-90 text-xl opacity-25" />
             </div>
           )}
           <div
             className={`absolute top-8 right-2 transition ${
               !activePopup && "scale-0"
-            } bg-gray-100 flex flex-col rounded shadow overflow-hidden`}
+            } bg-gray-100 flex flex-col rounded shadow overflow-hidden z-50`}
           >
             {booking.status === "open" && (
               <h3
