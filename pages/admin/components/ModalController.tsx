@@ -3,6 +3,7 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import AllergiesModal from "./modals/AllergiesModal";
 import DishesModal from "./modals/DishesModal";
+import PairingsSettingsModal from "./modals/PairingsSettingsModal";
 import NewBooking from "./modals/NewBooking";
 import NotesModal from "./modals/NotesModal";
 import TablesModal from "./modals/TablesModal";
@@ -56,6 +57,8 @@ const ModalController = ({
       {modalContent === "closeBooking" && <CloseBooking booking={data} />}
       {modalContent === "openBooking" && <OpenBooking booking={data} />}
       {modalContent === "pairings" && <PairingsModal booking={data} />}
+      {modalContent === "newPairing" && <PairingsSettingsModal />}
+      {modalContent === "editPairing" && <PairingsSettingsModal editPairing={data} />}
     </Modal>
   );
 };

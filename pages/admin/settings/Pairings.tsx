@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { AdminContext } from "..";
 import DishTable from "../components/DishTable";
+import PairingsTable from "../components/PairingsTable";
 
 const Dishes = () => {
   const { store } = useContext(AdminContext);
-  return <>{store ? <DishTable dishes={store.dishes} /> : null}</>;
+  return <>{store ? <PairingsTable pairings={store.pairings} /> : null}</>;
 };
 
 export default Dishes;

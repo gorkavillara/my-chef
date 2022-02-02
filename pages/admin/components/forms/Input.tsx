@@ -61,15 +61,16 @@ const Input = ({
           <span className={`uppercase ${labelClassName}`}>{title}</span>
           <div className="flex flex-wrap gap-1">
             {options.map((option, i) => (
-              <span
+              <button
                 key={i}
+                disabled={disabled}
                 className={`${
                   value.includes(option) ? "bg-red-400" : "bg-slate-300"
-                } text-white py-1 px-2 rounded-full`}
+                } text-white py-1 px-2 disabled:opacity-25  rounded-full`}
                 onClick={() => !disabled && onChange(option)}
               >
                 {option}
-              </span>
+              </button>
             ))}
           </div>
         </label>
@@ -130,23 +131,29 @@ const Input = ({
         </label>
       )}
       {type === "toggle" && (
-        <label
-          className={`flex items-center gap-4 mx-6 ${containerClassName}`}
-          onClick={onChange}
-        >
+        <label className={`flex items-center gap-4 mx-6 ${containerClassName}`}>
           <span className={`uppercase text-lg ${labelClassName}`}>
             {`${title}${required ? "*" : ""}`}
           </span>
-          <span className="relative">
-            <span className={`block w-10 h-6 ${
+          <button
+            className="relative disabled:opacity-25"
+            disabled={disabled}
+            onClick={() => {
+              if (disabled) return;
+              onChange();
+            }}
+          >
+            <span
+              className={`block w-10 h-6 ${
                 value === true ? "bg-green-500" : "bg-slate-400"
-              } bg-green-300 rounded-full shadow-inner transition duration-300 ease-in-out`}></span>
+              } bg-green-300 rounded-full shadow-inner transition duration-300 ease-in-out`}
+            ></span>
             <span
               className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 bg-white ${
                 value === true && "translate-x-full"
               } focus-within:shadow-outline transition-transform duration-300 ease-in-out`}
             ></span>
-          </span>
+          </button>
         </label>
       )}
     </>

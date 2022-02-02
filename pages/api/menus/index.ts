@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { registerNewMenu, updateMenu } from "../../../controllers/DBController";
+import { registerNewMenu, updateMenu, deleteMenu } from "../../../controllers/DBController";
 
 const Tables = async (req: NextApiRequest, res: NextApiResponse) => {
   const { action, store, menu } = req.body;
@@ -8,6 +8,9 @@ const Tables = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(r);
   } else if (action === "update") {
     const r = await updateMenu({ menu, store });
+    return res.status(200).json(r);
+  } else if (action === "delete") {
+    const r = await deleteMenu({ menu, store });
     return res.status(200).json(r);
   }
   return res.status(404).json(req.body);

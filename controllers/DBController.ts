@@ -44,6 +44,39 @@ export const updateDish = async ({ dish, store }) => {
   return { store: newStore };
 };
 
+export const deleteDish = async ({ dish, store }) => {
+  const dishes = store.dishes.filter((d: Dish) => dish.name !== d.name);
+  const newStore = { ...store, dishes };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
+
+export const registerNewPairing = async ({ pairing, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  await updateDoc(storeRef, {
+    pairings: arrayUnion(pairing),
+  });
+  const newStore = { ...store, pairings: [...store.pairings, pairing] };
+  return { store: newStore };
+};
+
+export const updatePairing = async ({ pairing, store }) => {
+  const pairings = store.pairings.map((p: Pairing) =>
+    p.name === pairing.name ? pairing : p
+  );
+  const newStore = { ...store, pairings };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
+export const deletePairing = async ({ pairing, store }) => {
+  const pairings = store.pairings.filter(
+    (pair: Pairing) => pair.name !== pairing.name
+  );
+  const newStore = { ...store, pairings };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
+
 export const registerNewMenu = async ({ menu, store }) => {
   const storeRef = doc(db, "stores", store.id);
   await updateDoc(storeRef, {
@@ -55,6 +88,13 @@ export const registerNewMenu = async ({ menu, store }) => {
 
 export const updateMenu = async ({ menu, store }) => {
   const menus = store.menus.map((m: Menu) => (m.name === menu.name ? menu : m));
+  const newStore = { ...store, menus };
+  await setDoc(doc(db, "stores", store.id), newStore);
+  return { store: newStore };
+};
+
+export const deleteMenu = async ({ menu, store }) => {
+  const menus = store.menus.filter((m: Menu) => menu.name !== m.name);
   const newStore = { ...store, menus };
   await setDoc(doc(db, "stores", store.id), newStore);
   return { store: newStore };

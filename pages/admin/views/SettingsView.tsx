@@ -2,12 +2,13 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "..";
 import Menus from "../settings/Menus";
 import Dishes from "../settings/Dishes";
+import Pairings from "../settings/Pairings";
 import Table from "../settings/Table";
 
 const NavMenu = ({ route, setRoute }) => (
   <div className="flex gap-2">
     <span
-      className={`px-6 py-3 transition bg-white rounded-t-lg ${
+      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
         route === "menus" ? "z-10" : "opacity-50"
       }`}
       onClick={() => setRoute("menus")}
@@ -15,7 +16,7 @@ const NavMenu = ({ route, setRoute }) => (
       Menus
     </span>
     <span
-      className={`px-6 py-3 transition bg-white rounded-t-lg ${
+      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
         route === "dishes" ? "z-10" : "opacity-50"
       }`}
       onClick={() => setRoute("dishes")}
@@ -23,7 +24,15 @@ const NavMenu = ({ route, setRoute }) => (
       Dishes
     </span>
     <span
-      className={`px-6 py-3 transition bg-white rounded-t-lg ${
+      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
+        route === "pairings" ? "z-10" : "opacity-50"
+      }`}
+      onClick={() => setRoute("pairings")}
+    >
+      Pairings
+    </span>
+    <span
+      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
         route === "tables" ? "z-10" : "opacity-50"
       }`}
       onClick={() => setRoute("tables")}
@@ -31,7 +40,7 @@ const NavMenu = ({ route, setRoute }) => (
       Tables
     </span>
     <span
-      className={`px-6 py-3 transition bg-white rounded-t-lg ${
+      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
         route === "users" ? "z-10" : "opacity-50"
       }`}
       onClick={() => setRoute("users")}
@@ -39,7 +48,7 @@ const NavMenu = ({ route, setRoute }) => (
       Users
     </span>
     <span
-      className={`px-6 py-3 transition bg-white rounded-t-lg ${
+      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
         route === "main" ? "z-10" : "opacity-50"
       }`}
       onClick={() => setRoute("main")}
@@ -61,7 +70,7 @@ const SettingsView = () => {
           <div className="flex-grow flex flex-col w-full h-full">
             <div
               className={`p-6 bg-white flex-grow shadow-lg w-full rounded-b rounded-r ${
-                route !== "main" ? "rounded" : ""
+                route !== "menus" ? "rounded" : ""
               } shadow-up flex flex-col gap-4`}
             >
               {route === "main" && (
@@ -121,6 +130,12 @@ const SettingsView = () => {
                 <>
                   <h1 className="font-semibold text-lg">Dishes</h1>
                   <Dishes />
+                </>
+              )}
+              {route === "pairings" && (
+                <>
+                  <h1 className="font-semibold text-lg">Pairings</h1>
+                  <Pairings />
                 </>
               )}
               {route === "users" && (

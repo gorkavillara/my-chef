@@ -1,8 +1,15 @@
 import React from "react";
 
-const Color = ({ color }) => (
-  <span
-    className={`w-3 h-3 rounded-full
+const Color = ({ color, size = "md", className = "" }) => (
+  <div
+    className={`
+      ${(size === "sm" && "w-1 h-1")}
+      ${(size === "md" && "w-3 h-3")}
+      ${(size === "lg" && "w-6 h-6")}
+      ${(size === "xl" && "w-9 h-9")}
+      
+      rounded-full
+      
       ${color === "red" && "bg-red-400"}
       ${color === "green" && "bg-green-400"}
       ${color === "blue" && "bg-blue-400"}
@@ -15,8 +22,9 @@ const Color = ({ color }) => (
       ${color === "indigo" && "bg-indigo-400"}
       ${color === "black" && "bg-black"}
       ${color === "disabled" && "bg-slate-100"}
+      ${className}
       `}
-  ></span>
+  ></div>
 );
 
 export default Color;

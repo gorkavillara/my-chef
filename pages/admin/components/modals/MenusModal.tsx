@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
+import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
 import { Menu } from "../../../../models";
 import AllergiesList from "../AllergiesList";
@@ -8,6 +9,7 @@ import CompanionList from "../CompanionList";
 import Input from "../forms/Input";
 
 const MenusModal = ({ editMenu = null }) => {
+  const [loading, setLoading] = useState(false);
   const { store, setStore, closeModal } = useContext(AdminContext);
   const emptyMenu = {
     name: "",
@@ -17,10 +19,24 @@ const MenusModal = ({ editMenu = null }) => {
   const [emptyDish, setEmptyDish] = useState(null);
   const registerMenu = () => {
     const action = editMenu === null ? "register" : "update";
+    setLoading(true);
     axios
       .post("/api/menus", { action, menu: newMenu, store })
       .then((r) => {
         setStore({ ...r.data.store });
+        setLoading(false);
+        closeModal();
+      })
+      .catch((e) => console.error(e));
+  };
+  const deleteMenu = () => {
+    const action = "delete";
+    setLoading(true);
+    axios
+      .post("/api/menus", { action, menu: newMenu, store })
+      .then((r) => {
+        setStore({ ...r.data.store });
+        setLoading(false);
         closeModal();
       })
       .catch((e) => console.error(e));
@@ -34,7 +50,7 @@ const MenusModal = ({ editMenu = null }) => {
       <h1 className="text-lg font-semibold">
         {editMenu ? "Edit menu" : "Add New Menu"}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+      <div className="flex flex-col gap-8">
         <Input
           type="text"
           name="name"
@@ -75,7 +91,8 @@ const MenusModal = ({ editMenu = null }) => {
                   </td>
                   <td className="px-5 py-2">
                     <button
-                      className="w-full flex justify-center items-center"
+                      className="w-full flex justify-center items-center disabled:opacity-25"
+                      disabled={loading}
                       onClick={() =>
                         setNewMenu({
                           ...newMenu,
@@ -118,7 +135,7 @@ const MenusModal = ({ editMenu = null }) => {
               <tr className="my-4">
                 <td colSpan={4} className="py-2">
                   <button
-                    disabled={emptyDish !== null}
+                    disabled={emptyDish !== null || loading}
                     className="bg-slate-100 py-2 w-full text-center font-semibold rounded-lg active:bg-slate-200 disabled:opacity-25"
                     onClick={() => setEmptyDish(store.dishes[0])}
                   >
@@ -129,13 +146,27 @@ const MenusModal = ({ editMenu = null }) => {
             </tbody>
           </table>
         </div>
-        <button
-          className="btn-primary-green mx-6 col-span-2"
-          onClick={registerMenu}
-          disabled={newMenu.name === ""}
-        >
-          {editMenu ? "Update Menu" : "Add Menu"}
-        </button>
+        <div className="flex gap-2 mx-6">
+          {editMenu && (
+            <button
+              className="btn-secondary-red"
+              onClick={() =>
+                confirm("Are you sure you want to delete this Menu?") &&
+                deleteMenu()
+              }
+              disabled={newMenu.name === "" || loading}
+            >
+              <IoTrashBinOutline className="text-xl" />
+            </button>
+          )}
+          <button
+            className="btn-primary-green flex-grow"
+            onClick={registerMenu}
+            disabled={newMenu.name === "" || loading}
+          >
+            {editMenu ? "Update Menu" : "Add Menu"}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,9 @@
 import { useContext, useState } from "react";
 import { AdminContext } from "..";
-import { Dish } from "../../../models";
-import AllergiesList from "./AllergiesList";
-import CompanionList from "./CompanionList";
+import { Pairing } from "../../../models";
+import Color from "./Color";
 
-export default function DishTable({ dishes }) {
+export default function PairingsTable({ pairings }) {
   const { openModal } = useContext(AdminContext);
   const [search, setSearch] = useState("");
   return (
@@ -34,13 +33,13 @@ export default function DishTable({ dishes }) {
         <div className="lg:ml-40 ml-10 space-x-8">
           <button
             className="btn-primary-green"
-            onClick={() => openModal("newDish")}
+            onClick={() => openModal("newPairing")}
           >
-            New Dish
+            New Pairing
           </button>
         </div>
       </div>
-      {dishes ? (
+      {pairings ? (
         <div>
           <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -51,45 +50,32 @@ export default function DishTable({ dishes }) {
                       Name
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Allergies
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                      Companions
+                      Color
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {dishes
-                    .filter((dish: Dish) => {
-                      return search === "" ? true : dish.name.includes(search);
+                  {pairings
+                    .filter((pairing: Pairing) => {
+                      return search === "" ? true : pairing.name.includes(search);
                     })
-                    .map((dish: Dish, i: number) => (
+                    .map((pairing: Pairing, i: number) => (
                       <tr
                         key={i}
-                        onClick={() => openModal("editDish", dish)}
+                        onClick={() => openModal("editPairing", pairing)}
                         className="cursor-pointer hover:bg-slate-50 transition"
                       >
                         <td className="px-5 py-4 border-b border-gray-200">
                           <div className="flex items-center">
                             <div className="ml-3">
                               <p className="text-gray-900 whitespace-no-wrap">
-                                {dish.name}
+                                {pairing.name}
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-4 border-b border-gray-200 text-sm">
-                          {dish.allergies.length > 0 ? (
-                            <AllergiesList
-                              allergies={dish.allergies}
-                              style="table"
-                            />
-                          ) : (
-                            "-"
-                          )}
-                        </td>
-                        <td className="px-5 py-4 border-b border-gray-200 text-sm">
-                          <CompanionList dish={dish} />
+                        <td className="px-5 py-4 border-b border-gray-200">
+                          <Color color={pairing.color} size="lg" />
                         </td>
                       </tr>
                     ))}

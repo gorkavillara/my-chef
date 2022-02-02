@@ -11,7 +11,7 @@ import { default as DishDisplay } from "./Dish";
 
 const Card = ({ booking }: { booking: Booking }) => {
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
-  const [greeted, setGreeted] = useState<boolean>(false);
+  const [greeted, setGreeted] = useState<string>("");
   const [activePopup, setActivePopup] = useState<boolean>(false);
   const [pairing, setPairing] = useState<Pairing>({ name: "", color: "" });
   const { openModal, store } = useContext(AdminContext);
@@ -23,41 +23,16 @@ const Card = ({ booking }: { booking: Booking }) => {
     setActiveDishes(dishes);
   }, []);
 
-  const changeStatus = (category: string, i: number) => {
-    const newDishes = activeDishes;
-    let prop = category + "Status";
-    if (prop === "sideStatus") {
-      if (newDishes[i].sideStatus === "pending") {
-        newDishes[i].sideStatus = "done";
-      } else if (newDishes[i].sideStatus === "done") {
-        newDishes[i].sideStatus = "necessary";
-      } else if (newDishes[i].sideStatus === "necessary") {
-        newDishes[i].sideStatus = "pending";
-      }
+  const changeGreeted = () => {
+    if (greeted === "") {
+      setGreeted("greeting");
+    } else if (greeted === "greeting") {
+      setGreeted("greeted");
+    } else if (greeted === "greeted") {
+      setGreeted("");
     }
-    if (prop === "wineStatus") {
-      if (newDishes[i].wineStatus === "pending") {
-        newDishes[i].wineStatus = "done";
-      } else if (newDishes[i].wineStatus === "done") {
-        newDishes[i].wineStatus = "necessary";
-      } else if (newDishes[i].wineStatus === "necessary") {
-        newDishes[i].wineStatus = "pending";
-      }
-    }
-    if (prop === "juiceStatus") {
-      if (newDishes[i].juiceStatus === "pending") {
-        newDishes[i].juiceStatus = "done";
-      } else if (newDishes[i].juiceStatus === "done") {
-        newDishes[i].juiceStatus = "necessary";
-      } else if (newDishes[i].juiceStatus === "necessary") {
-        newDishes[i].juiceStatus = "pending";
-      }
-    }
-    if (category === "general") {
-      newDishes[i].done = !newDishes[i].done;
-    }
-    setActiveDishes([...newDishes]);
   };
+
   return (
     <>
       {booking ? (
@@ -127,42 +102,48 @@ const Card = ({ booking }: { booking: Booking }) => {
           )}
           {(booking.status === "open" || booking.status === "closed") && (
             <div className="flex flex-grow border-t">
-              <div
-                className="flex-grow p-2"
+              <button
+                className="flex-grow p-2 text-left"
                 onClick={() => openModal("notes", { booking, store })}
               >
                 <h1 className="text-sm font-semibold">Notes</h1>
                 <span className="text-sm">{booking.notes}</span>
-              </div>
+              </button>
               {booking.status === "open" && (
-                <div
-                  onClick={() => setGreeted(!greeted)}
-                  className={`p-2 flex transition items-center ${
-                    greeted
-                      ? "text-white bg-green-400"
-                      : "border-l text-slate-600 bg-red-100 animate-pulse"
-                  }`}
+                <button
+                  onClick={changeGreeted}
+                  className={`p-2 flex transition items-center 
+                  ${
+                    greeted === "" &&
+                    "border-l text-red-500 bg-red-100 animate-pulse"
+                  }
+                  ${
+                    greeted === "greeting" &&
+                    "border-l text-yellow-600 bg-yellow-100"
+                  }
+                  ${greeted === "greeted" && "text-white bg-green-400 line-through"}
+                      `}
                 >
                   <h1 className="text-sm font-semibold">Welcome</h1>
-                </div>
+                </button>
               )}
             </div>
           )}
           {booking.status === "waiting" && (
-            <div
+            <button
               className="flex border-t bg-green-400 text-white justify-center items-center text-lg py-4 cursor-pointer active:bg-green-500"
               onClick={() => openModal("openBooking", booking)}
             >
               Open Table
-            </div>
+            </button>
           )}
           {(booking.status === "open" || booking.status === "closed") && (
-            <div
+            <button
               className="absolute right-0 top-1 w-8 h-8 cursor-pointer transition flex justify-center items-center text-slate-800 hover:bg-gray-400 hover:text-white rounded-full z-50"
               onClick={() => setActivePopup(!activePopup)}
             >
               <BsThreeDots className="rotate-90 text-xl opacity-25" />
-            </div>
+            </button>
           )}
           <div
             className={`absolute top-8 right-2 transition ${

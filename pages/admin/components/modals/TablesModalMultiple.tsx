@@ -30,8 +30,8 @@ const TablesModalMultiple = () => {
   };
   return (
     <div className="flex flex-col gap-4 w-full">
-      <h1 className="text-2xl text-gray-800 font-bold">Add multiple tables</h1>
-      <div className="border-t border-indigo-500"></div>
+      <h1 className="text-2xl font-semibold">Add multiple tables</h1>
+      <div className="border-t"></div>
       <label className="flex flex-col gap-2">
         <span className="text-gray-500">
           Prefix-name for each table (Eg:{" "}
