@@ -15,7 +15,7 @@ import ModalController from "./components/ModalController";
 
 interface ContextInterface {
   route?: string;
-  bookings?: object[];
+  bookings?: Booking[];
   setRoute?: Dispatch<SetStateAction<string>>;
   setBookings?: Dispatch<SetStateAction<object[]>>;
   openModal?: Function;
@@ -28,7 +28,7 @@ export const AdminContext = createContext<ContextInterface>({});
 
 const Admin = () => {
   const [route, setRoute] = useState<string>("tables");
-  const [bookings, setBookings] = useState<object[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<string>("");
   const [modalData, setModalData] = useState<object>({});

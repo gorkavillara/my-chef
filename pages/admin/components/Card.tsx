@@ -1,4 +1,4 @@
-import React, { Dispatch, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GiCrabClaw, GiWineGlass } from "react-icons/gi";
 import { HiOutlinePlus } from "react-icons/hi";
 import { BsThreeDots } from "react-icons/bs";
@@ -12,25 +12,23 @@ const minuteThreshold = 4;
 const Card = ({ booking }: { booking: Booking }) => {
   const [watchTime, setWatchTime] = useState(0);
   const [start, setStart] = useState(false);
-  const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<string>("");
   const [activePopup, setActivePopup] = useState<boolean>(false);
-  const { openModal, store, setBookings } = useContext(AdminContext);
+  const { openModal, store, bookings, setBookings } = useContext(AdminContext);
   const time = booking ? new Date(booking.time.seconds * 1000) : new Date();
 
   const setDish = (i: number, dish: Dish) => {
-    let newActiveDishes = activeDishes.map((d, j) => (j === i ? dish : d));
-    setActiveDishes([...newActiveDishes]);
-    return newActiveDishes.some((d) => d.status === "preparing")
+    const newDishes = booking.menu.dishes.map((d, j) => (j === i ? dish : d));
+    const newMenu = { ...booking.menu, dishes: newDishes };
+    const newBooking = { ...booking, menu: newMenu };
+    const newBookings = bookings.map((book) =>
+      book.id === newBooking.id ? newBooking : book
+    );
+    setBookings([...newBookings]);
+    return newDishes.some((d) => d.status === "preparing")
       ? setStart(true)
       : setStart(false);
   };
-
-  useEffect(() => {
-    const { menu } = booking;
-    const { dishes } = menu;
-    setActiveDishes(dishes);
-  }, []);
 
   const changeGreeted = () => {
     if (greeted === "") {
@@ -94,7 +92,12 @@ const Card = ({ booking }: { booking: Booking }) => {
               </div>
               <label className="p-1 flex gap-1 flex-wrap">
                 <span className="font-semibold">TIME: </span>
-                <span>{time.toLocaleTimeString("es-ES", { hour: '2-digit', minute: '2-digit' })}</span>
+                <span>
+                  {time.toLocaleTimeString("es-ES", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
               </label>
               <label className="p-1 flex gap-1 flex-wrap">
                 <span className="font-semibold">NATIONALITY: </span>
@@ -120,7 +123,7 @@ const Card = ({ booking }: { booking: Booking }) => {
                     <GiWineGlass />
                   </button>
                 </div>
-                {activeDishes.map((dish, i) => (
+                {booking.menu.dishes.map((dish, i) => (
                   <DishDisplay
                     key={i}
                     i={i}
