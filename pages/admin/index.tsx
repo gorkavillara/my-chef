@@ -13,6 +13,9 @@ import { Booking, Store } from "../../models";
 import { initializeBookings } from "../../controllers/BookingsController";
 import ModalController from "./components/ModalController";
 
+import { query, collection, where, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/client";
+
 interface ContextInterface {
   route?: string;
   bookings?: Booking[];
@@ -50,6 +53,20 @@ const Admin = () => {
       window.removeEventListener("beforeunload", goBackFunction);
     };
   }, []);
+
+  useEffect(() => {
+    if (!store) return;
+    const qRef = query(
+      collection(db, "bookings"),
+      where("store_id", "==", store.id)
+    );
+    const unsubscribe = onSnapshot(qRef, (docs) => {
+      let storeBookings = [];
+      docs.forEach((doc) => storeBookings.push({ ...doc.data(), id: doc.id }));
+      setBookings(storeBookings);
+    });
+    return unsubscribe;
+  }, [store]);
 
   useEffect(() => {
     axios
