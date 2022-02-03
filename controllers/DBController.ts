@@ -218,6 +218,23 @@ export const editBookingAllergies = async ({
   return { bookings: newBookings };
 };
 
+export const editBookingMenu = async ({
+  booking,
+  bookings,
+  newMenu,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  newMenu: Menu;
+}) => {
+  const newBooking = { ...booking, menu: newMenu };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
 export const setPairings = async ({
   booking,
   bookings,

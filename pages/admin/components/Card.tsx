@@ -6,6 +6,7 @@ import { Booking, Dish } from "../../../models";
 import AllergiesList from "./AllergiesList";
 import { AdminContext } from "..";
 import { default as DishDisplay } from "./Dish";
+import axios from "axios";
 
 const minuteThreshold = 4;
 
@@ -20,14 +21,25 @@ const Card = ({ booking }: { booking: Booking }) => {
   const setDish = (i: number, dish: Dish) => {
     const newDishes = booking.menu.dishes.map((d, j) => (j === i ? dish : d));
     const newMenu = { ...booking.menu, dishes: newDishes };
-    const newBooking = { ...booking, menu: newMenu };
-    const newBookings = bookings.map((book) =>
-      book.id === newBooking.id ? newBooking : book
-    );
-    setBookings([...newBookings]);
-    return newDishes.some((d) => d.status === "preparing")
-      ? setStart(true)
-      : setStart(false);
+    return axios
+      .post("/api/bookings", {
+        action: "updateMenu",
+        booking,
+        bookings,
+        newMenu,
+      })
+      .then((r) => {
+        setBookings([...r.data.bookings]);
+        newDishes.some((d) => d.status === "preparing")
+          ? setStart(true)
+          : setStart(false);
+      })
+      .catch((e) => console.log(e));
+    // const newBooking = { ...booking, menu: newMenu };
+    // const newBookings = bookings.map((book) =>
+    //   book.id === newBooking.id ? newBooking : book
+    // );
+    // setBookings([...newBookings]);
   };
 
   const changeGreeted = () => {
