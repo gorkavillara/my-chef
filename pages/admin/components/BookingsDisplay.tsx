@@ -12,8 +12,8 @@ const BookingsDisplay = ({
   return (
     <>
       {filter === "all" && (
-        <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 sm:gap-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 col-span-1 sm:col-span-2 xl:col-span-3 gap-2 sm:pr-2">
+        <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 sm:gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 col-span-1 md:col-span-2 xl:col-span-3 gap-2 sm:pr-2">
             {bookings ? (
               bookings
                 .filter((booking: Booking) => booking.status === "open")
@@ -24,7 +24,7 @@ const BookingsDisplay = ({
               <h1>Cargando...</h1>
             )}
           </div>
-          <div className="flex flex-col col-span-1 gap-4 sm:border-l-2 sm:pl-2">
+          <div className="flex flex-col gap-4 sm:border-l-2 sm:pl-2">
             <h1 className="font-semibold text-lg">
               Pending Bookings
             </h1>

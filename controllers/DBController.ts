@@ -235,6 +235,23 @@ export const editBookingMenu = async ({
   return { bookings: newBookings };
 };
 
+export const editBookingGreeting = async ({
+  booking,
+  bookings,
+  greeted,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  greeted: string;
+}) => {
+  const newBooking = { ...booking, greeted };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
 export const setPairings = async ({
   booking,
   bookings,

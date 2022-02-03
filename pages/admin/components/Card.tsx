@@ -35,21 +35,28 @@ const Card = ({ booking }: { booking: Booking }) => {
           : setStart(false);
       })
       .catch((e) => console.log(e));
-    // const newBooking = { ...booking, menu: newMenu };
-    // const newBookings = bookings.map((book) =>
-    //   book.id === newBooking.id ? newBooking : book
-    // );
-    // setBookings([...newBookings]);
   };
 
   const changeGreeted = () => {
-    if (greeted === "") {
-      setGreeted("greeting");
-    } else if (greeted === "greeting") {
-      setGreeted("greeted");
-    } else if (greeted === "greeted") {
-      setGreeted("");
+    let greeted = "";
+    if (booking.greeted === "" || !booking.greeted) {
+      greeted = "greeting";
+    } else if (booking.greeted === "greeting") {
+      greeted = "greeted";
+    } else if (booking.greeted === "greeted") {
+      greeted = "";
     }
+    return axios
+      .post("/api/bookings", {
+        action: "updateGreeting",
+        booking,
+        bookings,
+        greeted,
+      })
+      .then((r) => {
+        setBookings([...r.data.bookings]);
+      })
+      .catch((e) => console.log(e));
   };
 
   useEffect(() => {
@@ -158,17 +165,17 @@ const Card = ({ booking }: { booking: Booking }) => {
                 {booking.status === "open" && (
                   <button
                     onClick={changeGreeted}
-                    className={`p-2 flex transition items-center 
+                    className={`p-2 flex transition items-center outline-none 
                   ${
-                    greeted === "" &&
+                    booking.greeted === "" &&
                     "border-l text-red-500 bg-red-100 animate-pulse"
                   }
                   ${
-                    greeted === "greeting" &&
+                    booking.greeted === "greeting" &&
                     "border-l text-yellow-600 bg-yellow-100"
                   }
                   ${
-                    greeted === "greeted" &&
+                    booking.greeted === "greeted" &&
                     "text-white bg-green-400 line-through"
                   }
                       `}
@@ -238,7 +245,6 @@ const Card = ({ booking }: { booking: Booking }) => {
                 <span>
                   {("0" + Math.floor((watchTime / 1000) % 60)).slice(-2)}
                 </span>
-                {/* <span>{("0" + ((watchTime / 10) % 1000)).slice(-2)}</span> */}
               </span>
             </div>
           )}

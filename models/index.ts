@@ -19,6 +19,7 @@ export interface Booking {
   status: string;
   handwrittenNotesUrl?: string;
   pairings?: Pairing[];
+  greeted?: string;
 }
 
 export interface Table {
