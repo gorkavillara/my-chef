@@ -6,7 +6,7 @@ import Color from "../Color";
 
 const PairingsModal = ({ booking }) => {
   const [pairings, setPairings] = useState<Pairing[]>(
-    booking.pairings ? booking.pairings : []
+    booking?.pairings ? booking.pairings : []
   );
   const { store, setBookings, bookings, closeModal } = useContext(AdminContext);
   const openBooking = () => {
