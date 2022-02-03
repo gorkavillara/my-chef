@@ -43,6 +43,7 @@ export interface Dish {
   wineStatus?: string;
   juiceStatus?: string;
   done?: boolean;
+  status?: string;
 }
 
 export interface Product {

@@ -107,7 +107,7 @@ const Admin = () => {
           setStore,
         }}
       >
-        <div className="flex h-screen w-screen bg-slate-100">
+        <div className="flex h-screen w-screen bg-slate-100 scroll-hidden">
           <Sidebar />
           <MainDashboard />
         </div>

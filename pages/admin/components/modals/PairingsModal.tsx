@@ -37,7 +37,7 @@ const PairingsModal = ({ booking }) => {
       </h1>
       <div className="w-full flex flex-col gap-2">
         {store.pairings.map((pairing: Pairing, i: number) => (
-          <div
+          <button
             key={i}
             className={`flex justify-between items-center rounded-lg py-2 px-4 ${
               isSelected(pairing)
@@ -48,7 +48,7 @@ const PairingsModal = ({ booking }) => {
           >
             <span>{pairing.name}</span>
             <Color color={pairing.color} />
-          </div>
+          </button>
         ))}
       </div>
       <button className="btn-primary-green max-w-lg" onClick={openBooking}>

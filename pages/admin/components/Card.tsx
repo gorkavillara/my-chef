@@ -1,21 +1,30 @@
-import React, { useContext, useEffect, useState } from "react";
-import { GiCrabClaw, GiWaterSplash, GiWineGlass } from "react-icons/gi";
+import React, { Dispatch, useContext, useEffect, useState } from "react";
+import { GiCrabClaw, GiWineGlass } from "react-icons/gi";
 import { HiOutlinePlus } from "react-icons/hi";
 import { BsThreeDots } from "react-icons/bs";
-import StatesToggle from "./StatesToggle";
-import { Booking, Dish, Pairing } from "../../../models";
+import { Booking, Dish } from "../../../models";
 import AllergiesList from "./AllergiesList";
-import Color from "./Color";
 import { AdminContext } from "..";
 import { default as DishDisplay } from "./Dish";
 
+const minuteThreshold = 4;
+
 const Card = ({ booking }: { booking: Booking }) => {
+  const [watchTime, setWatchTime] = useState(0);
+  const [start, setStart] = useState(false);
   const [activeDishes, setActiveDishes] = useState<Dish[]>([]);
   const [greeted, setGreeted] = useState<string>("");
   const [activePopup, setActivePopup] = useState<boolean>(false);
-  const [pairing, setPairing] = useState<Pairing>({ name: "", color: "" });
-  const { openModal, store } = useContext(AdminContext);
+  const { openModal, store, setBookings } = useContext(AdminContext);
   const time = booking ? new Date(booking.time.seconds * 1000) : new Date();
+
+  const setDish = (i: number, dish: Dish) => {
+    let newActiveDishes = activeDishes.map((d, j) => (j === i ? dish : d));
+    setActiveDishes([...newActiveDishes]);
+    return newActiveDishes.some((d) => d.status === "preparing")
+      ? setStart(true)
+      : setStart(false);
+  };
 
   useEffect(() => {
     const { menu } = booking;
@@ -33,86 +42,108 @@ const Card = ({ booking }: { booking: Booking }) => {
     }
   };
 
+  useEffect(() => {
+    let interval = null;
+    if (start) {
+      interval = setInterval(() => {
+        setWatchTime((prevTime) => prevTime + 10);
+      }, 10);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [start]);
+
   return (
     <>
       {booking ? (
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden relative flex flex-col">
-          <div
-            className={`${
-              activePopup ? "absolute" : "hidden"
-            } top-0 left-0 w-full h-full z-40`}
-            onClick={() => setActivePopup(false)}
-          ></div>
-          <div className="grid grid-cols-2 p-1">
-            <label className="p-1">
-              <span className="font-semibold">PAX: </span>
-              <span>{booking.pax}</span>
-            </label>
-            <label className="p-1">
-              <span className="font-semibold">TABLE: </span>
-              <span>{booking.table}</span>
-            </label>
-            <label className="p-1 flex gap-1 flex-wrap">
-              <span className="font-semibold">NAME: </span>
-              <span>{booking.name}</span>
-            </label>
+        <div className="relative">
+          <div className="bg-white rounded-xl shadow-xl overflow-hidden relative flex flex-col">
             <div
-              onClick={() => openModal("allergies", booking)}
-              className="p-1 flex gap-1 flex-wrap"
-            >
-              <span className="font-semibold">ALLERGIES:</span>
-              {booking.allergies ? (
-                <AllergiesList allergies={booking.allergies} style="display" />
-              ) : (
-                "none"
-              )}
-            </div>
-            <label className="p-1 flex gap-1 flex-wrap">
-              <span className="font-semibold">TIME: </span>
-              <span>{time.toLocaleTimeString("es-ES")}</span>
-            </label>
-            <label className="p-1 flex gap-1 flex-wrap">
-              <span className="font-semibold">NATIONALITY: </span>
-              <span>{booking.nationality}</span>
-            </label>
-          </div>
-          {(booking.status === "open" || booking.status === "closed") && (
-            <div className="border-t">
-              <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
-                <span className="p-1">
-                  <GiCrabClaw />
-                </span>
-                <button
-                  className={`${
-                    booking.pairings
-                      ? booking.pairings?.length === 0
-                        ? "bg-red-100 animate-pulse"
-                        : "bg-green-100"
-                      : "bg-red-100 animate-pulse"
-                  } p-1 rounded-lg`}
-                  onClick={() => openModal("pairings", booking)}
-                >
-                  <GiWineGlass />
-                </button>
-              </div>
-              {activeDishes.map((dish, i) => (
-                <DishDisplay key={i} dish={dish} booking={booking} />
-              ))}
-            </div>
-          )}
-          {(booking.status === "open" || booking.status === "closed") && (
-            <div className="flex flex-grow border-t">
-              <button
-                className="flex-grow p-2 text-left"
-                onClick={() => openModal("notes", { booking, store })}
+              className={`${
+                activePopup ? "absolute" : "hidden"
+              } top-0 left-0 w-full h-full z-40`}
+              onClick={() => setActivePopup(false)}
+            ></div>
+            <div className="grid grid-cols-2 p-1">
+              <label className="p-1" onClick={() => setStart(true)}>
+                <span className="font-semibold">PAX: </span>
+                <span>{booking.pax}</span>
+              </label>
+              <label className="p-1">
+                <span className="font-semibold">TABLE: </span>
+                <span>{booking.table}</span>
+              </label>
+              <label className="p-1 flex gap-1 flex-wrap">
+                <span className="font-semibold">NAME: </span>
+                <span>{booking.name}</span>
+              </label>
+              <div
+                onClick={() => openModal("allergies", booking)}
+                className="p-1 flex gap-1 flex-wrap"
               >
-                <h1 className="text-sm font-semibold">Notes</h1>
-                <span className="text-sm">{booking.notes}</span>
-              </button>
-              {booking.status === "open" && (
+                <span className="font-semibold">ALLERGIES:</span>
+                {booking.allergies ? (
+                  <AllergiesList
+                    allergies={booking.allergies}
+                    style="display"
+                  />
+                ) : (
+                  "none"
+                )}
+              </div>
+              <label className="p-1 flex gap-1 flex-wrap">
+                <span className="font-semibold">TIME: </span>
+                <span>{time.toLocaleTimeString("es-ES", { hour: '2-digit', minute: '2-digit' })}</span>
+              </label>
+              <label className="p-1 flex gap-1 flex-wrap">
+                <span className="font-semibold">NATIONALITY: </span>
+                <span>{booking.nationality}</span>
+              </label>
+            </div>
+            {(booking.status === "open" || booking.status === "closed") && (
+              <div className="border-t">
+                <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
+                  <span className="p-1">
+                    <GiCrabClaw />
+                  </span>
+                  <button
+                    className={`${
+                      booking.pairings
+                        ? booking.pairings?.length === 0
+                          ? "bg-red-100 animate-pulse"
+                          : "bg-green-100"
+                        : "bg-red-100 animate-pulse"
+                    } p-1 rounded-lg`}
+                    onClick={() => openModal("pairings", booking)}
+                  >
+                    <GiWineGlass />
+                  </button>
+                </div>
+                {activeDishes.map((dish, i) => (
+                  <DishDisplay
+                    key={i}
+                    i={i}
+                    dish={dish}
+                    setDish={setDish}
+                    booking={booking}
+                  />
+                ))}
+              </div>
+            )}
+            {(booking.status === "open" || booking.status === "closed") && (
+              <div className="flex flex-grow border-t">
                 <button
-                  onClick={changeGreeted}
-                  className={`p-2 flex transition items-center 
+                  className="flex-grow p-2 text-left"
+                  onClick={() => openModal("notes", { booking, store })}
+                >
+                  <h1 className="text-sm font-semibold">Notes</h1>
+                  <span className="text-sm">{booking.notes}</span>
+                </button>
+                {booking.status === "open" && (
+                  <button
+                    onClick={changeGreeted}
+                    className={`p-2 flex transition items-center 
                   ${
                     greeted === "" &&
                     "border-l text-red-500 bg-red-100 animate-pulse"
@@ -121,52 +152,81 @@ const Card = ({ booking }: { booking: Booking }) => {
                     greeted === "greeting" &&
                     "border-l text-yellow-600 bg-yellow-100"
                   }
-                  ${greeted === "greeted" && "text-white bg-green-400 line-through"}
+                  ${
+                    greeted === "greeted" &&
+                    "text-white bg-green-400 line-through"
+                  }
                       `}
-                >
-                  <h1 className="text-sm font-semibold">Welcome</h1>
-                </button>
-              )}
-            </div>
-          )}
-          {booking.status === "waiting" && (
-            <button
-              className="flex border-t bg-green-400 text-white justify-center items-center text-lg py-4 cursor-pointer active:bg-green-500"
-              onClick={() => openModal("openBooking", booking)}
-            >
-              Open Table
-            </button>
-          )}
-          {(booking.status === "open" || booking.status === "closed") && (
-            <button
-              className="absolute right-0 top-1 w-8 h-8 cursor-pointer transition flex justify-center items-center text-slate-800 hover:bg-gray-400 hover:text-white rounded-full z-50"
-              onClick={() => setActivePopup(!activePopup)}
-            >
-              <BsThreeDots className="rotate-90 text-xl opacity-25" />
-            </button>
-          )}
-          <div
-            className={`absolute top-8 right-2 transition ${
-              !activePopup && "scale-0"
-            } bg-gray-100 flex flex-col rounded shadow overflow-hidden z-50`}
-          >
-            {booking.status === "open" && (
-              <h3
-                className="text-red-600 hover:bg-red-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
-                onClick={() => openModal("closeBooking", booking)}
-              >
-                <HiOutlinePlus className="rotate-45" /> Close
-              </h3>
+                  >
+                    <h1 className="text-sm font-semibold">Welcome</h1>
+                  </button>
+                )}
+              </div>
             )}
-            {booking.status === "closed" && (
-              <h3
-                className="text-green-600 hover:bg-green-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
+            {booking.status === "waiting" && (
+              <button
+                className="flex border-t bg-green-400 text-white justify-center items-center text-lg py-4 cursor-pointer active:bg-green-500"
                 onClick={() => openModal("openBooking", booking)}
               >
-                <HiOutlinePlus /> Reopen
-              </h3>
+                Open Table
+              </button>
             )}
+            {(booking.status === "open" || booking.status === "closed") && (
+              <button
+                className="absolute right-0 top-1 w-8 h-8 cursor-pointer transition flex justify-center items-center text-slate-800 hover:bg-gray-400 hover:text-white rounded-full z-50"
+                onClick={() => setActivePopup(!activePopup)}
+              >
+                <BsThreeDots className="rotate-90 text-xl opacity-25" />
+              </button>
+            )}
+            <div
+              className={`absolute top-8 right-2 transition ${
+                !activePopup && "scale-0"
+              } bg-gray-100 flex flex-col rounded shadow overflow-hidden z-50`}
+            >
+              {booking.status === "open" && (
+                <h3
+                  className="text-red-600 hover:bg-red-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
+                  onClick={() => openModal("closeBooking", booking)}
+                >
+                  <HiOutlinePlus className="rotate-45" /> Close
+                </h3>
+              )}
+              {booking.status === "closed" && (
+                <h3
+                  className="text-green-600 hover:bg-green-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
+                  onClick={() => openModal("openBooking", booking)}
+                >
+                  <HiOutlinePlus /> Reopen
+                </h3>
+              )}
+            </div>
           </div>
+          {watchTime > 0 && (
+            <div className="absolute w-full -top-6 flex justify-center">
+              <span
+                className={`rounded px-4 text-2xl font-semibold w-32 flex justify-center 
+                
+                ${
+                  watchTime < 0.75 * minuteThreshold * 60000
+                    ? "bg-white"
+                    : watchTime < minuteThreshold * 60000
+                    ? "bg-yellow-400"
+                    : "bg-red-400 animate-bounce"
+                }
+                
+                `}
+              >
+                <span>
+                  {("0" + Math.floor((watchTime / 60000) % 60)).slice(-2)}:
+                </span>
+                <span>
+                  {("0" + Math.floor((watchTime / 1000) % 60)).slice(-2)}
+                </span>
+                {/* <span>{("0" + ((watchTime / 10) % 1000)).slice(-2)}</span> */}
+              </span>
+            </div>
+          )}
         </div>
       ) : (
         <h1>Cargando...</h1>

@@ -9,6 +9,17 @@
     .bisel {
         box-shadow: 0 0px 10px rgba(0, 0, 0, 0.15)
     }
+
+    .scroll-hidden::-webkit-scrollbar {
+        display: none
+    }
+
+    .scroll-hidden {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width   : none;
+        /* Firefox */
+    }
 }
 
 @layer components {

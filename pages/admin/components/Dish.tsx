@@ -3,18 +3,21 @@ import Color from "./Color";
 
 const statuses = ["waiting", "preparing", "prepared", "served"];
 
-const Dish = ({ dish, booking }) => {
-  const [status, setStatus] = useState("waiting");
+const Dish = ({ dish, booking, setDish, i }) => {
+  const { status } = dish;
   const changeStatus = () => {
-    if (status === "waiting") {
-      return setStatus("preparing");
+    let newStatus = dish.status ? dish.status : "waiting";
+    if (!status || status === "waiting") {
+      newStatus = "preparing";
     } else if (status === "preparing") {
-      return setStatus("prepared");
+      newStatus = "prepared";
     } else if (status === "prepared") {
-      return setStatus("served");
+      newStatus = "served";
     } else if (status === "served") {
-      return setStatus("waiting");
+      newStatus = "waiting";
     }
+    const newDish = { ...dish, status: newStatus };
+    setDish(i, newDish);
     return;
   };
   return (
