@@ -25,19 +25,24 @@ interface ContextInterface {
   closeModal?: Function;
   store?: Store;
   setStore?: Dispatch<SetStateAction<Store>>;
+  date?: Date;
+  setDate?: Dispatch<SetStateAction<Date>>;
+  activeRole?: string;
 }
 
 export const AdminContext = createContext<ContextInterface>({});
 
-const Admin = () => {
+const Admin = ({ user }) => {
   const [route, setRoute] = useState<string>("tables");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<string>("");
   const [modalData, setModalData] = useState<object>({});
   const [store, setStore] = useState<Store>();
+  const [date, setDate] = useState<Date>(new Date());
+  const [activeRole, setActiveRole] = useState<string>("");
 
-  const goBackFunction = (event) => {
+  const goBackFunction = (event: any) => {
     event.preventDefault();
     setRoute("tables");
     closeModal();
@@ -66,6 +71,12 @@ const Admin = () => {
       setBookings(storeBookings);
     });
     return unsubscribe;
+  }, [store]);
+
+  useEffect(() => {
+    if (!store) return;
+    const us = store.settings.users.find((us) => user.email === us.email);
+    setActiveRole(us.role);
   }, [store]);
 
   useEffect(() => {
@@ -122,6 +133,9 @@ const Admin = () => {
           closeModal,
           store,
           setStore,
+          date,
+          setDate,
+          activeRole,
         }}
       >
         <div className="flex h-screen w-screen bg-slate-100 scroll-hidden">

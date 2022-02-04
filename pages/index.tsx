@@ -18,11 +18,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon_256x256.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
-      {user ? (
-        <Admin />
-      ) : (
-        <LoginPage setUser={setUser} />
-      )}
+      {user ? <Admin user={user} /> : <LoginPage setUser={setUser} />}
     </div>
   );
 };

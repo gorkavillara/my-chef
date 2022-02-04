@@ -11,7 +11,7 @@ import {
   setDoc,
   Timestamp,
 } from "firebase/firestore";
-import { User, Store, Booking, Dish, Menu, Pairing } from "../models";
+import { User, Store, Booking, Dish, Menu, Pairing, Table } from "../models";
 
 export const registerNewTable = async ({ table, store }) => {
   const storeRef = doc(db, "stores", store.id);
@@ -266,6 +266,23 @@ export const updateBookingDish = async ({
     dish.name === newDish.name ? newDish : dish
   );
   const newBooking = { ...booking, menu: { ...booking.menu, dishes } };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
+export const changeTable = async ({
+  booking,
+  bookings,
+  newTable,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  newTable: Table;
+}) => {
+  const newBooking = { ...booking, table: newTable };
   await setDoc(doc(db, "bookings", booking.id), newBooking);
   const newBookings = bookings.map((book) =>
     book.id === booking.id ? newBooking : book

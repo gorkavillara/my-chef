@@ -88,14 +88,17 @@ const Card = ({ booking }: { booking: Booking }) => {
               onClick={() => setActivePopup(false)}
             ></div>
             <div className="grid grid-cols-2 p-1">
-              <label className="p-1" onClick={() => setStart(true)}>
+              <label className="p-1">
                 <span className="font-semibold">PAX: </span>
                 <span>{booking.pax}</span>
               </label>
-              <label className="p-1">
+              <button
+                onClick={() => openModal("changeTable", booking)}
+                className="text-left p-1"
+              >
                 <span className="font-semibold">TABLE: </span>
                 <span>{booking.table}</span>
-              </label>
+              </button>
               <label className="p-1 flex gap-1 flex-wrap">
                 <span className="font-semibold">NAME: </span>
                 <span>{booking.name}</span>
@@ -191,7 +194,7 @@ const Card = ({ booking }: { booking: Booking }) => {
                   }
                       `}
                   >
-                    <h1 className="text-sm font-semibold">Welcome</h1>
+                    <h1 className="text-sm font-semibold py-4">Welcome</h1>
                   </button>
                 )}
               </div>

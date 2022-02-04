@@ -15,6 +15,7 @@ import PairingsModal from "./modals/PairingsModal";
 import Time from "./modals/Time";
 import Nationality from "./modals/Nationality";
 import DishOptions from "./modals/DishOptions";
+import ChangeTable from "./modals/ChangeTable";
 
 type ModalProps = {
   visible: boolean;
@@ -58,7 +59,12 @@ const ModalController = ({
       {modalContent === "openBooking" && <OpenBooking booking={data} />}
       {modalContent === "time" && <Time booking={data} />}
       {modalContent === "nationality" && <Nationality booking={data} />}
-      {modalContent === "dishOptions" && <DishOptions booking={data.booking} dish={data.dish} />}
+      {modalContent === "dishOptions" && (
+        <DishOptions booking={data.booking} dish={data.dish} />
+      )}
+      {modalContent === "changeTable" && (
+        <ChangeTable booking={data} />
+      )}
       {modalContent === "pairings" && <PairingsModal booking={data} />}
       {modalContent === "newPairing" && <PairingsSettingsModal />}
       {modalContent === "editPairing" && (

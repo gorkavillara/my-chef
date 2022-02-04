@@ -20,21 +20,7 @@ const allergies = [
   "Vegetarian",
 ];
 
-const nationalities = [
-  "Spanish",
-  "English",
-  "French",
-  "Italian",
-  "German",
-  "Chinese",
-  "Japanese",
-  "Russian",
-  "Arabian",
-  "Hindi",
-  "Swedish",
-  "Finnish",
-  "Danish",
-];
+const nationalities = ["ESP", "ENG", "ITA", "FRA", "EUSK"];
 
 const FormNewBooking = ({ store }: { store: Store }) => {
   const [booking, setBooking] = useState({
