@@ -4,6 +4,7 @@ import Menus from "../settings/Menus";
 import Dishes from "../settings/Dishes";
 import Pairings from "../settings/Pairings";
 import Table from "../settings/Table";
+import Users from "../settings/Users";
 
 const NavMenu = ({ route, setRoute }) => (
   <div className="flex gap-2">
@@ -141,6 +142,7 @@ const SettingsView = () => {
               {route === "users" && (
                 <>
                   <h1 className="font-semibold text-lg">Users</h1>
+                  <Users />
                 </>
               )}
             </div>

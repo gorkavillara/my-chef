@@ -22,6 +22,12 @@ export interface Booking {
   greeted?: string;
 }
 
+export interface User {
+  name: string;
+  email: string;
+  role: string;
+}
+
 export interface Table {
   name: string;
 }

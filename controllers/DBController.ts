@@ -78,6 +78,35 @@ export const deletePairing = async ({ pairing, store }) => {
   return { store: newStore };
 };
 
+export const registerUser = async ({ user, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  const users = [...store.settings.users, user];
+  const settings = { ...store.settings, users };
+  await updateDoc(storeRef, { settings });
+  const newStore = { ...store, settings };
+  return { store: newStore };
+};
+
+export const deleteUser = async ({ user, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  const users = store.settings.users.filter((us) => us.email !== user.email);
+  const settings = { ...store.settings, users };
+  await updateDoc(storeRef, { settings });
+  const newStore = { ...store, settings };
+  return { store: newStore };
+};
+
+export const updateUser = async ({ user, store }) => {
+  const storeRef = doc(db, "stores", store.id);
+  const users = store.settings.users.map((us) =>
+    us.email === user.email ? user : us
+  );
+  const settings = { ...store.settings, users };
+  await updateDoc(storeRef, { settings });
+  const newStore = { ...store, settings };
+  return { store: newStore };
+};
+
 export const registerNewMenu = async ({ menu, store }) => {
   const storeRef = doc(db, "stores", store.id);
   await updateDoc(storeRef, {

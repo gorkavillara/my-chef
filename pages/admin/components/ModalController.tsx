@@ -3,6 +3,7 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 import AllergiesModal from "./modals/AllergiesModal";
 import DishesModal from "./modals/DishesModal";
+import UsersModal from "./modals/UsersModal";
 import PairingsSettingsModal from "./modals/PairingsSettingsModal";
 import NewBooking from "./modals/NewBooking";
 import NotesModal from "./modals/NotesModal";
@@ -53,6 +54,8 @@ const ModalController = ({
       {modalContent === "tables-multiple" && <TablesModalMultiple />}
       {modalContent === "newDish" && <DishesModal />}
       {modalContent === "editDish" && <DishesModal editDish={data} />}
+      {modalContent === "newUser" && <UsersModal />}
+      {modalContent === "editUser" && <UsersModal editUser={data} />}
       {modalContent === "newMenu" && <MenusModal />}
       {modalContent === "editMenu" && <MenusModal editMenu={data} />}
       {modalContent === "closeBooking" && <CloseBooking booking={data} />}
