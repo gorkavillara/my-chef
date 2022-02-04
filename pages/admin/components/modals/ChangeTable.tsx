@@ -28,7 +28,7 @@ const ChangeTable = ({ booking }: { booking: Booking }) => {
       .catch((e) => console.error(e));
   };
 
-  const tableNames = store.tables.map((tab) => tab.name);
+  const tableNames = store ? store.tables.map((tab) => tab.name) : [];
 
   return booking ? (
     <div className="flex flex-col gap-4 items-stretch justify-between h-96 w-96 min-w-1/2 min-h-2/3">
