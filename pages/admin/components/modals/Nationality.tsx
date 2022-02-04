@@ -5,7 +5,9 @@ import Input from "../forms/Input";
 
 const Nationality = ({ booking }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [nationality, setNationality] = useState<string>(booking.nationality);
+  const [nationality, setNationality] = useState<string>(
+    booking ? booking.nationality : ""
+  );
 
   const { setBookings, bookings, closeModal } = useContext(AdminContext);
   const changeNationality = () => {
