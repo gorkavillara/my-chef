@@ -9,6 +9,10 @@ import {
   setPairings,
   editBookingMenu,
   editBookingGreeting,
+  changeTime,
+  changeNationality,
+  updateBookingDish,
+  deleteBookingDish,
 } from "../../../controllers/DBController";
 
 const Bookings = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +27,10 @@ const Bookings = async (req: NextApiRequest, res: NextApiResponse) => {
     bookings,
     pairings,
     newMenu,
-    greeted
+    greeted,
+    time,
+    nationality,
+    newDish,
   } = req.body;
   if (action === "getByStore") {
     const r = await getBookingsByStore({ id: store.id });
@@ -58,6 +65,18 @@ const Bookings = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(r);
   } else if (action === "setPairings") {
     const r = await setPairings({ booking, bookings, pairings });
+    return res.status(200).json(r);
+  } else if (action === "changeTime") {
+    const r = await changeTime({ booking, bookings, time });
+    return res.status(200).json(r);
+  } else if (action === "changeNationality") {
+    const r = await changeNationality({ booking, bookings, nationality });
+    return res.status(200).json(r);
+  } else if (action === "updateBookingDish") {
+    const r = await updateBookingDish({ booking, bookings, newDish });
+    return res.status(200).json(r);
+  } else if (action === "deleteBookingDish") {
+    const r = await deleteBookingDish({ booking, bookings, newDish });
     return res.status(200).json(r);
   }
   return res.status(404).json(req.body);

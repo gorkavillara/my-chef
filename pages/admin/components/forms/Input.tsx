@@ -65,7 +65,9 @@ const Input = ({
                 key={i}
                 disabled={disabled}
                 className={`${
-                  value.includes(option) ? "bg-red-400" : "bg-slate-300"
+                  value && value.includes(option)
+                    ? "bg-red-400"
+                    : "bg-slate-300"
                 } text-white py-1 px-2 disabled:opacity-25  rounded-full`}
                 onClick={() => !disabled && onChange(option)}
               >
@@ -125,8 +127,9 @@ const Input = ({
             onChange={onChange}
             showTimeSelect
             timeIntervals={15}
+            disabled={disabled}
             dateFormat="MMMM d, yyyy h:mm aa"
-            className="w-full border-b border-slate-700 pb-6 outline-none"
+            className="w-full border-b border-slate-700 pb-6 outline-none disabled:opacity-25"
           />
         </label>
       )}
@@ -146,7 +149,7 @@ const Input = ({
             <span
               className={`block w-10 h-6 ${
                 value === true ? "bg-green-500" : "bg-slate-400"
-              } bg-green-300 rounded-full shadow-inner transition duration-300 ease-in-out`}
+              } rounded-full shadow-inner transition duration-300 ease-in-out`}
             ></span>
             <span
               className={`absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 bg-white ${

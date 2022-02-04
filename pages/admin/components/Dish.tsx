@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AdminContext } from "..";
+import { Pairing } from "../../../models";
 import Color from "./Color";
 
 const Dish = ({ dish, booking, setDish, i }) => {
+  const { openModal } = useContext(AdminContext);
   const changeStatus = () => {
     let newStatus = dish.status ? dish.status : "waiting";
     if (!dish.status || dish.status === "waiting") {
       newStatus = "preparing";
     } else if (dish.status === "preparing") {
-      newStatus = "prepared";
-    } else if (dish.status === "prepared") {
       newStatus = "served";
     } else if (dish.status === "served") {
       newStatus = "waiting";
@@ -19,11 +20,12 @@ const Dish = ({ dish, booking, setDish, i }) => {
   };
   return dish ? (
     <div className="flex py-1 px-2 gap-4 items-center cursor-pointer">
-      <span
+      <button
         className={`w-3 h-3 rounded-full ${
           dish.side ? "bg-green-500" : "bg-slate-100"
         }`}
-      ></span>
+        onClick={() => openModal("dishOptions", { booking, dish })}
+      ></button>
       <div
         className={`flex-grow text-lg px-2 rounded-full flex justify-between items-center ${
           dish.allergies?.some((all) => booking.allergies?.indexOf(all) >= 0)
@@ -37,26 +39,35 @@ const Dish = ({ dish, booking, setDish, i }) => {
         onClick={changeStatus}
       >
         <span
-          className={`${
+          className={`
+          ${dish.status === "preparing" && "line-through"} 
+          ${
             (dish.status === "prepared" || dish.status === "served") &&
-            "line-through"
+            "line-double"
           }`}
         >
           {dish.name}
         </span>{" "}
         <span className="text-sm">
-          {dish.status !== "waiting" ? dish.status : ""}
+          {dish.status === "waiting"
+            ? ""
+            : dish.status === "preparing"
+            ? "almost ready..."
+            : dish.status}
         </span>
       </div>
-      {dish.wine ? (
-        <span className="flex gap-1">
-          {booking.pairings?.map((pairing, i) => (
+      <button
+        className="flex gap-1"
+        onClick={() => openModal("dishOptions", { booking, dish })}
+      >
+        {dish.wine ? (
+          booking.pairings?.map((pairing: Pairing, i: number) => (
             <Color key={i} color={pairing.color} />
-          ))}
-        </span>
-      ) : (
-        <Color color={"disabled"} />
-      )}
+          ))
+        ) : (
+          <Color color={"disabled"} />
+        )}
+      </button>
     </div>
   ) : null;
 };

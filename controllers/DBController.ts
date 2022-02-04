@@ -9,6 +9,7 @@ import {
   query,
   where,
   setDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { User, Store, Booking, Dish, Menu, Pairing } from "../models";
 
@@ -245,6 +246,81 @@ export const editBookingGreeting = async ({
   greeted: string;
 }) => {
   const newBooking = { ...booking, greeted };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
+export const updateBookingDish = async ({
+  booking,
+  bookings,
+  newDish,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  newDish: Dish;
+}) => {
+  const dishes = booking.menu.dishes.map((dish) =>
+    dish.name === newDish.name ? newDish : dish
+  );
+  const newBooking = { ...booking, menu: { ...booking.menu, dishes } };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
+export const deleteBookingDish = async ({
+  booking,
+  bookings,
+  newDish,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  newDish: Dish;
+}) => {
+  const dishes = booking.menu.dishes.filter(
+    (dish) => dish.name !== newDish.name
+  );
+  const newBooking = { ...booking, menu: { ...booking.menu, dishes } };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
+export const changeTime = async ({
+  booking,
+  bookings,
+  time,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  time: Date;
+}) => {
+  const t = new Date(time);
+  const newBooking = { ...booking, time: Timestamp.fromDate(t) };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  const newBookings = bookings.map((book) =>
+    book.id === booking.id ? newBooking : book
+  );
+  return { bookings: newBookings };
+};
+
+export const changeNationality = async ({
+  booking,
+  bookings,
+  nationality,
+}: {
+  booking: Booking;
+  bookings: Booking[];
+  nationality: string;
+}) => {
+  const newBooking = { ...booking, nationality };
   await setDoc(doc(db, "bookings", booking.id), newBooking);
   const newBookings = bookings.map((book) =>
     book.id === booking.id ? newBooking : book

@@ -32,15 +32,20 @@ const Card = ({ booking }: { booking: Booking }) => {
         setBookings([...r.data.bookings]);
         newDishes.some((d) => d.status === "preparing")
           ? setStart(true)
-          : setStart(false);
+          : restartTimer();
       })
       .catch((e) => console.log(e));
+  };
+
+  const restartTimer = () => {
+    setWatchTime(0);
+    setStart(false);
   };
 
   const changeGreeted = () => {
     let greeted = "";
     if (booking.greeted === "" || !booking.greeted) {
-      greeted = "greeting";
+      greeted = "greeted";
     } else if (booking.greeted === "greeting") {
       greeted = "greeted";
     } else if (booking.greeted === "greeted") {
@@ -109,7 +114,10 @@ const Card = ({ booking }: { booking: Booking }) => {
                   "none"
                 )}
               </div>
-              <label className="p-1 flex gap-1 flex-wrap">
+              <div
+                onClick={() => openModal("time", booking)}
+                className="p-1 flex gap-1 flex-wrap"
+              >
                 <span className="font-semibold">TIME: </span>
                 <span>
                   {time.toLocaleTimeString("es-ES", {
@@ -117,11 +125,14 @@ const Card = ({ booking }: { booking: Booking }) => {
                     minute: "2-digit",
                   })}
                 </span>
-              </label>
-              <label className="p-1 flex gap-1 flex-wrap">
+              </div>
+              <div
+                onClick={() => openModal("nationality", booking)}
+                className="p-1 flex gap-1 flex-wrap"
+              >
                 <span className="font-semibold">NATIONALITY: </span>
                 <span>{booking.nationality}</span>
-              </label>
+              </div>
             </div>
             {(booking.status === "open" || booking.status === "closed") && (
               <div className="border-t">
@@ -224,7 +235,7 @@ const Card = ({ booking }: { booking: Booking }) => {
               )}
             </div>
           </div>
-          {watchTime > 0 && (
+          {watchTime > 700 && (
             <div className="absolute w-full -top-6 flex justify-center">
               <span
                 className={`rounded px-4 text-2xl font-semibold w-32 flex justify-center 

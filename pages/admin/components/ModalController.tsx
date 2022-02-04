@@ -9,12 +9,12 @@ import NotesModal from "./modals/NotesModal";
 import TablesModal from "./modals/TablesModal";
 import TablesModalMultiple from "./modals/TablesModalMultiple";
 import MenusModal from "./modals/MenusModal";
-import { AnimatePresence, motion } from "framer-motion";
-import BookingsDisplay from "./BookingsDisplay";
 import CloseBooking from "./modals/CloseBooking";
 import OpenBooking from "./modals/OpenBooking";
-import { HiOutlinePlus } from "react-icons/hi";
 import PairingsModal from "./modals/PairingsModal";
+import Time from "./modals/Time";
+import Nationality from "./modals/Nationality";
+import DishOptions from "./modals/DishOptions";
 
 type ModalProps = {
   visible: boolean;
@@ -56,9 +56,14 @@ const ModalController = ({
       {modalContent === "editMenu" && <MenusModal editMenu={data} />}
       {modalContent === "closeBooking" && <CloseBooking booking={data} />}
       {modalContent === "openBooking" && <OpenBooking booking={data} />}
+      {modalContent === "time" && <Time booking={data} />}
+      {modalContent === "nationality" && <Nationality booking={data} />}
+      {modalContent === "dishOptions" && <DishOptions booking={data.booking} dish={data.dish} />}
       {modalContent === "pairings" && <PairingsModal booking={data} />}
       {modalContent === "newPairing" && <PairingsSettingsModal />}
-      {modalContent === "editPairing" && <PairingsSettingsModal editPairing={data} />}
+      {modalContent === "editPairing" && (
+        <PairingsSettingsModal editPairing={data} />
+      )}
     </Modal>
   );
 };

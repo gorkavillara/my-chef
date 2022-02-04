@@ -6,16 +6,12 @@ import {
 } from "firebase/auth";
 import { firebaseConfig } from "../../../firebase/client";
 import { initializeApp } from "firebase/app";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-import { loginUri, loginUri2 } from "../../../utils/svgs/login";
-import {
-  IoLogoApple,
-  IoLogoFacebook,
-  IoLogoGoogle,
-  IoRocket,
-  IoStar,
-  IoWallet,
-} from "react-icons/io5";
+const provider = new GoogleAuthProvider();
+
+import { loginUri2 } from "../../../utils/svgs/login";
+import { IoRocket, IoStar, IoWallet } from "react-icons/io5";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -55,6 +51,27 @@ const LoginPage = ({ setUser }) => {
         const errorMessage = error.message;
         setNewUser(emptyUser);
         setErrorCode(error.code);
+        setLoading(false);
+      });
+  };
+
+  const googleLogin = async () => {
+    setLoading(true);
+    setErrorCode("");
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        setLoading(false);
+        setUser(user);
+        saveUserInStorage(user);
+        // ...
+      })
+      .catch((error) => {
+        console.error(error)
         setLoading(false);
       });
   };
@@ -118,14 +135,14 @@ const LoginPage = ({ setUser }) => {
           </span>
         </div>
       </div>
-      <div className="flex bg-white from-green-300 to-blue-600 flex-col justify-center items-center gap-8 px-6 sm:px-12">
+      <div className="flex bg-white flex-col justify-center items-center gap-8 px-6 sm:px-12">
         {route === "login" && (
-          <>
+          <div className="max-w-xl flex flex-col justify-center items-center gap-8">
             <h1 className="text-4xl font-bold text-center">
               Welcome to My Rapid Chef
             </h1>
             <div className="flex gap-6">
-              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4">
+              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4" onClick={googleLogin}>
                 <img src={"/GLogo.svg"} />
                 <span>Log In with Google</span>
               </button>
@@ -186,13 +203,16 @@ const LoginPage = ({ setUser }) => {
             <button onClick={() => setRoute("signup")} className="italic">
               ...or you can click here to Sign Up
             </button>
-          </>
+          </div>
         )}
         {route === "signup" && (
-          <>
+          <div className="max-w-xl flex flex-col justify-center items-center gap-8">
+            <h1 className="text-4xl font-bold text-center">
+              Welcome to My Rapid Chef
+            </h1>
             <h1 className="text-xl">Sign Up below</h1>
             <div className="flex gap-6">
-              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4">
+              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4" onClick={googleLogin}>
                 <img src={"/GLogo.svg"} />
                 <span>Sign Up with Google</span>
               </button>
@@ -267,9 +287,11 @@ const LoginPage = ({ setUser }) => {
             <button onClick={() => setRoute("login")} className="italic">
               Already have an account? Click here to Log In
             </button>
-          </>
+          </div>
         )}
-        <p>Powered by Gorka Villar</p>
+        <p>
+          Powered by <a href="https://myrapidwaiter.com">My Rapid Waiter</a>
+        </p>
       </div>
     </div>
   );

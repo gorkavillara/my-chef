@@ -20,6 +20,18 @@
         scrollbar-width   : none;
         /* Firefox */
     }
+
+    .line-double {
+        text-decoration-line: line-through; 
+        text-decoration-style: double;
+    }
+
+    .min-w-1\/2 {
+        min-width: 50vw;
+    }
+    .min-h-2\/3 {
+        min-height: 66vh;
+    }
 }
 
 @layer components {
