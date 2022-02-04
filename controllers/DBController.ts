@@ -27,6 +27,23 @@ export const registerMultipleTables = async ({ tables, store }) => {
   await setDoc(doc(db, "stores", store.id), newStore);
   return { store: newStore };
 };
+
+export const updateTable = async ({ table, store, id }) => {
+  const storeRef = doc(db, "stores", store.id);
+  const tables = store.tables.map((tab, i) => (id === i ? tab : table));
+  await updateDoc(storeRef, { tables });
+  const newStore = { ...store, tables };
+  return { store: newStore };
+};
+
+export const deleteTable = async ({ store, id }) => {
+  const storeRef = doc(db, "stores", store.id);
+  const tables = store.tables.filter((tab, i) => id !== i);
+  await updateDoc(storeRef, { tables });
+  const newStore = { ...store, tables };
+  return { store: newStore };
+};
+
 export const registerNewDish = async ({ dish, store }) => {
   const storeRef = doc(db, "stores", store.id);
   await updateDoc(storeRef, {

@@ -9,7 +9,7 @@ import axios from "axios";
 import Head from "next/head";
 import MainDashboard from "./views/MainDashboard";
 import Sidebar from "./components/Sidebar";
-import { Booking, Store } from "../../models";
+import { Booking, Store, User } from "../../models";
 import { initializeBookings } from "../../controllers/BookingsController";
 import ModalController from "./components/ModalController";
 
@@ -28,6 +28,7 @@ interface ContextInterface {
   date?: Date;
   setDate?: Dispatch<SetStateAction<Date>>;
   activeRole?: string;
+  user?: User;
 }
 
 export const AdminContext = createContext<ContextInterface>({});
@@ -135,6 +136,7 @@ const Admin = ({ user }) => {
           setStore,
           date,
           setDate,
+          user,
           activeRole,
         }}
       >

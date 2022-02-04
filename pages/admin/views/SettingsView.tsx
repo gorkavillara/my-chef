@@ -5,6 +5,7 @@ import Dishes from "../settings/Dishes";
 import Pairings from "../settings/Pairings";
 import Table from "../settings/Table";
 import Users from "../settings/Users";
+import Tables from "../settings/Tables";
 
 const NavMenu = ({ route, setRoute }) => (
   <div className="flex gap-2">
@@ -48,14 +49,14 @@ const NavMenu = ({ route, setRoute }) => (
     >
       Users
     </span>
-    <span
+    {/* <span
       className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
         route === "main" ? "z-10" : "opacity-50"
       }`}
       onClick={() => setRoute("main")}
     >
       Info
-    </span>
+    </span> */}
   </div>
 );
 
@@ -81,44 +82,8 @@ const SettingsView = () => {
               )}
               {route === "tables" && (
                 <>
-                  <div className="flex justify-between mb-2">
-                    <div className="flex gap-4 items-center">
-                      <h1 className="font-semibold text-lg">Tables</h1>
-                      <button
-                        onClick={() => openModal("tables", { store })}
-                        className="btn-primary-green"
-                      >
-                        + Add Table
-                      </button>
-                      <button
-                        onClick={() => openModal("tables-multiple")}
-                        className="btn-primary-green"
-                      >
-                        + Add Multiple
-                      </button>
-                    </div>
-                    {/* <div className="flex gap-2">
-                    <button
-                      disabled={selectedTables.length === 0}
-                      color="red"
-                      onClick={() =>
-                        confirm(
-                          `¿Estás seguro de querer eliminar estas ${selectedTables.length} mesas?`
-                        ) && deleteMultiple()
-                      }
-                    >
-                      <IoTrash />
-                      Eliminar
-                    </button>
-                  </div> */}
-                  </div>
-                  <Table
-                    items={store.tables}
-                    deleteItems={() => console.log("delete")}
-                    selectedTables={[]}
-                    toggleSelected={() => console.log("toggle")}
-                    editItem={() => console.log("edit")}
-                  />
+                  <h1 className="font-semibold text-lg">Tables</h1>
+                  <Tables />
                 </>
               )}
               {route === "menus" && (

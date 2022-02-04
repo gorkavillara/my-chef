@@ -51,6 +51,7 @@ const ModalController = ({
         />
       )}
       {modalContent === "tables" && <TablesModal />}
+      {modalContent === "editTable" && <TablesModal editTable={data} />}
       {modalContent === "tables-multiple" && <TablesModalMultiple />}
       {modalContent === "newDish" && <DishesModal />}
       {modalContent === "editDish" && <DishesModal editDish={data} />}
