@@ -1,18 +1,47 @@
 import React, { useContext, useState } from "react";
+import { IoCaretBack, IoCaretForward } from "react-icons/io5";
 import { AdminContext } from "..";
 import { Booking } from "../../../models";
 import BookingsDisplay from "../components/BookingsDisplay";
 
 const TablesView = () => {
   const [filter, setFilter] = useState("all");
-  const { bookings } = useContext(AdminContext);
-  const today = new Date();
+  const { bookings, date, setDate } = useContext(AdminContext);
+  const todayBookings = (booking: Booking) => {
+    const d = new Date(booking.time.seconds * 1000);
+    return (
+      d.getDate() === date.getDate() &&
+      d.getMonth() === date.getMonth() &&
+      d.getFullYear() === date.getFullYear()
+    );
+  };
   return bookings ? (
     <>
       <div className="flex items-center justify-between pl-6 py-6">
-        <h1 className="font-semibold text-lg">
-          Bookings: {today.toLocaleDateString("es-ES")}
-        </h1>
+        <div className="flex gap-2 items-center justify-center">
+          <h1 className="font-semibold text-lg">Bookings:</h1>
+          <button
+            className="bg-slate-300 p-1 rounded"
+            onClick={() => {
+              const newDate = date.valueOf() - 3600 * 1000 * 24;
+              setDate(new Date(newDate));
+            }}
+          >
+            <IoCaretBack />
+          </button>
+          <h1 className="font-semibold text-lg">
+            {date.toLocaleDateString("es-ES")}
+          </h1>
+          <button
+            className="bg-slate-300 p-1 rounded"
+            onClick={() => {
+              const newDate = date.valueOf() + 3600 * 1000 * 24;
+              setDate(new Date(newDate));
+            }}
+          >
+            <IoCaretForward />
+          </button>
+        </div>
         <div className="flex items-center gap-2 px-6">
           <button
             onClick={() => setFilter("all")}
@@ -20,7 +49,7 @@ const TablesView = () => {
               filter === "all" ? "btn-primary-blue" : "btn-secondary-blue"
             }`}
           >
-            All ({bookings.length})
+            All ({bookings.filter(todayBookings).length})
           </button>
           <button
             onClick={() => setFilter("open")}
@@ -30,8 +59,9 @@ const TablesView = () => {
           >
             Open (
             {
-              bookings.filter((booking: Booking) => booking.status === "open")
-                .length
+              bookings
+                .filter((booking: Booking) => booking.status === "open")
+                .filter(todayBookings).length
             }
             )
           </button>
@@ -43,8 +73,9 @@ const TablesView = () => {
           >
             Closed (
             {
-              bookings.filter((booking: Booking) => booking.status === "closed")
-                .length
+              bookings
+                .filter((booking: Booking) => booking.status === "closed")
+                .filter(todayBookings).length
             }
             )
           </button>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AdminContext } from "..";
 import { Booking } from "../../../models";
 import Card from "./Card";
 
@@ -9,6 +10,15 @@ const BookingsDisplay = ({
   filter: string;
   bookings: object[];
 }) => {
+  const { date } = useContext(AdminContext);
+  const todayBookings = (booking: Booking) => {
+    const d = new Date(booking.time.seconds * 1000);
+    return (
+      d.getDate() === date.getDate() &&
+      d.getMonth() === date.getMonth() &&
+      d.getFullYear() === date.getFullYear()
+    );
+  };
   return (
     <>
       {filter === "all" && (
@@ -17,6 +27,7 @@ const BookingsDisplay = ({
             {bookings ? (
               bookings
                 .filter((booking: Booking) => booking.status === "open")
+                .filter(todayBookings)
                 .map((booking: Booking, i) => (
                   <Card booking={booking} key={i} />
                 ))
@@ -25,12 +36,11 @@ const BookingsDisplay = ({
             )}
           </div>
           <div className="flex flex-col gap-4 sm:border-l-2 sm:pl-2">
-            <h1 className="font-semibold text-lg">
-              Pending Bookings
-            </h1>
+            <h1 className="font-semibold text-lg">Pending Bookings</h1>
             {bookings ? (
               bookings
                 .filter((booking: Booking) => booking.status === "waiting")
+                .filter(todayBookings)
                 .map((booking: Booking, i) => (
                   <Card booking={booking} key={i} />
                 ))
@@ -45,6 +55,7 @@ const BookingsDisplay = ({
           {bookings ? (
             bookings
               .filter((booking: Booking) => booking.status === "open")
+              .filter(todayBookings)
               .map((booking: Booking, i) => <Card booking={booking} key={i} />)
           ) : (
             <h1>Cargando</h1>
@@ -56,6 +67,7 @@ const BookingsDisplay = ({
           {bookings ? (
             bookings
               .filter((booking: Booking) => booking.status === "closed")
+              .filter(todayBookings)
               .map((booking: Booking, i) => <Card booking={booking} key={i} />)
           ) : (
             <h1>Cargando</h1>

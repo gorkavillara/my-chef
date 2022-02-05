@@ -1,177 +1,124 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import { BsChevronLeft } from "react-icons/bs";
+import { AdminContext } from "..";
+import { Booking } from "../../../models";
+
+const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const CalendarView = () => {
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const { bookings, setRoute, setDate } = useContext(AdminContext);
+
+  const getMonth = () => {
+    const month = Math.floor(currentDate.month());
+    const year = currentDate.year();
+    const firstDayOfTheMonth = dayjs(new Date(year, month, 1)).day();
+    let currentMonthCount = 0 - firstDayOfTheMonth;
+    const daysMatrix = new Array(5).fill([]).map(() => {
+      return new Array(7).fill(null).map(() => {
+        currentMonthCount++;
+        return dayjs(new Date(year, month, currentMonthCount + 1));
+      });
+    });
+    return daysMatrix;
+  };
+
+  const dayBookings = (booking: Booking, date: Dayjs) => {
+    const d = dayjs(new Date(booking.time.seconds * 1000));
+    return d.format("DD-MM-YY") === date.format("DD-MM-YY");
+  };
+
   return (
     <div className="flex flex-col gap-4 p-6">
       <h1 className="font-semibold text-lg text-left">Bookings Calendar</h1>
       <div className="bg-white w-full rounded flex-col gap-2 shadow">
         <div className="flex gap-2 py-2 px-4 items-center justify-between">
           <div className="flex gap-1">
-            <h1 className="font-bold text-slate-800">January</h1>
-            <span className="text-slate-500">2022</span>
+            <h1 className="font-bold text-slate-800">
+              {dayjs(
+                new Date(currentDate.year(), currentDate.month(), 1)
+              ).format("MMMM")}
+            </h1>
+            <span className="text-slate-500">
+              {dayjs(
+                new Date(currentDate.year(), currentDate.month(), 1)
+              ).format("YYYY")}
+            </span>
           </div>
           <div className="border border-slate-200 py-2 divide-x rounded flex items-center text-slate-600 font-semibold">
-            <button className="px-2">
+            <button
+              className="px-2"
+              onClick={() => {
+                const newDate = currentDate.subtract(1, "month");
+                setCurrentDate(newDate);
+              }}
+            >
               <BsChevronLeft />
             </button>
-            <button className="px-2">
+            <button
+              className="px-2"
+              onClick={() => {
+                const newDate = currentDate.add(1, "month");
+                setCurrentDate(newDate);
+              }}
+            >
               <BsChevronLeft className="rotate-180" />
             </button>
           </div>
         </div>
         <div className="grid grid-rows-7">
-          <div className="grid grid-cols-7 h-24">
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                MON
-              </span>
+          {getMonth().map((week, wid) => (
+            <div className="grid grid-cols-7 h-24">
+              {new Array(7).fill(null).map((a, did) => (
+                <div
+                  className="border flex flex-col gap-1 py-1 px-2 relative items-baseline"
+                  onClick={() => {
+                    setRoute("tables");
+                    setDate(week[did].toDate());
+                  }}
+                >
+                  {wid === 0 && (
+                    <span className="absolute top-1 w-full text-center text-slate-400 font-bold uppercase">
+                      {weekdays[did]}
+                    </span>
+                  )}
+                  <span
+                    className={`
+                    ${
+                      week[did].format("DD-MM-YY") ===
+                      dayjs().format("DD-MM-YY")
+                        ? "px-2 bg-green-400 text-white rounded-full"
+                        : ""
+                    }
+                    ${
+                      week[did].month() !== currentDate.month()
+                        ? "opacity-30"
+                        : ""
+                    }`}
+                  >
+                    {week[did].date()}
+                  </span>
+                  {bookings
+                    .filter((b) => dayBookings(b, week[did]))
+                    .map((b, i) =>
+                      i === 0 ? (
+                        <div className="w-full text-sm text-center rounded-full bg-blue-300 p-1">
+                          {dayjs(new Date(b.time.seconds * 1000)).format(
+                            "HH:mm"
+                          )}{" "}
+                          {b.name} {b.pax}p
+                        </div>
+                      ) : i === 1 ? (
+                        <div className="w-full text-sm text-center rounded-full bg-slate-200 p-1">
+                          See more...
+                        </div>
+                      ) : null
+                    )}
+                </div>
+              ))}
             </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                TUE
-              </span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                WED
-              </span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                THU
-              </span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                FRI
-              </span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                SAT
-              </span>
-              <span>1</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span className="absolute top-1 w-full text-center text-slate-400 font-bold">
-                SUN
-              </span>
-              <span>2</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-7 h-24">
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>3</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>4</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>5</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>6</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>7</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>8</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>9</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-7 h-24">
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>10</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>11</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>12</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>13</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>14</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>15</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>16</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-7 h-24">
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>17</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>18</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>19</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>20</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>21</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>22</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>23</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-7 h-24">
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>24</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>25</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>26</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>27</span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>28</span>
-            </div>
-            <div className="border flex flex-col py-1 px-2 relative gap-1">
-              <span>29</span>
-              <div className="text-xs text-center rounded-full bg-blue-300">21:00 Gorka 3p</div>
-              <div className="text-xs text-center rounded-full bg-blue-300">22:00 Julen 2p</div>
-              <div className="text-xs text-center rounded-full bg-blue-300">+2</div>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>30</span>
-              <div className="text-xs text-center rounded-full bg-blue-300">12:30 Amaia 5p</div>
-              <div className="text-xs text-center rounded-full bg-blue-300">13:30 Maria 6p</div>
-            </div>
-          </div>
-          <div className="grid grid-cols-7 h-24">
-            <div className="border flex flex-col gap-1 py-1 px-2 relative">
-              <span>
-                <span className="bg-green-400 rounded-full text-white p-1">
-                  31
-                </span>
-              </span>
-            </div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative"></div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative"></div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative"></div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative"></div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative"></div>
-            <div className="border flex flex-col gap-1 py-1 px-2 relative"></div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
