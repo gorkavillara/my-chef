@@ -29,7 +29,7 @@ const CalendarView = () => {
     return d.format("DD-MM-YY") === date.format("DD-MM-YY");
   };
 
-  return (
+  return bookings ? (
     <div className="flex flex-col gap-4 p-6">
       <h1 className="font-semibold text-lg text-left">Bookings Calendar</h1>
       <div className="bg-white w-full rounded flex-col gap-2 shadow">
@@ -123,7 +123,7 @@ const CalendarView = () => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default CalendarView;
