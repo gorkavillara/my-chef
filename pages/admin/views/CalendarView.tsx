@@ -69,9 +69,10 @@ const CalendarView = () => {
         </div>
         <div className="grid grid-rows-7">
           {getMonth().map((week, wid) => (
-            <div className="grid grid-cols-7 h-24">
+            <div key={wid} className="grid grid-cols-7 h-24">
               {new Array(7).fill(null).map((a, did) => (
                 <div
+                  key={did}
                   className="border flex flex-col gap-1 py-1 px-2 relative items-baseline"
                   onClick={() => {
                     setRoute("tables");
