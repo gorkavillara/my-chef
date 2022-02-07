@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useContext, useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { IoArrowUndo, IoSave, IoTrashBin } from "react-icons/io5";
 import { AdminContext } from "../..";
+import { saveNotes } from "../../../../controllers/DBController";
 import { Booking } from "../../../../models";
 
 const NotesModal = ({
@@ -19,17 +19,15 @@ const NotesModal = ({
   const canvasRef = useRef(null);
   const saveDraw = () => {
     const url = canvasRef.current.getSaveData();
-    axios
-      .post("/api/bookings", {
-        action: "saveNotes",
-        newNotes,
-        handwrittenNotesUrl: JSON.stringify(url),
-        booking,
-      })
-      .then((r) => {
+    saveNotes({
+      newNotes,
+      handwrittenNotesUrl: JSON.stringify(url),
+      booking,
+    })
+      .then((data: any) => {
         setBookings(
           bookings.map((book: Booking) =>
-            book.id === booking.id ? r.data.booking : book
+            book.id === booking.id ? data.booking : book
           )
         );
         closeModal();

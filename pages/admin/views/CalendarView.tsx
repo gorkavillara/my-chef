@@ -104,7 +104,7 @@ const CalendarView = () => {
                     {bookings
                       .filter((b) => dayBookings(b, week[did]))
                       .map((b, i) => (
-                        <>
+                        <React.Fragment key={i}>
                           {i === 0 ? (
                             <div className="w-full text-sm text-center rounded-full bg-blue-300 p-1">
                               {dayjs(new Date(b.time.seconds * 1000)).format(
@@ -117,7 +117,7 @@ const CalendarView = () => {
                               See more...
                             </div>
                           ) : null}
-                        </>
+                        </React.Fragment>
                       ))}
                   </div>
                   <div className="lg:hidden w-full">

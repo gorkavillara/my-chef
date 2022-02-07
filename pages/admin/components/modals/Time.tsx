@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../..";
+import { changeTime as changeBookingTime } from "../../../../controllers/DBController";
 import Input from "../forms/Input";
 
 const Time = ({ booking }) => {
@@ -31,15 +32,13 @@ const Time = ({ booking }) => {
   const { setBookings, bookings, closeModal } = useContext(AdminContext);
   const changeTime = () => {
     setLoading(true);
-    axios
-      .post("/api/bookings", {
-        action: "changeTime",
-        booking,
-        bookings,
-        time,
-      })
-      .then((r) => {
-        setBookings(r.data.bookings);
+    changeBookingTime({
+      booking,
+      bookings,
+      time,
+    })
+      .then((data) => {
+        setBookings(data.bookings);
         setLoading(false);
         closeModal();
       })

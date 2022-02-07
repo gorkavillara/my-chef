@@ -1,8 +1,8 @@
-import axios from "axios";
 import { Timestamp } from "firebase/firestore";
 import React, { useState, useContext } from "react";
 import { IoRocket } from "react-icons/io5";
 import { AdminContext } from "../..";
+import { addNewBooking } from "../../../../controllers/DBController";
 import { Store } from "../../../../models";
 import Input from "../forms/Input";
 import Loading from "../Loading";
@@ -58,13 +58,11 @@ const FormNewBooking = ({ store }: { store: Store }) => {
 
   const submitNewBooking = () => {
     setLoading(true);
-    axios
-      .post("/api/bookings", {
-        action: "newBooking",
-        booking: { ...booking, time: Timestamp.fromDate(booking.time) },
-        store,
-      })
-      .then((r) => {
+    addNewBooking({
+      booking: { ...booking, time: Timestamp.fromDate(booking.time) },
+      store,
+    })
+      .then(() => {
         setLoading(false);
         closeModal();
       })

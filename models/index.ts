@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface Booking {
-  id: string;
+  id?: string;
   allergies?: string[];
   name: string;
   nationality: string;

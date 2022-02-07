@@ -1,7 +1,11 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
+import {
+  registerUser as registerNewUser,
+  updateUser as updUser,
+  deleteUser as delUser,
+} from "../../../../controllers/DBController";
 import { User } from "../../../../models";
 import Input from "../forms/Input";
 
@@ -14,25 +18,31 @@ const UsersModal = ({ editUser = null }) => {
     editUser ? editUser : { name: "", email: "", role: "waiter" }
   );
   const registerUser = () => {
-    const action = editUser === null ? "registerUser" : "updateUser";
     setLoading(true);
-    axios
-      .post("/api/stores", { action, user: newUser, store })
-      .then((r) => {
-        setLoading(false);
-        setStore({ ...r.data.store });
-        closeModal();
-      })
-      .catch((e) => console.error(e));
+    if (editUser === null) {
+      registerNewUser({ user: newUser, store })
+        .then((data) => {
+          setLoading(false);
+          setStore({ ...data.store });
+          closeModal();
+        })
+        .catch((e) => console.error(e));
+    } else {
+      updUser({ user: newUser, store })
+        .then((data) => {
+          setLoading(false);
+          setStore({ ...data.store });
+          closeModal();
+        })
+        .catch((e) => console.error(e));
+    }
   };
   const deleteUser = () => {
-    const action = "deleteUser";
     setLoading(true);
-    axios
-      .post("/api/stores", { action, user: newUser, store })
-      .then((r) => {
+    delUser({ user: newUser, store })
+      .then((data) => {
         setLoading(false);
-        setStore({ ...r.data.store });
+        setStore({ ...data.store });
         closeModal();
       })
       .catch((e) => console.error(e));

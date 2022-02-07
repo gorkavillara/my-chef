@@ -1,7 +1,11 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
+import {
+  registerNewDish,
+  updateDish,
+  deleteDish as delDish,
+} from "../../../../controllers/DBController";
 import { Dish } from "../../../../models";
 import Input from "../forms/Input";
 
@@ -33,25 +37,27 @@ const DishesModal = ({ editDish = null }) => {
   };
   const [newDish, setNewDish] = useState<Dish>(editDish ? editDish : emptyDish);
   const registerDish = () => {
-    const action = editDish === null ? "register" : "update";
     setLoading(true);
-    axios
-      .post("/api/dishes", { action, dish: newDish, store })
-      .then((r) => {
+    if (editDish === null) {
+      registerNewDish({ dish: newDish, store }).then((data) => {
         setLoading(false);
-        setStore({ ...r.data.store });
+        setStore({ ...data.store });
         closeModal();
-      })
-      .catch((e) => console.error(e));
+      });
+    } else {
+      updateDish({ dish: newDish, store }).then((data) => {
+        setLoading(false);
+        setStore({ ...data.store });
+        closeModal();
+      });
+    }
   };
   const deleteDish = () => {
-    const action = "delete";
     setLoading(true);
-    axios
-      .post("/api/dishes", { action, dish: newDish, store })
-      .then((r) => {
+    delDish({ dish: newDish, store })
+      .then((data) => {
         setLoading(false);
-        setStore({ ...r.data.store });
+        setStore({ ...data.store });
         closeModal();
       })
       .catch((e) => console.error(e));

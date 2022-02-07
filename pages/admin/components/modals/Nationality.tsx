@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../..";
+import { changeNationality as changeBookingNationality } from "../../../../controllers/DBController";
 import Input from "../forms/Input";
 
 const Nationality = ({ booking }) => {
@@ -12,15 +12,13 @@ const Nationality = ({ booking }) => {
   const { setBookings, bookings, closeModal } = useContext(AdminContext);
   const changeNationality = () => {
     setLoading(true);
-    axios
-      .post("/api/bookings", {
-        action: "changeNationality",
-        booking,
-        bookings,
-        nationality,
-      })
-      .then((r) => {
-        setBookings(r.data.bookings);
+    changeBookingNationality({
+      booking,
+      bookings,
+      nationality,
+    })
+      .then((data) => {
+        setBookings(data.bookings);
         setLoading(false);
         closeModal();
       })

@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../..";
+import { changeTable } from "../../../../controllers/DBController";
 import { Booking } from "../../../../models";
 import Input from "../forms/Input";
 
@@ -11,18 +11,16 @@ const ChangeTable = ({ booking }: { booking: Booking }) => {
   );
 
   const { setBookings, bookings, closeModal, store } = useContext(AdminContext);
-  const changeTable = () => {
+  const changeBookingTable = () => {
     setLoading(true);
     const newTable = selectedTablesArray.join(", ");
-    axios
-      .post("/api/bookings", {
-        action: "changeTable",
-        booking,
-        bookings,
-        newTable,
-      })
-      .then((r) => {
-        setBookings(r.data.bookings);
+    return changeTable({
+      booking,
+      bookings,
+      newTable,
+    })
+      .then((data) => {
+        setBookings(data.bookings);
         setLoading(false);
         closeModal();
       })
@@ -60,7 +58,7 @@ const ChangeTable = ({ booking }: { booking: Booking }) => {
       </div>
       <button
         className="btn-primary-green max-w-lg self-center"
-        onClick={changeTable}
+        onClick={changeBookingTable}
         disabled={loading}
       >
         Save changes

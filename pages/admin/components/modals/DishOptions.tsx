@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
+import { deleteBookingDish, updateBookingDish } from "../../../../controllers/DBController";
 import { Dish } from "../../../../models";
 import Input from "../forms/Input";
 
@@ -35,34 +35,30 @@ const DishOptions = ({ booking, dish }) => {
       setNewDish({ ...newDish, allergies: [allergy] });
     }
   };
-  const deleteBookingDish = () => {
+  const delBookingDish = () => {
     setLoading(true);
-    axios
-      .post("/api/bookings", {
-        action: "deleteBookingDish",
+    deleteBookingDish({
         booking,
         bookings,
         newDish,
       })
-      .then((r) => {
-        setBookings(r.data.bookings);
+      .then((data) => {
+        setBookings(data.bookings);
         setLoading(false);
         closeModal();
       })
       .catch((e) => console.error(e));
   };
 
-  const updateBookingDish = () => {
+  const updBookingDish = () => {
     setLoading(true);
-    axios
-      .post("/api/bookings", {
-        action: "updateBookingDish",
+    updateBookingDish({
         booking,
         bookings,
         newDish,
       })
-      .then((r) => {
-        setBookings(r.data.bookings);
+      .then((data) => {
+        setBookings(data.bookings);
         setLoading(false);
         closeModal();
       })
@@ -107,7 +103,7 @@ const DishOptions = ({ booking, dish }) => {
             className="btn-secondary-red"
             onClick={() =>
               confirm("Are you sure you want to delete this dish?") &&
-              deleteBookingDish()
+              delBookingDish()
             }
             disabled={newDish.name === "" || loading}
           >
@@ -115,7 +111,7 @@ const DishOptions = ({ booking, dish }) => {
           </button>
           <button
             className="btn-primary-green mx-6 flex-grow"
-            onClick={updateBookingDish}
+            onClick={updBookingDish}
             disabled={newDish.name === "" || loading}
           >
             Update Dish

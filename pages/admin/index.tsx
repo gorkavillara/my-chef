@@ -5,7 +5,6 @@ import React, {
   SetStateAction,
   useEffect,
 } from "react";
-import axios from "axios";
 import Head from "next/head";
 import MainDashboard from "./views/MainDashboard";
 import Sidebar from "./components/Sidebar";
@@ -13,8 +12,18 @@ import { Booking, Store, User } from "../../models";
 import { initializeBookings } from "../../controllers/BookingsController";
 import ModalController from "./components/ModalController";
 
-import { query, collection, where, onSnapshot } from "firebase/firestore";
+import {
+  query,
+  collection,
+  where,
+  onSnapshot,
+  Firestore,
+} from "firebase/firestore";
 import { db } from "../../firebase/client";
+import {
+  getBookingsByStore,
+  getStoresByUserEmail,
+} from "../../controllers/DBController";
 
 interface ContextInterface {
   route?: string;
@@ -29,6 +38,7 @@ interface ContextInterface {
   setDate?: Dispatch<SetStateAction<Date>>;
   activeRole?: string;
   user?: User;
+  db?: Firestore;
 }
 
 export const AdminContext = createContext<ContextInterface>({});
@@ -81,32 +91,19 @@ const Admin = ({ user }) => {
   }, [store]);
 
   useEffect(() => {
-    axios
-      .post("/api/stores", {
-        action: "getByEmail",
-        user: { email: "gorkavillara@gmail.com" },
-      })
-      .then((r) => {
-        const newBookings: Booking[] = initializeBookings(
-          r.data.stores[0].bookings
-        );
-        setStore(r.data.stores[0]);
-      })
-      .catch((e) => console.log(e));
+    getStoresByUserEmail({ userEmail: user.email })
+      .then((data: { stores: Store[]; role: string }) =>
+        setStore(data.stores[0])
+      )
+      .catch((e) => console.error(e));
   }, []);
 
   useEffect(() => {
     if (!store) return;
-    axios
-      .post("/api/bookings", {
-        action: "getByStore",
-        store,
-      })
-      .then((r) => {
-        const newBookings: Booking[] = initializeBookings(r.data.bookings);
-        setBookings(newBookings);
-      })
-      .catch((e) => console.log(e));
+    getBookingsByStore({ id: store.id }).then((data) => {
+      const newBookings: Booking[] = initializeBookings(data.bookings);
+      setBookings(newBookings);
+    });
   }, [store]);
 
   const openModal = (content: string, data: object = {}) => {
@@ -138,6 +135,7 @@ const Admin = ({ user }) => {
           setDate,
           user,
           activeRole,
+          db,
         }}
       >
         <div className="flex h-screen w-screen bg-slate-100 scroll-hidden">

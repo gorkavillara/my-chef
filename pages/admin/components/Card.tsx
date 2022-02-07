@@ -7,6 +7,10 @@ import AllergiesList from "./AllergiesList";
 import { AdminContext } from "..";
 import { default as DishDisplay } from "./Dish";
 import axios from "axios";
+import {
+  editBookingGreeting,
+  editBookingMenu,
+} from "../../../controllers/DBController";
 
 const minuteThreshold = 4;
 
@@ -20,20 +24,18 @@ const Card = ({ booking }: { booking: Booking }) => {
   const setDish = (i: number, dish: Dish) => {
     const newDishes = booking.menu.dishes.map((d, j) => (j === i ? dish : d));
     const newMenu = { ...booking.menu, dishes: newDishes };
-    return axios
-      .post("/api/bookings", {
-        action: "updateMenu",
-        booking,
-        bookings,
-        newMenu,
-      })
-      .then((r) => {
-        setBookings([...r.data.bookings]);
+    return editBookingMenu({
+      booking,
+      bookings,
+      newMenu,
+    })
+      .then((data) => {
+        setBookings([...data.bookings]);
         newDishes.some((d) => d.status === "preparing")
           ? setStart(true)
           : restartTimer();
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
   };
 
   const restartTimer = () => {
@@ -50,15 +52,13 @@ const Card = ({ booking }: { booking: Booking }) => {
     } else if (booking.greeted === "greeted") {
       greeted = "";
     }
-    return axios
-      .post("/api/bookings", {
-        action: "updateGreeting",
-        booking,
-        bookings,
-        greeted,
-      })
-      .then((r) => {
-        setBookings([...r.data.bookings]);
+    return editBookingGreeting({
+      booking,
+      bookings,
+      greeted,
+    })
+      .then((data) => {
+        setBookings([...data.bookings]);
       })
       .catch((e) => console.log(e));
   };

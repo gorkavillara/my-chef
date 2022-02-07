@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../..";
+import { editBookingAllergies } from "../../../../controllers/DBController";
 import { Booking } from "../../../../models";
 import AllergiesList from "../AllergiesList";
 import Input from "../forms/Input";
@@ -38,20 +39,17 @@ const AllergiesModal = ({
     setNewAllergies([...all]);
   };
 
-  const updateAllergies = () => {
-    axios
-      .post("/api/bookings", {
-        action: "updateAllergies",
-        newAllergies,
-        booking,
-        bookings,
-      })
-      .then((r) => {
-        setBookings(r.data.bookings);
+  const updateAllergies = () =>
+    editBookingAllergies({
+      newAllergies,
+      booking,
+      bookings,
+    })
+      .then((data) => {
+        setBookings(data.bookings);
         closeModal();
       })
       .catch((e) => console.error(e));
-  };
 
   return (
     <div className="flex flex-col gap-4">

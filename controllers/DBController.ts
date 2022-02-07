@@ -190,14 +190,14 @@ export const addNewBooking = async ({
   booking,
   store,
 }: {
-  booking: Booking;
+  booking: any;
   store: Store;
 }) => {
   const r = await addDoc(collection(db, "bookings"), {
     ...booking,
     store_id: store.id,
   });
-  return { booking };
+  return { booking: { ...booking, id: r.id } };
 };
 
 export const saveNotesUrl = async ({
@@ -326,7 +326,7 @@ export const changeTable = async ({
 }: {
   booking: Booking;
   bookings: Booking[];
-  newTable: Table;
+  newTable: string;
 }) => {
   const newBooking = { ...booking, table: newTable };
   await setDoc(doc(db, "bookings", booking.id), newBooking);

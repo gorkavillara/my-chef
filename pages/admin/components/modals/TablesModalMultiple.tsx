@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../..";
+import { registerMultipleTables } from "../../../../controllers/DBController";
 
 const TablesModalMultiple = () => {
   const [prefix, setPrefix] = useState<string>("");
@@ -20,10 +20,9 @@ const TablesModalMultiple = () => {
   };
   const registerTables = () => {
     const tables = createTables();
-    axios
-      .post("/api/tables", { action: "register-multiple", tables, store })
-      .then((r) => {
-        setStore({ ...r.data.store });
+    registerMultipleTables({ tables, store })
+      .then((data) => {
+        setStore({ ...data.store });
         closeModal();
       })
       .catch((e) => console.error(e));

@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../..";
+import { setPairings as setPairs } from "../../../../controllers/DBController";
 import { Pairing } from "../../../../models";
 import Color from "../Color";
 
@@ -9,16 +9,14 @@ const PairingsModal = ({ booking }) => {
     booking?.pairings ? booking.pairings : []
   );
   const { store, setBookings, bookings, closeModal } = useContext(AdminContext);
-  const openBooking = () => {
-    axios
-      .post("/api/bookings", {
-        action: "setPairings",
+  const updatePairings = () => {
+    setPairs({
         booking,
         bookings,
         pairings,
       })
-      .then((r) => {
-        setBookings(r.data.bookings);
+      .then((data) => {
+        setBookings(data.bookings);
         closeModal();
       })
       .catch((e) => console.error(e));
@@ -51,7 +49,7 @@ const PairingsModal = ({ booking }) => {
           </button>
         ))}
       </div>
-      <button className="btn-primary-green max-w-lg" onClick={openBooking}>
+      <button className="btn-primary-green max-w-lg" onClick={updatePairings}>
         Save
       </button>
     </div>

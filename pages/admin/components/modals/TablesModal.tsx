@@ -1,7 +1,11 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
+import {
+  registerNewTable,
+  updateTable,
+  deleteTable as delTable,
+} from "../../../../controllers/DBController";
 import { Table } from "../../../../models";
 import Input from "../forms/Input";
 
@@ -16,30 +20,36 @@ const TablesModal = ({ editTable = null }) => {
     editTable ? editTable : emptyTable
   );
   const registerTable = () => {
-    const action = editTable === null ? "register" : "update";
+    setLoading(true);
     const id =
       editTable === null
         ? 0
         : store.tables.findIndex((tab) => tab.name === editTable.name);
-    setLoading(true);
-    axios
-      .post("/api/tables", { action, table: newTable, store, id })
-      .then((r) => {
-        setStore({ ...r.data.store });
-        setLoading(false);
-        closeModal();
-      })
-      .catch((e) => console.error(e));
+    if (editTable === null) {
+      registerNewTable({ table: newTable, store })
+        .then((data) => {
+          setStore({ ...data.store });
+          setLoading(false);
+          closeModal();
+        })
+        .catch((e) => console.error(e));
+    } else {
+      updateTable({ table: newTable, store, id })
+        .then((data) => {
+          setStore({ ...data.store });
+          setLoading(false);
+          closeModal();
+        })
+        .catch((e) => console.error(e));
+    }
   };
   const deleteTable = () => {
-    const action = "delete";
     const id = store.tables.findIndex((tab) => tab.name === editTable.name);
     setLoading(true);
-    axios
-      .post("/api/tables", { action, table: newTable, store, id })
-      .then((r) => {
+    delTable({ store, id })
+      .then((data) => {
         setLoading(false);
-        setStore({ ...r.data.store });
+        setStore({ ...data.store });
         closeModal();
       })
       .catch((e) => console.error(e));

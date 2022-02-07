@@ -1,8 +1,12 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
+import {
+  registerNewMenu,
+  updateMenu,
+  deleteMenu as delMenu,
+} from "../../../../controllers/DBController";
 import { Menu } from "../../../../models";
 import AllergiesList from "../AllergiesList";
 import CompanionList from "../CompanionList";
@@ -18,24 +22,31 @@ const MenusModal = ({ editMenu = null }) => {
   const [newMenu, setNewMenu] = useState<Menu>(editMenu ? editMenu : emptyMenu);
   const [emptyDish, setEmptyDish] = useState(null);
   const registerMenu = () => {
-    const action = editMenu === null ? "register" : "update";
     setLoading(true);
-    axios
-      .post("/api/menus", { action, menu: newMenu, store })
-      .then((r) => {
-        setStore({ ...r.data.store });
-        setLoading(false);
-        closeModal();
-      })
-      .catch((e) => console.error(e));
+    if (editMenu === null) {
+      registerNewMenu({ menu: newMenu, store })
+        .then((data) => {
+          setStore({ ...data.store });
+          setLoading(false);
+          closeModal();
+        })
+        .catch((e) => console.error(e));
+    } else {
+      updateMenu({ menu: newMenu, store })
+        .then((data) => {
+          setStore({ ...data.store });
+          setLoading(false);
+          closeModal();
+        })
+        .catch((e) => console.error(e));
+    }
   };
   const deleteMenu = () => {
     const action = "delete";
     setLoading(true);
-    axios
-      .post("/api/menus", { action, menu: newMenu, store })
-      .then((r) => {
-        setStore({ ...r.data.store });
+    delMenu({ menu: newMenu, store })
+      .then((data) => {
+        setStore({ ...data.store });
         setLoading(false);
         closeModal();
       })
