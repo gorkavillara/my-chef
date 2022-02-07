@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 import { IoTrashBinOutline } from "react-icons/io5";
 import { AdminContext } from "../..";
-import { deleteBookingDish, updateBookingDish } from "../../../../controllers/DBController";
+import {
+  deleteBookingDish,
+  updateBookingDish,
+} from "../../../../controllers/DBController";
 import { Dish } from "../../../../models";
 import Input from "../forms/Input";
 
@@ -36,32 +39,24 @@ const DishOptions = ({ booking, dish }) => {
     }
   };
   const delBookingDish = () => {
-    setLoading(true);
+    closeModal();
     deleteBookingDish({
-        booking,
-        bookings,
-        newDish,
-      })
-      .then((data) => {
-        setBookings(data.bookings);
-        setLoading(false);
-        closeModal();
-      })
+      booking,
+      bookings,
+      newDish,
+    })
+      .then((data) => setBookings(data.bookings))
       .catch((e) => console.error(e));
   };
 
   const updBookingDish = () => {
-    setLoading(true);
+    closeModal();
     updateBookingDish({
-        booking,
-        bookings,
-        newDish,
-      })
-      .then((data) => {
-        setBookings(data.bookings);
-        setLoading(false);
-        closeModal();
-      })
+      booking,
+      bookings,
+      newDish,
+    })
+      .then((data) => setBookings(data.bookings))
       .catch((e) => console.error(e));
   };
 

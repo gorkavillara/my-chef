@@ -22,34 +22,21 @@ const MenusModal = ({ editMenu = null }) => {
   const [newMenu, setNewMenu] = useState<Menu>(editMenu ? editMenu : emptyMenu);
   const [emptyDish, setEmptyDish] = useState(null);
   const registerMenu = () => {
-    setLoading(true);
+    closeModal();
     if (editMenu === null) {
       registerNewMenu({ menu: newMenu, store })
-        .then((data) => {
-          setStore({ ...data.store });
-          setLoading(false);
-          closeModal();
-        })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     } else {
       updateMenu({ menu: newMenu, store })
-        .then((data) => {
-          setStore({ ...data.store });
-          setLoading(false);
-          closeModal();
-        })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     }
   };
   const deleteMenu = () => {
-    const action = "delete";
-    setLoading(true);
+    closeModal();
     delMenu({ menu: newMenu, store })
-      .then((data) => {
-        setStore({ ...data.store });
-        setLoading(false);
-        closeModal();
-      })
+      .then((data) => setStore({ ...data.store }))
       .catch((e) => console.error(e));
   };
   const addDish = () => {

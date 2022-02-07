@@ -20,11 +20,9 @@ const TablesModalMultiple = () => {
   };
   const registerTables = () => {
     const tables = createTables();
+    closeModal();
     registerMultipleTables({ tables, store })
-      .then((data) => {
-        setStore({ ...data.store });
-        closeModal();
-      })
+      .then((data) => setStore({ ...data.store }))
       .catch((e) => console.error(e));
   };
   return (

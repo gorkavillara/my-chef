@@ -19,23 +19,16 @@ const NotesModal = ({
   const canvasRef = useRef(null);
   const saveDraw = () => {
     const url = canvasRef.current.getSaveData();
+    closeModal();
     saveNotes({
       newNotes,
       handwrittenNotesUrl: JSON.stringify(url),
       booking,
-    })
-      .then((data: any) => {
-        setBookings(
-          bookings.map((book: Booking) =>
-            book.id === booking.id ? data.booking : book
-          )
-        );
-        closeModal();
-      })
-      .catch((e) => console.log(e));
+    }).catch((e) => console.log(e));
   };
   const undoDraw = () => canvasRef.current.undo();
   const eraseDraw = () => canvasRef.current.eraseAll();
+  console.log(booking.handwrittenNotesUrl);
   return booking ? (
     <div className="flex flex-col gap-4">
       <h1 className="font-semibold text-lg">Notes</h1>

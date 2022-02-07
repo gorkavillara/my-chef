@@ -57,16 +57,11 @@ const FormNewBooking = ({ store }: { store: Store }) => {
   };
 
   const submitNewBooking = () => {
-    setLoading(true);
+    closeModal();
     addNewBooking({
       booking: { ...booking, time: Timestamp.fromDate(booking.time) },
       store,
-    })
-      .then(() => {
-        setLoading(false);
-        closeModal();
-      })
-      .catch((e) => console.log(e));
+    }).catch((e) => console.log(e));
   };
 
   const isCompleted = () => {

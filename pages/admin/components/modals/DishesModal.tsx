@@ -38,27 +38,26 @@ const DishesModal = ({ editDish = null }) => {
   const [newDish, setNewDish] = useState<Dish>(editDish ? editDish : emptyDish);
   const registerDish = () => {
     setLoading(true);
+    closeModal();
     if (editDish === null) {
       registerNewDish({ dish: newDish, store }).then((data) => {
         setLoading(false);
         setStore({ ...data.store });
-        closeModal();
       });
     } else {
       updateDish({ dish: newDish, store }).then((data) => {
         setLoading(false);
         setStore({ ...data.store });
-        closeModal();
       });
     }
   };
   const deleteDish = () => {
     setLoading(true);
+    closeModal();
     delDish({ dish: newDish, store })
       .then((data) => {
         setLoading(false);
         setStore({ ...data.store });
-        closeModal();
       })
       .catch((e) => console.error(e));
   };

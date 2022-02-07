@@ -39,17 +39,16 @@ const AllergiesModal = ({
     setNewAllergies([...all]);
   };
 
-  const updateAllergies = () =>
-    editBookingAllergies({
+  const updateAllergies = () => {
+    closeModal();
+    return editBookingAllergies({
       newAllergies,
       booking,
       bookings,
     })
-      .then((data) => {
-        setBookings(data.bookings);
-        closeModal();
-      })
+      .then((data) => setBookings(data.bookings))
       .catch((e) => console.error(e));
+  };
 
   return (
     <div className="flex flex-col gap-4">

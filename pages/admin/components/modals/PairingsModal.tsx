@@ -10,14 +10,11 @@ const PairingsModal = ({ booking }) => {
   );
   const { store, setBookings, bookings, closeModal } = useContext(AdminContext);
   const updatePairings = () => {
-    setPairs({
+    closeModal();
+    return setPairs({
         booking,
         bookings,
         pairings,
-      })
-      .then((data) => {
-        setBookings(data.bookings);
-        closeModal();
       })
       .catch((e) => console.error(e));
   };

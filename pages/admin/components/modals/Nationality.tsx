@@ -9,20 +9,14 @@ const Nationality = ({ booking }) => {
     booking ? booking.nationality : ""
   );
 
-  const { setBookings, bookings, closeModal } = useContext(AdminContext);
+  const { bookings, closeModal } = useContext(AdminContext);
   const changeNationality = () => {
-    setLoading(true);
-    changeBookingNationality({
+    closeModal();
+    return changeBookingNationality({
       booking,
       bookings,
       nationality,
-    })
-      .then((data) => {
-        setBookings(data.bookings);
-        setLoading(false);
-        closeModal();
-      })
-      .catch((e) => console.error(e));
+    }).catch((e) => console.error(e));
   };
 
   return booking ? (

@@ -12,18 +12,14 @@ const ChangeTable = ({ booking }: { booking: Booking }) => {
 
   const { setBookings, bookings, closeModal, store } = useContext(AdminContext);
   const changeBookingTable = () => {
-    setLoading(true);
     const newTable = selectedTablesArray.join(", ");
+    closeModal();
     return changeTable({
       booking,
       bookings,
       newTable,
     })
-      .then((data) => {
-        setBookings(data.bookings);
-        setLoading(false);
-        closeModal();
-      })
+      .then((data) => setBookings(data.bookings))
       .catch((e) => console.error(e));
   };
 

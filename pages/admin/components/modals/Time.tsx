@@ -29,20 +29,14 @@ const Time = ({ booking }) => {
     setTime(new Date(newTime));
   };
 
-  const { setBookings, bookings, closeModal } = useContext(AdminContext);
+  const { bookings, closeModal } = useContext(AdminContext);
   const changeTime = () => {
-    setLoading(true);
+    closeModal();
     changeBookingTime({
       booking,
       bookings,
       time,
-    })
-      .then((data) => {
-        setBookings(data.bookings);
-        setLoading(false);
-        closeModal();
-      })
-      .catch((e) => console.error(e));
+    }).catch((e) => console.error(e));
   };
 
   return booking && time ? (

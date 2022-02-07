@@ -18,33 +18,21 @@ const UsersModal = ({ editUser = null }) => {
     editUser ? editUser : { name: "", email: "", role: "waiter" }
   );
   const registerUser = () => {
-    setLoading(true);
+    closeModal();
     if (editUser === null) {
-      registerNewUser({ user: newUser, store })
-        .then((data) => {
-          setLoading(false);
-          setStore({ ...data.store });
-          closeModal();
-        })
+      return registerNewUser({ user: newUser, store })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     } else {
-      updUser({ user: newUser, store })
-        .then((data) => {
-          setLoading(false);
-          setStore({ ...data.store });
-          closeModal();
-        })
+      return updUser({ user: newUser, store })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     }
   };
   const deleteUser = () => {
-    setLoading(true);
-    delUser({ user: newUser, store })
-      .then((data) => {
-        setLoading(false);
-        setStore({ ...data.store });
-        closeModal();
-      })
+    closeModal();
+    return delUser({ user: newUser, store })
+      .then((data) => setStore({ ...data.store }))
       .catch((e) => console.error(e));
   };
   return (

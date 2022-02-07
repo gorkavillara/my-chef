@@ -35,33 +35,21 @@ const PairingsSettingsModal = ({ editPairing = null }) => {
     editPairing ? editPairing : emptyPairing
   );
   const registerPairing = () => {
-    setLoading(true);
+    closeModal();
     if (editPairing === null) {
-      registerNewPairing({ pairing: newPairing, store })
-        .then((data) => {
-          setStore({ ...data.store });
-          setLoading(false);
-          closeModal();
-        })
+      return registerNewPairing({ pairing: newPairing, store })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     } else {
-      updatePairing({ pairing: newPairing, store })
-        .then((data) => {
-          setStore({ ...data.store });
-          setLoading(false);
-          closeModal();
-        })
+      return updatePairing({ pairing: newPairing, store })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     }
   };
   const deletePairing = () => {
-    setLoading(true);
-    delPairing({ pairing: newPairing, store })
-      .then((data) => {
-        setStore({ ...data.store });
-        setLoading(false);
-        closeModal();
-      })
+    closeModal();
+    return delPairing({ pairing: newPairing, store })
+      .then((data) => setStore({ ...data.store }))
       .catch((e) => console.error(e));
   };
 

@@ -4,13 +4,12 @@ import { editBookingStatus } from "../../../../controllers/DBController";
 
 const CloseBooking = ({ booking }) => {
   const { setBookings, bookings, closeModal } = useContext(AdminContext);
-  const closeBooking = () =>
-    editBookingStatus({ booking, bookings, newStatus: "closed" })
-      .then((data) => {
-        setBookings(data.bookings);
-        closeModal();
-      })
+  const closeBooking = () => {
+    closeModal();
+    return editBookingStatus({ booking, bookings, newStatus: "closed" })
+      .then((data) => setBookings(data.bookings))
       .catch((e) => console.error(e));
+  };
   return booking ? (
     <div className="w-full flex flex-col gap-4 text-center items-center">
       <span className="text-lg">

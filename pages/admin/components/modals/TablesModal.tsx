@@ -20,38 +20,26 @@ const TablesModal = ({ editTable = null }) => {
     editTable ? editTable : emptyTable
   );
   const registerTable = () => {
-    setLoading(true);
+    closeModal();
     const id =
       editTable === null
         ? 0
         : store.tables.findIndex((tab) => tab.name === editTable.name);
     if (editTable === null) {
-      registerNewTable({ table: newTable, store })
-        .then((data) => {
-          setStore({ ...data.store });
-          setLoading(false);
-          closeModal();
-        })
+      return registerNewTable({ table: newTable, store })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     } else {
-      updateTable({ table: newTable, store, id })
-        .then((data) => {
-          setStore({ ...data.store });
-          setLoading(false);
-          closeModal();
-        })
+      return updateTable({ table: newTable, store, id })
+        .then((data) => setStore({ ...data.store }))
         .catch((e) => console.error(e));
     }
   };
   const deleteTable = () => {
     const id = store.tables.findIndex((tab) => tab.name === editTable.name);
-    setLoading(true);
-    delTable({ store, id })
-      .then((data) => {
-        setLoading(false);
-        setStore({ ...data.store });
-        closeModal();
-      })
+    closeModal();
+    return delTable({ store, id })
+      .then((data) => setStore({ ...data.store }))
       .catch((e) => console.error(e));
   };
   return (

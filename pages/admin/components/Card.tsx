@@ -21,6 +21,15 @@ const Card = ({ booking }: { booking: Booking }) => {
   const { openModal, store, bookings, setBookings } = useContext(AdminContext);
   const time = booking ? new Date(booking.time.seconds * 1000) : new Date();
 
+  useEffect(() => {
+    if (!booking) return;
+    if (booking.menu.dishes.some((d) => d.status === "preparing")) {
+      setStart(true);
+    } else {
+      restartTimer();
+    }
+  }, [booking]);
+
   const setDish = (i: number, dish: Dish) => {
     const newDishes = booking.menu.dishes.map((d, j) => (j === i ? dish : d));
     const newMenu = { ...booking.menu, dishes: newDishes };
@@ -29,12 +38,7 @@ const Card = ({ booking }: { booking: Booking }) => {
       bookings,
       newMenu,
     })
-      .then((data) => {
-        setBookings([...data.bookings]);
-        newDishes.some((d) => d.status === "preparing")
-          ? setStart(true)
-          : restartTimer();
-      })
+      .then((data) => setBookings([...data.bookings]))
       .catch((e) => console.error(e));
   };
 
@@ -57,9 +61,7 @@ const Card = ({ booking }: { booking: Booking }) => {
       bookings,
       greeted,
     })
-      .then((data) => {
-        setBookings([...data.bookings]);
-      })
+      .then((data) => setBookings([...data.bookings]))
       .catch((e) => console.log(e));
   };
 
@@ -169,7 +171,7 @@ const Card = ({ booking }: { booking: Booking }) => {
                 <div className="flex flex-grow border-t">
                   <button
                     className="flex-grow p-2 text-left"
-                    onClick={() => openModal("notes", { booking, store })}
+                    onClick={() => openModal("notes", { booking })}
                   >
                     <h1 className="text-sm font-semibold">Notes</h1>
                     <span className="text-sm">{booking.notes}</span>
