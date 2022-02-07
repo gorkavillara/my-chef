@@ -39,7 +39,7 @@ const BookingsDisplay = ({
             </div>
             <div className="h-full w-16 absolute top-0 right-0 horizontal-transparent"></div>
           </div>
-          <div className="flex-grow grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4">
+          <div className="flex-grow grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-5 px-6 pb-6 gap-4">
             {bookings ? (
               bookings
                 .filter((booking: Booking) => booking.status === "open")
