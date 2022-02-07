@@ -32,6 +32,11 @@
     .min-h-2\/3 {
         min-height: 66vh;
     }
+
+    .horizontal-transparent {
+        box-shadow: inset -35px 0 15px #F1F5F9;
+        /* box-shadow: inset 35px 0 35px #F1F5F9; */
+    }
 }
 
 @layer components {

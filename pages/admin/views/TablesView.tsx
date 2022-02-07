@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { IoCaretBack, IoCaretForward } from "react-icons/io5";
+import { IoCaretBack, IoCaretForward, IoPrintOutline } from "react-icons/io5";
 import { AdminContext } from "..";
 import { Booking } from "../../../models";
 import BookingsDisplay from "../components/BookingsDisplay";
@@ -43,6 +43,7 @@ const TablesView = () => {
           </button>
         </div>
         <div className="flex items-center gap-2 px-6">
+          <button className="text-blue-500 text-4xl px-4"><IoPrintOutline /></button>
           <button
             onClick={() => setFilter("all")}
             className={`${
