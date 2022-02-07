@@ -1,14 +1,21 @@
-import React from "react";
-import Card from "../components/Card";
+import React, { useContext } from "react";
 import BigCard from "../components/BigCard";
-import {
-  IoAlbumsOutline,
-  IoPersonAddOutline,
-  IoBarChartOutline,
-  IoOptionsOutline,
-} from "react-icons/io5";
+import { IoAlbumsOutline, IoPersonAddOutline } from "react-icons/io5";
+import { AdminContext } from "..";
 
 const ChartsView = () => {
+  const { bookings } = useContext(AdminContext);
+  const todayBookings = () => {
+    const d = new Date();
+    return bookings.filter((b) => {
+      const date = new Date(b.time.seconds * 1000);
+      return (
+        d.getDate() === date.getDate() &&
+        d.getMonth() === date.getMonth() &&
+        d.getFullYear() === date.getFullYear()
+      );
+    });
+  };
   return (
     <>
       <h1 className="font-semibold text-lg p-6">Dashboard</h1>
@@ -16,7 +23,7 @@ const ChartsView = () => {
         <BigCard
           icon={<IoAlbumsOutline />}
           text={"Bookings Today"}
-          value={24}
+          value={todayBookings().length}
           isActive={true}
         />
         <BigCard

@@ -100,22 +100,40 @@ const CalendarView = () => {
                   >
                     {week[did].date()}
                   </span>
-                  {bookings
-                    .filter((b) => dayBookings(b, week[did]))
-                    .map((b, i) =>
-                      i === 0 ? (
-                        <div className="w-full text-sm text-center rounded-full bg-blue-300 p-1">
-                          {dayjs(new Date(b.time.seconds * 1000)).format(
-                            "HH:mm"
-                          )}{" "}
-                          {b.name} {b.pax}p
-                        </div>
-                      ) : i === 1 ? (
-                        <div className="w-full text-sm text-center rounded-full bg-slate-200 p-1">
-                          See more...
-                        </div>
-                      ) : null
+                  <div className="hidden lg:flex lg:flex-col lg:gap-1 w-full">
+                    {bookings
+                      .filter((b) => dayBookings(b, week[did]))
+                      .map((b, i) => (
+                        <>
+                          {i === 0 ? (
+                            <div className="w-full text-sm text-center rounded-full bg-blue-300 p-1">
+                              {dayjs(new Date(b.time.seconds * 1000)).format(
+                                "HH:mm"
+                              )}{" "}
+                              {b.name} {b.pax}p
+                            </div>
+                          ) : i === 1 ? (
+                            <div className="w-full text-sm text-center rounded-full bg-slate-200 p-1">
+                              See more...
+                            </div>
+                          ) : null}
+                        </>
+                      ))}
+                  </div>
+                  <div className="lg:hidden w-full">
+                    {bookings.filter((b) => dayBookings(b, week[did])).length >
+                      0 && (
+                      <div className="w-full text-sm text-center rounded-full bg-blue-200 p-1">
+                        {bookings.filter((b) => dayBookings(b, week[did]))
+                          .length === 1
+                          ? "1 booking"
+                          : `${
+                              bookings.filter((b) => dayBookings(b, week[did]))
+                                .length
+                            } bookings`}
+                      </div>
                     )}
+                  </div>
                 </div>
               ))}
             </div>
