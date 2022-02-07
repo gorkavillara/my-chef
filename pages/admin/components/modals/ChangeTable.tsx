@@ -1,18 +1,19 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../..";
-import { Booking, Table } from "../../../../models";
+import { Booking } from "../../../../models";
 import Input from "../forms/Input";
 
 const ChangeTable = ({ booking }: { booking: Booking }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [newTable, setNewTable] = useState<Table>(
-    booking ? booking.table : { name: "" }
+  const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>(
+    booking ? booking.table.split(", ") : []
   );
 
   const { setBookings, bookings, closeModal, store } = useContext(AdminContext);
   const changeTable = () => {
     setLoading(true);
+    const newTable = selectedTablesArray.join(", ");
     axios
       .post("/api/bookings", {
         action: "changeTable",
@@ -28,21 +29,33 @@ const ChangeTable = ({ booking }: { booking: Booking }) => {
       .catch((e) => console.error(e));
   };
 
+  const toggleTable = (table: string) => {
+    let tabs = [];
+    if (selectedTablesArray.some((tab) => tab === table)) {
+      tabs = selectedTablesArray.filter((tab) => tab !== table);
+    } else {
+      tabs = [...selectedTablesArray, table];
+    }
+    tabs = tabs.filter((tab) => tab !== "");
+    setSelectedTablesArray([...tabs]);
+  };
+
   const tableNames = store ? store.tables.map((tab) => tab.name) : [];
 
   return booking ? (
-    <div className="flex flex-col gap-4 items-stretch justify-between h-96 w-96 min-w-1/2 min-h-2/3">
+    <div className="flex flex-col gap-4 items-stretch justify-between">
       <div className="flex flex-col gap-4">
         <span className="text-lg font-semibold">
           Change booking time for {booking.table}
         </span>
         <Input
-          type="select"
+          type="chip-select"
+          color="blue"
           name="table"
-          value={newTable}
+          value={selectedTablesArray}
           options={tableNames}
           disabled={loading}
-          onChange={(e) => setNewTable(e.target.value)}
+          onChange={toggleTable}
         />
       </div>
       <button

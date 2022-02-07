@@ -13,6 +13,21 @@ const Time = ({ booking }) => {
     setTime(t);
   }, []);
 
+  const getTimeInputValue = () => {
+    if (!booking || !time) return "";
+    const h = time.getHours();
+    const m = time.getMinutes();
+    return `${h}:${m}`;
+  };
+
+  const handleTimeChange = (t) => {
+    const [h, m] = t.target.value.split(":");
+    let newTime = time;
+    newTime.setHours(h);
+    newTime.setMinutes(m);
+    setTime(new Date(newTime));
+  };
+
   const { setBookings, bookings, closeModal } = useContext(AdminContext);
   const changeTime = () => {
     setLoading(true);
@@ -31,19 +46,19 @@ const Time = ({ booking }) => {
       .catch((e) => console.error(e));
   };
 
-  return booking ? (
-    <div className="flex flex-col gap-4 items-stretch justify-between h-96 w-96 min-w-1/2 min-h-2/3">
-      <div className="flex flex-col gap-4">
-        <span className="text-lg font-semibold">Change booking time for {booking.table}</span>
-        <Input
-          type="datetime"
+  return booking && time ? (
+    <div className="flex flex-col gap-4 items-center justify-between">
+      <div className="flex flex-col gap-4 items-center">
+        <span className="text-lg font-semibold">
+          Change booking time for {booking.table}
+        </span>
+        <input
+          type="time"
           name="time"
-          value={time}
+          className="outline-none border rounded-lg text-center text-xl focus:ring ring-green-200 px-2 py-1"
+          value={getTimeInputValue()}
           disabled={loading}
-          onChange={(t) => {
-            const newTime = new Date(t);
-            setTime(newTime);
-          }}
+          onChange={handleTimeChange}
         />
       </div>
       <button

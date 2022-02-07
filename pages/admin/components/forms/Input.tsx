@@ -15,6 +15,7 @@ type InputProps = {
   inputClassName?: string;
   containerClassName?: string;
   disabled?: boolean;
+  color?: string;
 };
 
 const Input = ({
@@ -30,6 +31,7 @@ const Input = ({
   inputClassName = "",
   containerClassName = "",
   disabled = false,
+  color = "",
 }: InputProps) => {
   return (
     <>
@@ -66,7 +68,7 @@ const Input = ({
                 disabled={disabled}
                 className={`${
                   value && value.includes(option)
-                    ? "bg-red-400"
+                    ? `bg-${color === "" ? "red" : color}-400`
                     : "bg-slate-300"
                 } text-white py-1 px-2 disabled:opacity-25  rounded-full`}
                 onClick={() => !disabled && onChange(option)}
@@ -129,6 +131,20 @@ const Input = ({
             timeIntervals={15}
             disabled={disabled}
             dateFormat="MMMM d, yyyy h:mm aa"
+            className="w-full border-b border-slate-700 pb-6 outline-none disabled:opacity-25"
+          />
+        </label>
+      )}
+      {type === "time" && (
+        <label className={`flex flex-col gap-4 mx-6 ${containerClassName}`}>
+          <span className={`uppercase text-lg ${labelClassName}`}>
+            {`${title}${required ? "*" : ""}`}
+          </span>
+          <input
+            type="time"
+            value={value}
+            onChange={onChange}
+            disabled={disabled}
             className="w-full border-b border-slate-700 pb-6 outline-none disabled:opacity-25"
           />
         </label>

@@ -28,7 +28,7 @@ const Nationality = ({ booking }) => {
   };
 
   return booking ? (
-    <div className="flex flex-col gap-4 items-stretch justify-between h-96 w-96 min-w-1/2 min-h-2/3">
+    <div className="flex flex-col gap-4 items-stretch justify-between">
       <div className="flex flex-col gap-4">
         <span className="text-lg font-semibold">
           Change booking time for {booking.table}

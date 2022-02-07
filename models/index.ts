@@ -13,7 +13,7 @@ export interface Booking {
   nationality: string;
   notes: string;
   pax: number;
-  table: Table;
+  table: string;
   time: any;
   menu: Menu;
   status: string;
