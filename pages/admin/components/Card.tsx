@@ -81,7 +81,7 @@ const Card = ({ booking }: { booking: Booking }) => {
         <>
           {(booking.status === "open" || booking.status === "closed") && (
             <div className="relative">
-              <div className="bg-white rounded-xl shadow-xl overflow-hidden relative flex flex-col">
+              <div className="bg-white rounded-xl shadow-xl relative flex flex-col">
                 <div
                   className={`${
                     activePopup ? "absolute" : "hidden"
@@ -177,18 +177,21 @@ const Card = ({ booking }: { booking: Booking }) => {
                   {booking.status === "open" && (
                     <button
                       onClick={changeGreeted}
-                      className={`p-2 flex transition items-center outline-none 
+                      className={`p-2 flex rounded-br-xl transition items-center outline-none 
                   ${
-                    booking.greeted === "" &&
-                    "border-l text-red-500 bg-red-100 animate-pulse"
+                    booking.greeted === ""
+                      ? "border-l text-red-500 bg-red-100 animate-pulse"
+                      : ""
                   }
                   ${
-                    booking.greeted === "greeting" &&
-                    "border-l text-yellow-600 bg-yellow-100"
+                    booking.greeted === "greeting"
+                      ? "border-l text-yellow-600 bg-yellow-100"
+                      : ""
                   }
                   ${
-                    booking.greeted === "greeted" &&
-                    "text-white bg-green-400 line-through"
+                    booking.greeted === "greeted"
+                      ? "text-white bg-green-400 line-through"
+                      : ""
                   }
                       `}
                     >
@@ -227,17 +230,14 @@ const Card = ({ booking }: { booking: Booking }) => {
                 {watchTime > 700 && (
                   <div className="absolute w-full -top-6 flex justify-center">
                     <span
-                      className={`rounded px-4 text-2xl font-semibold w-32 flex justify-center 
-                
-                ${
-                  watchTime < 0.75 * minuteThreshold * 60000
-                    ? "bg-white"
-                    : watchTime < minuteThreshold * 60000
-                    ? "bg-yellow-400"
-                    : "bg-red-400 animate-bounce"
-                }
-                
-                `}
+                      className={`rounded-lg shadow-lg px-4 text-2xl font-semibold w-32 flex justify-center ${
+                        watchTime < 0.75 * minuteThreshold * 60000
+                          ? "bg-white"
+                          : watchTime < minuteThreshold * 60000
+                          ? "bg-yellow-400"
+                          : "bg-red-400 animate-bounce"
+                      }
+                    `}
                     >
                       <span>
                         {("0" + Math.floor((watchTime / 60000) % 60)).slice(-2)}

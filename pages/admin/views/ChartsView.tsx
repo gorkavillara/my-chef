@@ -4,7 +4,7 @@ import { IoAlbumsOutline, IoPersonAddOutline } from "react-icons/io5";
 import { AdminContext } from "..";
 
 const ChartsView = () => {
-  const { bookings } = useContext(AdminContext);
+  const { bookings, setRoute, setDate } = useContext(AdminContext);
   const todayBookings = () => {
     const d = new Date();
     return bookings.filter((b) => {
@@ -20,12 +20,20 @@ const ChartsView = () => {
     <>
       <h1 className="font-semibold text-lg p-6">Dashboard</h1>
       <main className="flex-grow bg-slate-100 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 px-6 pb-6 gap-4">
-        <BigCard
-          icon={<IoAlbumsOutline />}
-          text={"Bookings Today"}
-          value={todayBookings().length}
-          isActive={true}
-        />
+        <button
+          className="text-left"
+          onClick={() => {
+            setRoute("tables");
+            setDate(new Date());
+          }}
+        >
+          <BigCard
+            icon={<IoAlbumsOutline />}
+            text={"Bookings Today"}
+            value={todayBookings().length}
+            isActive={true}
+          />
+        </button>
         <BigCard
           icon={<IoPersonAddOutline />}
           text={"New Clients"}

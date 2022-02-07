@@ -21,7 +21,7 @@ const TablesView = () => {
         <div className="flex gap-2 items-center justify-center">
           <h1 className="font-semibold text-lg">Bookings:</h1>
           <button
-            className="bg-slate-300 p-1 rounded"
+            className="bg-slate-300 p-1 rounded hidden"
             onClick={() => {
               const newDate = date.valueOf() - 3600 * 1000 * 24;
               setDate(new Date(newDate));
@@ -33,7 +33,7 @@ const TablesView = () => {
             {date.toLocaleDateString("es-ES")}
           </h1>
           <button
-            className="bg-slate-300 p-1 rounded"
+            className="bg-slate-300 p-1 rounded hidden"
             onClick={() => {
               const newDate = date.valueOf() + 3600 * 1000 * 24;
               setDate(new Date(newDate));

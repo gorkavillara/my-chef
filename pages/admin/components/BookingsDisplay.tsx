@@ -23,8 +23,19 @@ const BookingsDisplay = ({
     <>
       {filter === "all" && (
         <main className="flex-grow bg-slate-100 px-0 pb-6 gap-4 sm:gap-0">
-          <div className="py-3 scroll-hidden relative">
-            {/* <h1 className="font-semibold text-lg px-6">Pending Bookings</h1> */}
+          <div className="flex-grow grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4">
+            {bookings ? (
+              bookings
+                .filter((booking: Booking) => booking.status === "open")
+                .filter(todayBookings)
+                .map((booking: Booking, i) => (
+                  <Card booking={booking} key={i} />
+                ))
+            ) : (
+              <h1>Cargando...</h1>
+            )}
+          </div>
+          <div className="py-3 relative">
             <div className="flex overflow-x-auto space-x-8 pl-6 pr-12">
               {bookings ? (
                 bookings
@@ -38,18 +49,6 @@ const BookingsDisplay = ({
               )}
             </div>
             <div className="h-full w-16 absolute top-0 right-0 horizontal-transparent"></div>
-          </div>
-          <div className="flex-grow grid grid-cols-1 sm:grid-cols-4 xl:grid-cols-5 px-6 pb-6 gap-4">
-            {bookings ? (
-              bookings
-                .filter((booking: Booking) => booking.status === "open")
-                .filter(todayBookings)
-                .map((booking: Booking, i) => (
-                  <Card booking={booking} key={i} />
-                ))
-            ) : (
-              <h1>Cargando...</h1>
-            )}
           </div>
         </main>
       )}
