@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
-  getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
-import { firebaseConfig } from "../../../firebase/client";
-import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const provider = new GoogleAuthProvider();
 
 import { loginUri2 } from "../../../utils/svgs/login";
 import { IoRocket, IoStar, IoWallet } from "react-icons/io5";
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
 
 const emptyUser = {
   email: "",
@@ -22,7 +17,7 @@ const emptyUser = {
   confirm_password: "",
 };
 
-const LoginPage = ({ setUser }) => {
+const LoginPage = ({ setUser, auth }) => {
   const [route, setRoute] = useState("login");
   const [newUser, setNewUser] = useState(emptyUser);
   const [loading, setLoading] = useState(false);
@@ -31,9 +26,6 @@ const LoginPage = ({ setUser }) => {
   useEffect(() => {
     setErrorCode("");
   }, [route]);
-
-  const saveUserInStorage = (user) =>
-    localStorage.setItem("authUser", JSON.stringify(user));
 
   const login = async () => {
     const { email, password } = newUser;
@@ -44,7 +36,7 @@ const LoginPage = ({ setUser }) => {
         const user = userCredential.user;
         setLoading(false);
         setUser(user);
-        saveUserInStorage(user);
+        // saveUserInStorage(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -65,13 +57,14 @@ const LoginPage = ({ setUser }) => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+        auth.currentUser = result.user;
         setLoading(false);
         setUser(user);
-        saveUserInStorage(user);
+        // saveUserInStorage(user);
         // ...
       })
       .catch((error) => {
-        console.error(error)
+        console.error(error);
         setLoading(false);
       });
   };
@@ -86,7 +79,6 @@ const LoginPage = ({ setUser }) => {
     createUserWithEmailAndPassword(auth, newUser.email, newUser.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         setLoading(false);
         setUser(user);
       })
@@ -142,7 +134,10 @@ const LoginPage = ({ setUser }) => {
               Welcome to My Rapid Chef
             </h1>
             <div className="flex gap-6">
-              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4" onClick={googleLogin}>
+              <button
+                className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4"
+                onClick={googleLogin}
+              >
                 <img src={"/GLogo.svg"} />
                 <span>Log In with Google</span>
               </button>
@@ -212,7 +207,10 @@ const LoginPage = ({ setUser }) => {
             </h1>
             <h1 className="text-xl">Sign Up below</h1>
             <div className="flex gap-6">
-              <button className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4" onClick={googleLogin}>
+              <button
+                className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4"
+                onClick={googleLogin}
+              >
                 <img src={"/GLogo.svg"} />
                 <span>Sign Up with Google</span>
               </button>

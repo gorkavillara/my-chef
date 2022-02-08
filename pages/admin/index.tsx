@@ -56,7 +56,7 @@ interface ContextInterface {
 
 export const AdminContext = createContext<ContextInterface>({});
 
-const Admin = ({ user }) => {
+const Admin = ({ user, auth }) => {
   const [route, setRoute] = useState<string>("tables");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [activeModal, setActiveModal] = useState<boolean>(false);
