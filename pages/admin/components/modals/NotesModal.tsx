@@ -15,7 +15,6 @@ const NotesModal = ({
   closeModal: Function;
 }) => {
   const [newNotes, setNewNotes] = useState(notes);
-  const { bookings, setBookings } = useContext(AdminContext);
   const canvasRef = useRef(null);
   const saveDraw = () => {
     const url = canvasRef.current.getSaveData();
@@ -28,7 +27,6 @@ const NotesModal = ({
   };
   const undoDraw = () => canvasRef.current.undo();
   const eraseDraw = () => canvasRef.current.eraseAll();
-  console.log(booking.handwrittenNotesUrl);
   return booking ? (
     <div className="flex flex-col gap-4">
       <h1 className="font-semibold text-lg">Notes</h1>

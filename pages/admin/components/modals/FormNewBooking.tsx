@@ -34,6 +34,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
     menu: {},
     status: "waiting",
   });
+  const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>([]);
   const [menuName, setMenuName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -45,6 +46,18 @@ const FormNewBooking = ({ store }: { store: Store }) => {
     setMenuName(e.target.value);
     const menu = store.menus.find((menu) => menu.name === e.target.value);
     setBooking({ ...booking, menu });
+  };
+
+  const toggleTable = (table: string) => {
+    let tabs = [];
+    if (selectedTablesArray.some((tab) => tab === table)) {
+      tabs = selectedTablesArray.filter((tab) => tab !== table);
+    } else {
+      tabs = [...selectedTablesArray, table];
+    }
+    tabs = tabs.filter((tab) => tab !== "");
+    setSelectedTablesArray([...tabs]);
+    setBooking({ ...booking, table: tabs.join(", ") });
   };
 
   const toggleAllergy = (allergy: string) => {
@@ -114,12 +127,13 @@ const FormNewBooking = ({ store }: { store: Store }) => {
         />
         <Input
           disabled={loading}
-          type="select"
+          type="chip-select"
           name="table"
           placeholder="Table"
           value={booking.table}
+          color="blue"
           options={store.tables.map((table) => table.name)}
-          onChange={(e) => setBooking({ ...booking, table: e.target.value })}
+          onChange={toggleTable}
         />
         <Input
           disabled={loading}

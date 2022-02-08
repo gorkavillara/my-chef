@@ -3,12 +3,17 @@ import { AdminContext } from "../..";
 import { editBookingStatus } from "../../../../controllers/DBController";
 
 const OpenBooking = ({ booking }) => {
-  const { setBookings, bookings, closeModal } = useContext(AdminContext);
-  closeModal();
-  const openBooking = () =>
-    editBookingStatus({ booking, bookings, newStatus: "open" }).catch((e) =>
-      console.error(e)
-    );
+  const { bookings, closeModal } = useContext(AdminContext);
+  
+  const openBooking = async () => {
+    closeModal();
+    return await editBookingStatus({
+      booking,
+      bookings,
+      newStatus: "open",
+    }).catch((e) => console.error(e));
+  };
+  
   return booking ? (
     <div className="w-full flex flex-col gap-4 text-center items-center">
       <span className="text-lg">
