@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { IoBrush, IoPencil, IoPencilOutline, IoText } from "react-icons/io5";
 import { AdminContext } from "..";
 import { Pairing } from "../../../models";
 import Color from "./Color";
@@ -27,7 +28,7 @@ const Dish = ({ dish, booking, setDish, i }) => {
         onClick={() => openModal("dishOptions", { booking, dish })}
       ></button>
       <div
-        className={`flex-grow text-lg px-2 rounded-full flex justify-between items-center ${
+        className={`flex-grow text-lg px-2 rounded-lg flex justify-between items-center ${
           dish.allergies?.some((all) => booking.allergies?.indexOf(all) >= 0)
             ? "text-red-500"
             : ""
@@ -47,14 +48,31 @@ const Dish = ({ dish, booking, setDish, i }) => {
           }`}
         >
           {dish.name}
-        </span>{" "}
-        <span className="text-sm">
-          {dish.status === "waiting"
-            ? ""
-            : dish.status === "preparing"
-            ? "almost ready..."
-            : dish.status}
         </span>
+      </div>
+      <div className="flex items-center gap-1">
+        <button
+          className={`border text-lg flex items-center p-1 rounded-lg ${
+            dish.notes ? "" : "opacity-25"
+          }`}
+          onClick={() => openModal("dishNotes", { booking, dish })}
+        >
+          {dish.notes ? (
+            <span className="text-left text-xs w-16 truncate text-ellipsis">
+              {dish.notes}
+            </span>
+          ) : (
+            <IoText />
+          )}
+        </button>
+        <button
+          className={`border text-lg p-1 rounded-lg ${
+            dish.handwrittenNotes ? "" : "opacity-25"
+          }`}
+          onClick={() => openModal("dishNotes", { booking, dish })}
+        >
+          <IoBrush />
+        </button>
       </div>
       <button
         className="flex gap-1"

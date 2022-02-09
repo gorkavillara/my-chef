@@ -17,6 +17,7 @@ import Time from "./modals/Time";
 import Nationality from "./modals/Nationality";
 import DishOptions from "./modals/DishOptions";
 import ChangeTable from "./modals/ChangeTable";
+import DishNotesModal from "./modals/DishNotesModal";
 
 type ModalProps = {
   visible: boolean;
@@ -46,6 +47,14 @@ const ModalController = ({
       {modalContent === "notes" && (
         <NotesModal
           notes={data.booking.notes}
+          booking={data.booking}
+          closeModal={onClose}
+        />
+      )}
+      {modalContent === "dishNotes" && (
+        <DishNotesModal
+          notes={data.dish.notes}
+          dish={data.dish}
           booking={data.booking}
           closeModal={onClose}
         />

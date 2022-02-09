@@ -231,6 +231,38 @@ export const saveNotes = async ({
   return { booking: newBooking };
 };
 
+export const saveDishNotes = async ({
+  handwrittenNotesUrl,
+  dish,
+  booking,
+  newNotes,
+}: {
+  handwrittenNotesUrl: string;
+  dish: Dish;
+  booking: Booking;
+  newNotes: string;
+}) => {
+  if (handwrittenNotesUrl === "") return false;
+  const newDish = {
+    ...dish,
+    notes: newNotes,
+    handwrittenNotes: handwrittenNotesUrl,
+  };
+  const newDishes = booking.menu.dishes.map((d) =>
+    d.name === dish.name ? newDish : d
+  );
+  const newMenu = {
+    ...booking.menu,
+    dishes: newDishes,
+  };
+  const newBooking = {
+    ...booking,
+    menu: newMenu,
+  };
+  await setDoc(doc(db, "bookings", booking.id), newBooking);
+  return { booking: newBooking };
+};
+
 export const editBookingStatus = async ({
   booking,
   bookings,
