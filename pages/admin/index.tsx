@@ -114,7 +114,7 @@ const Admin = ({ user, auth }) => {
                 setStore(data.stores[0])
             )
             .catch((e) => console.error(e))
-    }, [user.email])
+    }, [user])
 
     useEffect(() => {
         if (!store) return
