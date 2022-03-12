@@ -53,6 +53,8 @@ interface ContextInterface {
     activeRole?: string
     user?: User
     db?: Firestore
+    expanded?: boolean
+    setExpanded?: Dispatch<SetStateAction<boolean>>
 }
 
 export const AdminContext = createContext<ContextInterface>({})
@@ -67,6 +69,7 @@ const Admin = ({ user, auth }) => {
     const [store, setStore] = useState<Store>()
     const [date, setDate] = useState<Date>(new Date())
     const [activeRole, setActiveRole] = useState<string>("")
+    const [expanded, setExpanded] = useState(false)
 
     const goBackFunction = useCallback((event: any) => {
         event.preventDefault()
@@ -155,6 +158,8 @@ const Admin = ({ user, auth }) => {
                     user,
                     activeRole,
                     db,
+                    expanded,
+                    setExpanded,
                 }}
             >
                 <div className="flex h-screen w-screen bg-slate-100 scroll-hidden">

@@ -6,9 +6,13 @@ import SettingsView from "./SettingsView"
 import CalendarView from "./CalendarView"
 
 const MainDashboard = () => {
-    const { route } = useContext(AdminContext)
+    const { route, expanded } = useContext(AdminContext)
     return (
-        <div className="ml-20 flex-grow bg-slate-100 min-h-full">
+        <div
+            className={`transition-all ${
+                expanded ? "ml-20" : "ml-0"
+            } flex-grow bg-slate-100 min-h-full`}
+        >
             {route === "tables" && <TablesView />}
             {route === "charts" && <ChartsView />}
             {route === "calendar" && <CalendarView />}

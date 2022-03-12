@@ -6,7 +6,7 @@ const num_stars = 2
 
 const MottoPhrase = () => {
     return (
-        <div className="bg-blue-50 py-4 flex justify-center gap-4">
+        <div className="bg-blue-50 pb-8 flex justify-center gap-4">
             <div className="flex gap-2">
                 {Array(num_stars)
                     .fill("")

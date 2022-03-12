@@ -39,8 +39,8 @@ const BookingsDisplay = ({
                                 <h1>Cargando...</h1>
                             )}
                         </div>
-                        <div className="py-3 relative">
-                            <div className="flex overflow-x-auto space-x-8 pl-6 pr-12">
+                        <div className="relative">
+                            <div className="flex overflow-x-auto space-x-8 py-10 pl-6 pr-12">
                                 {bookings ? (
                                     bookings
                                         .filter(

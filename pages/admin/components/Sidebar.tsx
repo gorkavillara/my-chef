@@ -7,16 +7,22 @@ import {
     IoOptionsOutline,
     IoCalendarClearOutline,
 } from "react-icons/io5"
+import { AiOutlineDoubleLeft } from "react-icons/ai"
 import CircleButton from "./CircleButton"
 import Avatar from "./Avatar"
 import { AdminContext } from ".."
 import Image from "next/image"
 
 const Sidebar = () => {
-    const { route, setRoute, openModal, store, setDate } =
+    const { route, setRoute, openModal, store, setDate, expanded, setExpanded } =
         useContext(AdminContext)
+    const toggleSidebar = () => setExpanded(!expanded)
     return (
-        <div className="fixed left-0 h-full w-20 bg-white flex flex-col py-8 px-2 items-center justify-between">
+        <div
+            className={`fixed transition-all h-full w-20 bg-white flex flex-col py-8 px-2 items-center justify-between ${
+                expanded ? "left-0" : "-left-20"
+            }`}
+        >
             <div className="flex flex-col items-center">
                 <button
                     onClick={() => {
@@ -70,6 +76,18 @@ const Sidebar = () => {
                 />
                 <Avatar image="/paulo.jpg" />
             </div>
+            <button
+                className="absolute bg-white rounded-r-full w-12 h-12 bottom-8 left-20 flex justify-center gap-0 items-center"
+                onClick={toggleSidebar}
+            >
+                <span className="text-3xl font-bold text-slate-800">
+                    {expanded ? (
+                        <AiOutlineDoubleLeft />
+                    ) : (
+                        <AiOutlineDoubleLeft className="rotate-180" />
+                    )}
+                </span>
+            </button>
         </div>
     )
 }
