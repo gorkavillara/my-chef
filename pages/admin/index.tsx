@@ -103,9 +103,10 @@ const Admin = ({ user, auth }) => {
 
     useEffect(() => {
         if (!store) return
+        if (!user) return
         const us = store.settings.users.find((us) => user.email === us.email)
         setActiveRole(us.role)
-    }, [store, user.email])
+    }, [store, user])
 
     useEffect(() => {
         if (!user) return
@@ -114,7 +115,7 @@ const Admin = ({ user, auth }) => {
                 setStore(data.stores[0])
             )
             .catch((e) => console.error(e))
-    }, []) //eslint-disable-line
+    }, [user])
 
     useEffect(() => {
         if (!store) return
