@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 
 const Color = ({ color, size = "md", className = "" }) => (
-  <div
-    className={`
-      ${(size === "sm" && "w-1 h-1")}
-      ${(size === "md" && "w-3 h-3")}
-      ${(size === "lg" && "w-6 h-6")}
-      ${(size === "xl" && "w-9 h-9")}
+    <div
+        className={`
+      ${size === "sm" && "w-1 h-1"}
+      ${size === "md" && "w-3 h-3"}
+      ${size === "lg" && "w-6 h-6"}
+      ${size === "xl" && "w-9 h-9"}
       
       rounded-full
       
@@ -24,7 +24,7 @@ const Color = ({ color, size = "md", className = "" }) => (
       ${color === "disabled" && "bg-slate-100"}
       ${className}
       `}
-  ></div>
-);
+    ></div>
+)
 
-export default Color;
+export default Color

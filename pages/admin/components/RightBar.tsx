@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
 const RightBar = () => {
-  return <div className="h-full w-12 bg-white"></div>;
-};
+    return <div className="h-full w-12 bg-white"></div>
+}
 
-export default RightBar;
+export default RightBar

@@ -1,30 +1,30 @@
-import React from "react";
-import { Dish } from "../../../models";
-import { GiCrabClaw, GiWineGlass } from "react-icons/gi";
+import React from "react"
+import { Dish } from "../../../models"
+import { GiCrabClaw, GiWineGlass } from "react-icons/gi"
 
 const CompanionList = ({ dish }: { dish: Dish }) => {
-  return dish ? (
-    <div className="flex gap-1 flex-wrap">
-      <div
-        className={`flex gap-1 items-center p-1 rounded text-2xl ${
-          dish.side
-            ? "bg-green-300 text-green-700"
-            : "bg-slate-100 text-slate-300"
-        }`}
-      >
-        <GiCrabClaw />
-      </div>
-      <div
-        className={`flex gap-1 items-center p-1 rounded text-2xl ${
-          dish.wine
-            ? "bg-green-300 text-green-700"
-            : "bg-slate-100 text-slate-300"
-        }`}
-      >
-        <GiWineGlass />
-      </div>
-    </div>
-  ) : null;
-};
+    return dish ? (
+        <div className="flex gap-1 flex-wrap">
+            <div
+                className={`flex gap-1 items-center p-1 rounded text-2xl ${
+                    dish.side
+                        ? "bg-green-300 text-green-700"
+                        : "bg-slate-100 text-slate-300"
+                }`}
+            >
+                <GiCrabClaw />
+            </div>
+            <div
+                className={`flex gap-1 items-center p-1 rounded text-2xl ${
+                    dish.wine
+                        ? "bg-green-300 text-green-700"
+                        : "bg-slate-100 text-slate-300"
+                }`}
+            >
+                <GiWineGlass />
+            </div>
+        </div>
+    ) : null
+}
 
-export default CompanionList;
+export default CompanionList

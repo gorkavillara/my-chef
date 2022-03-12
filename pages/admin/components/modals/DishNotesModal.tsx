@@ -1,9 +1,7 @@
-import React, { useContext, useRef, useState } from "react";
-import CanvasDraw from "react-canvas-draw";
-import { IoArrowUndo, IoSave, IoTrashBin } from "react-icons/io5";
-import { AdminContext } from "../..";
-import { saveDishNotes } from "../../../../controllers/DBController";
-import { Booking, Dish } from "../../../../models";
+import React, { useState } from "react"
+import { IoSave } from "react-icons/io5"
+import { saveDishNotesString } from "../../../../controllers/DBController"
+import { Booking, Dish } from "../../../../models"
 
 const DishNotesModal = ({
   notes = "",
@@ -11,25 +9,20 @@ const DishNotesModal = ({
   dish,
   closeModal,
 }: {
-  notes: string;
-  booking: Booking;
-  dish: Dish;
-  closeModal: Function;
+  notes: string
+  booking: Booking
+  dish: Dish
+  closeModal: Function
 }) => {
-  const [newNotes, setNewNotes] = useState(notes);
-  const canvasRef = useRef(null);
+  const [newNotes, setNewNotes] = useState(notes)
   const saveDraw = () => {
-    const url = canvasRef.current.getSaveData();
-    closeModal();
-    saveDishNotes({
+    closeModal()
+    saveDishNotesString({
       newNotes,
-      handwrittenNotesUrl: JSON.stringify(url),
       dish,
       booking,
-    }).catch((e) => console.log(e));
-  };
-  const undoDraw = () => canvasRef.current.undo();
-  const eraseDraw = () => canvasRef.current.eraseAll();
+    }).catch((e) => console.log(e))
+  }
   return booking ? (
     <div className="flex flex-col gap-4">
       <h1 className="font-semibold text-lg">Notes</h1>
@@ -39,7 +32,7 @@ const DishNotesModal = ({
         className="input-text"
         autoFocus={false}
       />
-      <div className="w-full border-t"></div>
+      {/* <div className="w-full border-t"></div>
       <h1 className="font-semibold text-lg">Handwritten</h1>
       <div className="p-2 border flex justify-center">
         <CanvasDraw
@@ -61,23 +54,23 @@ const DishNotesModal = ({
           }
           hideInterface
         />
-      </div>
+      </div> */}
       <div className="flex justify-end gap-4 flex-wrap">
-        <button className="btn-secondary-red" onClick={eraseDraw}>
+        {/* <button className="btn-secondary-red" onClick={eraseDraw}>
           <IoTrashBin />
           Erase
         </button>
         <button className="btn-secondary-red" onClick={undoDraw}>
           <IoArrowUndo />
           Undo
-        </button>
+        </button> */}
         <button className="btn-primary-green" onClick={saveDraw}>
           <IoSave />
           Save
         </button>
       </div>
     </div>
-  ) : null;
-};
+  ) : null
+}
 
-export default DishNotesModal;
+export default DishNotesModal

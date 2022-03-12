@@ -1,8 +1,8 @@
-import React from "react";
-import { IoReload } from "react-icons/io5";
+import React from "react"
+import { IoReload } from "react-icons/io5"
 
 const Loading = () => {
-  return <IoReload className="animate-spin text-lg" />;
-};
+    return <IoReload className="animate-spin text-lg" />
+}
 
-export default Loading;
+export default Loading

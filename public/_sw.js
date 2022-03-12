@@ -1,23 +1,23 @@
-import { skipWaiting, clientsClaim } from 'workbox-core';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { NetworkOnly, NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
-import { registerRoute, setDefaultHandler, setCatchHandler } from 'workbox-routing';
-import { matchPrecache, precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { skipWaiting, clientsClaim } from 'workbox-core'
+import { ExpirationPlugin } from 'workbox-expiration'
+import { NetworkOnly, NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies'
+import { registerRoute, setDefaultHandler, setCatchHandler } from 'workbox-routing'
+import { matchPrecache, precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching'
 
-skipWaiting();
-clientsClaim();
+skipWaiting()
+clientsClaim()
 
 // must include following lines when using inject manifest module from workbox
 // https://developers.google.com/web/tools/workbox/guides/precache-files/workbox-build#add_an_injection_point
-const WB_MANIFEST = self.__WB_MANIFEST;
+const WB_MANIFEST = self.__WB_MANIFEST
 // Precache fallback route and image
 WB_MANIFEST.push({
   url: '/fallback',
   revision: '1234567890',
-});
-precacheAndRoute(WB_MANIFEST);
+})
+precacheAndRoute(WB_MANIFEST)
 
-cleanupOutdatedCaches();
+cleanupOutdatedCaches()
 registerRoute(
   '/',
   new NetworkFirst({
@@ -31,7 +31,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
   new CacheFirst({
@@ -45,7 +45,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,
   new StaleWhileRevalidate({
@@ -59,7 +59,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 // disable image cache, so we could observe the placeholder image when offline
 registerRoute(
   /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
@@ -74,7 +74,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /\.(?:js)$/i,
   new StaleWhileRevalidate({
@@ -88,7 +88,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /\.(?:css|less)$/i,
   new StaleWhileRevalidate({
@@ -102,7 +102,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /\.(?:json|xml|csv)$/i,
   new NetworkFirst({
@@ -116,7 +116,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /\/api\/.*$/i,
   new NetworkFirst({
@@ -131,7 +131,7 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 registerRoute(
   /.*/i,
   new NetworkFirst({
@@ -146,13 +146,13 @@ registerRoute(
     ],
   }),
   'GET'
-);
+)
 
 // following lines gives you control of the offline fallback strategies
 // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#comprehensive_fallbacks
 
 // Use a stale-while-revalidate strategy for all other requests.
-setDefaultHandler(new StaleWhileRevalidate());
+setDefaultHandler(new StaleWhileRevalidate())
 
 // This "catch" handler is triggered when any of the other routes fail to
 // generate a response.
@@ -168,35 +168,34 @@ setCatchHandler(({ event }) => {
   switch (event.request.destination) {
     case 'document':
       // If using precached URLs:
-      return matchPrecache('/fallback');
+      return matchPrecache('/fallback')
       // return caches.match('/fallback')
-      break;
+      break
     case 'image':
       // If using precached URLs:
-      return matchPrecache('/static/images/fallback.png');
+      return matchPrecache('/static/images/fallback.png')
       // return caches.match('/static/images/fallback.png')
-      break;
+      break
     case 'font':
     // If using precached URLs:
-    // return matchPrecache(FALLBACK_FONT_URL);
+    // return matchPrecache(FALLBACK_FONT_URL)
     // return caches.match('/static/fonts/fallback.otf')
     // break
     default:
       // If we don't have a fallback, just return an error response.
-      return Response.error();
+      return Response.error()
   }
-});
+})
 
 self.addEventListener("install", function (event) {
-    // console.log("Hello world from the Service Worker 🤙");
-    event.waitUntil(
-        caches.open(staticCacheName).then(cache => {
-            cache.addAll(assets)
-        })
-    )
-});
+  event.waitUntil(
+    caches.open(staticCacheName).then(cache => {
+      cache.addAll(assets)
+    })
+  )
+})
 
-self.addEventListener("fetch", evt => {
-    // console.log("Fetching...")
+self.addEventListener("fetch", () => {
+  // console.log("Fetching...")
 
 })

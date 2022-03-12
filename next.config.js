@@ -1,4 +1,4 @@
-const withPWA = require("next-pwa");
+const withPWA = require("next-pwa")
 
 module.exports = withPWA({
   pwa: {
@@ -7,4 +7,7 @@ module.exports = withPWA({
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development"
   },
-});
+  eslint: {
+    dirs: ['pages']
+  }
+})
