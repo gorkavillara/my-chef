@@ -114,7 +114,7 @@ const Admin = ({ user, auth }) => {
                 setStore(data.stores[0])
             )
             .catch((e) => console.error(e))
-    }, [user])
+    }, []) //eslint-disable-line
 
     useEffect(() => {
         if (!store) return
