@@ -22,7 +22,7 @@ const allergies = [
 ]
 
 const DishOptions = ({ booking, dish }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     const { bookings, closeModal, setBookings } = useContext(AdminContext)
     const [newDish, setNewDish] = useState<Dish>(dish)
 

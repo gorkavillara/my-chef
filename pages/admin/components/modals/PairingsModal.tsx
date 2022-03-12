@@ -8,8 +8,7 @@ const PairingsModal = ({ booking }) => {
     const [pairings, setPairings] = useState<Pairing[]>(
         booking?.pairings ? booking.pairings : []
     )
-    const { store, setBookings, bookings, closeModal } =
-        useContext(AdminContext)
+    const { store, bookings, closeModal } = useContext(AdminContext)
     const updatePairings = () => {
         closeModal()
         return setPairs({

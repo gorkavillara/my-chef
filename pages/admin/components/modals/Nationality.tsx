@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { AdminContext } from "../.."
 import { changeNationality as changeBookingNationality } from "../../../../controllers/DBController"
 import Input from "../forms/Input"
 
 const Nationality = ({ booking }) => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading] = useState<boolean>(false)
     const [nationality, setNationality] = useState<string>(
         booking ? booking.nationality : ""
     )

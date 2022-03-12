@@ -36,7 +36,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
     })
     const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>([])
     const [menuName, setMenuName] = useState<string>("")
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading] = useState<boolean>(false)
 
     const { closeModal } = useContext(AdminContext)
 

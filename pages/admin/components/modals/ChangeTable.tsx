@@ -5,7 +5,7 @@ import { Booking } from "../../../../models"
 import Input from "../forms/Input"
 
 const ChangeTable = ({ booking }: { booking: Booking }) => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading] = useState<boolean>(false)
     const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>(
         booking ? booking.table.split(", ") : []
     )

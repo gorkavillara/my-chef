@@ -12,7 +12,7 @@ import Input from "../forms/Input"
 const roles = ["owner", "manager", "chef", "waiter"]
 
 const UsersModal = ({ editUser = null }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     const { store, setStore, closeModal, activeRole } = useContext(AdminContext)
     const [newUser, setNewUser] = useState<User>(
         editUser ? editUser : { name: "", email: "", role: "waiter" }

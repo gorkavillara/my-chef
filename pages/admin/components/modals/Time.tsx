@@ -1,18 +1,16 @@
-import axios from "axios"
 import React, { useContext, useEffect, useState } from "react"
 import { AdminContext } from "../.."
 import { changeTime as changeBookingTime } from "../../../../controllers/DBController"
-import Input from "../forms/Input"
 
 const Time = ({ booking }) => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading] = useState<boolean>(false)
     const [time, setTime] = useState<Date>()
 
     useEffect(() => {
         if (!booking) return
         const t = new Date(booking.time.seconds * 1000)
         setTime(t)
-    }, [])
+    }, [booking])
 
     const getTimeInputValue = () => {
         if (!booking || !time) return ""

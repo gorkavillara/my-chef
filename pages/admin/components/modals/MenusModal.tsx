@@ -13,7 +13,7 @@ import CompanionList from "../CompanionList"
 import Input from "../forms/Input"
 
 const MenusModal = ({ editMenu = null }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     const { store, setStore, closeModal } = useContext(AdminContext)
     const emptyMenu = {
         name: "",

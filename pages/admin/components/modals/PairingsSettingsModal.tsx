@@ -25,7 +25,7 @@ const colors = [
 ]
 
 const PairingsSettingsModal = ({ editPairing = null }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     const { store, setStore, closeModal } = useContext(AdminContext)
     const emptyPairing = {
         name: "",

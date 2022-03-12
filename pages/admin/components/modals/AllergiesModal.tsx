@@ -1,4 +1,3 @@
-import axios from "axios"
 import React, { useContext, useState } from "react"
 import { AdminContext } from "../.."
 import { editBookingAllergies } from "../../../../controllers/DBController"

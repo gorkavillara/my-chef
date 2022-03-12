@@ -10,7 +10,7 @@ import { Table } from "../../../../models"
 import Input from "../forms/Input"
 
 const TablesModal = ({ editTable = null }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
     const { store, setStore, closeModal } = useContext(AdminContext)
     const emptyTable = {
         name: "",
