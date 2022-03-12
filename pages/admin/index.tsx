@@ -108,6 +108,7 @@ const Admin = ({ user, auth }) => {
     }, [store, user.email])
 
     useEffect(() => {
+        if (!user) return
         getStoresByUserEmail({ userEmail: user.email })
             .then((data: { stores: Store[]; role: string }) =>
                 setStore(data.stores[0])
