@@ -26,7 +26,7 @@ const Sidebar = () => {
                 >
                     <picture className="mb-8">
                         <Image
-                            src="/favicon_256x256.png"
+                            src="/favicon_color2d_256x256.png"
                             width={256}
                             height={256}
                             alt="icon"
