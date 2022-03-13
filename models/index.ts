@@ -69,6 +69,8 @@ export interface Store {
         users: User[]
         name: string
         subscription: string
+        michelin_stars?: number
+        motto?: string
     }
     tables?: Table[]
     products?: Product[]

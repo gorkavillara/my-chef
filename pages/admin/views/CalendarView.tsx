@@ -31,7 +31,7 @@ const CalendarView = () => {
 
     return bookings ? (
         <div className="flex flex-col gap-4 p-6">
-            <h1 className="font-semibold text-lg text-left">
+            <h1 className="font-semibold text-lg text-left ml-10">
                 Bookings Calendar
             </h1>
             <div className="bg-white w-full rounded flex-col gap-2 shadow">

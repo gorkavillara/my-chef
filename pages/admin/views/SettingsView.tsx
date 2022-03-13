@@ -64,7 +64,7 @@ const SettingsView = () => {
     const { store } = useContext(AdminContext)
     return (
         <div className="min-h-full w-full flex flex-col">
-            <h1 className="font-semibold text-lg p-6">Settings</h1>
+            <h1 className="font-semibold text-lg p-6 ml-10">Settings</h1>
             {store ? (
                 <main className="flex-grow flex flex-col bg-slate-100 px-6 pb-6">
                     <NavMenu route={route} setRoute={setRoute} />

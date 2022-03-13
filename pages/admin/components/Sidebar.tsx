@@ -77,7 +77,7 @@ const Sidebar = () => {
                 <Avatar image="/paulo.jpg" />
             </div>
             <button
-                className="absolute bg-white rounded-r-full w-12 h-12 bottom-8 left-20 flex justify-center gap-0 items-center"
+                className="absolute bg-white rounded-r-full w-12 h-12 top-4 left-20 flex justify-center gap-0 items-center"
                 onClick={toggleSidebar}
             >
                 <span className="text-3xl font-bold text-slate-800">

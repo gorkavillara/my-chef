@@ -18,9 +18,9 @@ const TablesView = () => {
     }
     return bookings ? (
         <>
-            <div className="flex items-center justify-between pl-6 py-6">
+            <div className="flex items-center justify-between pl-6 py-5">
                 <div className="flex gap-2 items-center justify-center">
-                    <h1 className="font-semibold text-lg">Bookings:</h1>
+                    <h1 className="font-semibold text-lg ml-10">Bookings:</h1>
                     <button
                         className="bg-slate-300 p-1 rounded hidden"
                         onClick={() => {

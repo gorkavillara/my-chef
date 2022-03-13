@@ -221,6 +221,21 @@ export const saveNotes = async ({
     return { booking: newBooking }
 }
 
+export const saveNotesString = async ({
+    booking,
+    newNotes,
+}: {
+    booking: Booking
+    newNotes: string
+}) => {
+    const newBooking = {
+        ...booking,
+        notes: newNotes,
+    }
+    await setDoc(doc(db, "bookings", booking.id), newBooking)
+    return { booking: newBooking }
+}
+
 export const saveDishNotes = async ({
     handwrittenNotesUrl,
     dish,
