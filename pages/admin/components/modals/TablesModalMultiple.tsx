@@ -70,7 +70,7 @@ const TablesModalMultiple = () => {
             <button
                 className="btn-primary-green"
                 onClick={registerTables}
-                disabled={from >= to}
+                disabled={from >= to || prefix === ""}
             >
                 Añadir Mesas
             </button>

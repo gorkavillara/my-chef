@@ -1,6 +1,5 @@
-import React, { useRef, useState } from "react"
-import CanvasDraw from "react-canvas-draw"
-import { IoArrowUndo, IoSave, IoTrashBin } from "react-icons/io5"
+import React, { useState } from "react"
+import { IoSave } from "react-icons/io5"
 import { saveNotesString } from "../../../../controllers/DBController"
 import { Booking } from "../../../../models"
 
@@ -14,7 +13,6 @@ const NotesModal = ({
     closeModal: Function
 }) => {
     const [newNotes, setNewNotes] = useState(notes)
-    const canvasRef = useRef(null)
     const saveDraw = () => {
         closeModal()
         saveNotesString({
