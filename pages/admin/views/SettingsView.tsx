@@ -5,9 +5,27 @@ import Dishes from "../settings/Dishes"
 import Pairings from "../settings/Pairings"
 import Users from "../settings/Users"
 import Tables from "../settings/Tables"
+import General from "../settings/General"
+import Integrations from "../settings/Integrations"
 
 const NavMenu = ({ route, setRoute }) => (
     <div className="flex gap-2">
+        <span
+            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
+                route === "main" ? "z-10" : "opacity-50"
+            }`}
+            onClick={() => setRoute("main")}
+        >
+            General
+        </span>
+        <span
+            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
+                route === "integrations" ? "z-10" : "opacity-50"
+            }`}
+            onClick={() => setRoute("integrations")}
+        >
+            Integrations
+        </span>
         <span
             className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
                 route === "menus" ? "z-10" : "opacity-50"
@@ -48,19 +66,11 @@ const NavMenu = ({ route, setRoute }) => (
         >
             Users
         </span>
-        {/* <span
-      className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-        route === "main" ? "z-10" : "opacity-50"
-      }`}
-      onClick={() => setRoute("main")}
-    >
-      Info
-    </span> */}
     </div>
 )
 
 const SettingsView = () => {
-    const [route, setRoute] = useState("menus")
+    const [route, setRoute] = useState("main")
     const { store } = useContext(AdminContext)
     return (
         <div className="min-h-full w-full flex flex-col">
@@ -71,14 +81,23 @@ const SettingsView = () => {
                     <div className="flex-grow flex flex-col w-full h-full">
                         <div
                             className={`p-6 bg-white flex-grow shadow-lg w-full rounded-b rounded-r ${
-                                route !== "menus" ? "rounded" : ""
+                                route !== "main" ? "rounded" : ""
                             } shadow-up flex flex-col gap-4`}
                         >
                             {route === "main" && (
                                 <>
                                     <h1 className="font-semibold text-lg">
-                                        Public Info
+                                        General
                                     </h1>
+                                    <General />
+                                </>
+                            )}
+                            {route === "integrations" && (
+                                <>
+                                    <h1 className="font-semibold text-lg">
+                                        Integrations
+                                    </h1>
+                                    <Integrations />
                                 </>
                             )}
                             {route === "tables" && (

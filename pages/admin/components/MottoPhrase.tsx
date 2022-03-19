@@ -8,7 +8,7 @@ const MottoPhrase = () => {
     return store ? (
         <div className="bg-blue-50 pb-8 flex justify-center gap-4">
             <div className="flex gap-2">
-                {store.settings.michelin_stars &&
+                {store.settings?.michelin_stars > 0 &&
                     Array(store.settings.michelin_stars)
                         .fill("")
                         .map((_, i) => (

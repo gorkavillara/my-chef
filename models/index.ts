@@ -65,15 +65,28 @@ export interface Store {
     id: string
     bookings?: Booking[]
     menus?: Menu[]
-    settings?: {
-        users: User[]
-        name: string
-        subscription: string
-        michelin_stars?: number
-        motto?: string
-    }
+    settings?: Settings
     tables?: Table[]
     products?: Product[]
     dishes?: Dish[]
     pairings?: Pairing[]
+}
+
+export interface Settings {
+    users: User[]
+    name: string
+    subscription: string
+    michelin_stars?: number
+    motto?: string
+    integrations?: Integration[]
+}
+
+export interface Integration {
+    provider: string
+    baseUrl: string
+    logoUrl?: string
+    apiKey?: string
+    username?: string
+    password?: string
+    temp?: boolean
 }

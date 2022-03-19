@@ -8,6 +8,8 @@ import { firebaseConfig } from "../firebase/client"
 import { initializeApp } from "firebase/app"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 
+import { Toaster } from "react-hot-toast"
+
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 
@@ -34,6 +36,7 @@ const Home: NextPage = () => {
             ) : (
                 <LoginPage setUser={setUser} auth={auth} />
             )}
+            <div><Toaster/></div>
         </div>
     )
 }

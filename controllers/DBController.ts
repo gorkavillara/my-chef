@@ -11,7 +11,16 @@ import {
     setDoc,
     Timestamp,
 } from "firebase/firestore"
-import { User, Store, Booking, Dish, Menu, Pairing } from "../models"
+import {
+    User,
+    Store,
+    Booking,
+    Dish,
+    Menu,
+    Pairing,
+    Settings,
+    Integration,
+} from "../models"
 
 export const registerNewTable = async ({ table, store }) => {
     const storeRef = doc(db, "stores", store.id)
@@ -471,4 +480,51 @@ export const setPairings = async ({
         book.id === booking.id ? newBooking : book
     )
     return { bookings: newBookings }
+}
+
+export const updateSettings = async ({
+    store,
+    settings,
+}: {
+    store: Store
+    settings: Settings
+}) => {
+    const storeRef = doc(db, "stores", store.id)
+    await updateDoc(storeRef, { settings })
+    const newStore = { ...store, settings }
+    return newStore
+}
+
+export const updateIntegrations = async ({
+    store,
+    integrations,
+}: {
+    store: Store
+    integrations: Integration[]
+}) => {
+    const storeRef = doc(db, "stores", store.id)
+    await updateDoc(storeRef, { settings: { ...store.settings, integrations } })
+    const newStore = { ...store, settings: { ...store.settings, integrations } }
+    return newStore
+}
+
+export const deleteIntegration = async ({
+    store,
+    integration,
+}: {
+    store: Store
+    integration: Integration
+}) => {
+    const storeRef = doc(db, "stores", store.id)
+    const newIntegrations = store.settings.integrations.filter(
+        (int) => int.provider !== integration.provider
+    )
+    await updateDoc(storeRef, {
+        settings: { ...store.settings, integrations: newIntegrations },
+    })
+    const newStore = {
+        ...store,
+        settings: { ...store.settings, integrations: newIntegrations },
+    }
+    return newStore
 }

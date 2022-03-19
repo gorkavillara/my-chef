@@ -18,6 +18,8 @@ import Nationality from "./modals/Nationality"
 import DishOptions from "./modals/DishOptions"
 import ChangeTable from "./modals/ChangeTable"
 import DishNotesModal from "./modals/DishNotesModal"
+import IntegrationsModal from "./modals/IntegrationsModal"
+import IntegrationDeleteModal from "./modals/IntegrationDeleteModal"
 
 type ModalProps = {
     visible: boolean
@@ -83,6 +85,12 @@ const ModalController = ({
             {modalContent === "newPairing" && <PairingsSettingsModal />}
             {modalContent === "editPairing" && (
                 <PairingsSettingsModal editPairing={data} />
+            )}
+            {modalContent === "integrations" && (
+                <IntegrationsModal integrations={data.integrations} providers={data.providers} />
+            )}
+            {modalContent === "integrationsDelete" && (
+                <IntegrationDeleteModal integration={data} />
             )}
         </Modal>
     )

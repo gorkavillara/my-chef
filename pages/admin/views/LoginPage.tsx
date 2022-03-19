@@ -25,6 +25,7 @@ const LoginPage = ({ setUser, auth }) => {
 
     useEffect(() => {
         setErrorCode("")
+        return () => setErrorCode("")
     }, [route])
 
     const login = async () => {

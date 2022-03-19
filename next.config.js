@@ -9,5 +9,8 @@ module.exports = withPWA({
   },
   eslint: {
     dirs: ['pages']
+  },
+  images: {
+    domains: ['res.cloudinary.com'],
   }
 })
