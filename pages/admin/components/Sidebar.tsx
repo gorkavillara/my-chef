@@ -14,8 +14,16 @@ import { AdminContext } from ".."
 import Image from "next/image"
 
 const Sidebar = () => {
-    const { route, setRoute, openModal, store, setDate, expanded, setExpanded } =
-        useContext(AdminContext)
+    const {
+        route,
+        setRoute,
+        openModal,
+        store,
+        setDate,
+        expanded,
+        setExpanded,
+        user,
+    } = useContext(AdminContext)
     const toggleSidebar = () => setExpanded(!expanded)
     return (
         <div
@@ -74,7 +82,9 @@ const Sidebar = () => {
                     notifications={2}
                     onClick={() => null}
                 />
-                <Avatar image="/paulo.jpg" />
+                <button onClick={() => setRoute("profile")}>
+                    <Avatar image={user.photoURL} />
+                </button>
             </div>
             <button
                 className="absolute bg-white rounded-r-full w-12 h-12 top-4 left-20 flex justify-center gap-0 items-center"

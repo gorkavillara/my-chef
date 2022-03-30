@@ -1,9 +1,3 @@
-export interface User {
-    email: string
-    name: string
-    role: string
-}
-
 export interface Booking {
     id?: string
     allergies?: string[]
@@ -24,6 +18,7 @@ export interface User {
     name: string
     email: string
     role: string
+    photoURL: string
 }
 
 export interface Table {

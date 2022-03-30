@@ -4,6 +4,7 @@ import ChartsView from "./ChartsView"
 import { AdminContext } from ".."
 import SettingsView from "./SettingsView"
 import CalendarView from "./CalendarView"
+import ProfileView from "./ProfileView"
 
 const MainDashboard = () => {
     const { route, expanded } = useContext(AdminContext)
@@ -17,6 +18,7 @@ const MainDashboard = () => {
             {route === "charts" && <ChartsView />}
             {route === "calendar" && <CalendarView />}
             {route === "settings" && <SettingsView />}
+            {route === "profile" && <ProfileView />}
         </div>
     )
 }
