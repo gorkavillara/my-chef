@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import { IoCaretBack, IoCaretForward, IoPrintOutline } from "react-icons/io5"
+import { IoCaretBack, IoCaretForward, IoRefresh } from "react-icons/io5"
 import { AdminContext } from ".."
 import { Booking } from "../../../models"
 import BookingsDisplay from "../components/BookingsDisplay"
@@ -7,7 +7,9 @@ import MottoPhrase from "../components/MottoPhrase"
 
 const TablesView = () => {
     const [filter, setFilter] = useState("all")
-    const { bookings, date, setDate } = useContext(AdminContext)
+    const [loading] = useState(false)
+    const { bookings, date, setDate, refreshBookings, store } =
+        useContext(AdminContext)
     const todayBookings = (booking: Booking) => {
         const d = new Date(booking.time.seconds * 1000)
         return (
@@ -44,9 +46,21 @@ const TablesView = () => {
                     </button>
                 </div>
                 <div className="flex items-center gap-2 px-6">
-                    <button className="text-blue-500 text-4xl px-4">
+                    {store?.settings.integrations.find(
+                        (int) => int.provider === "sevenrooms"
+                    ) && (
+                        <button
+                            onClick={refreshBookings}
+                            className={`text-blue-500 text-4xl px-4 ${
+                                loading ? "animate-spin" : ""
+                            }`}
+                        >
+                            <IoRefresh />
+                        </button>
+                    )}
+                    {/* <button className="text-blue-500 text-4xl px-4">
                         <IoPrintOutline />
-                    </button>
+                    </button> */}
                     <button
                         onClick={() => setFilter("all")}
                         className={`${

@@ -27,6 +27,8 @@ import {
     getStoresByUserEmail,
 } from "../../controllers/DBController"
 
+import { getNewToken } from "../../controllers/IntegrationsController"
+
 enableIndexedDbPersistence(db).catch((err) => {
     if (err.code == "failed-precondition") {
         // Multiple tabs open, persistence can only be enabled
@@ -55,6 +57,7 @@ interface ContextInterface {
     db?: Firestore
     expanded?: boolean
     setExpanded?: Dispatch<SetStateAction<boolean>>
+    refreshBookings?: React.MouseEventHandler<HTMLButtonElement>
 }
 
 export const AdminContext = createContext<ContextInterface>({})
@@ -136,6 +139,24 @@ const Admin = ({ user, auth }) => {
     const closeModal = () => {
         setActiveModal(false)
     }
+
+    const refreshBookings = async () => {
+        // 1 - Chequea si hay algo en localstorage
+        var int_token = JSON.parse(localStorage.getItem("int_token"))
+        console.log(int_token)
+        // 2 - Si hay, chequea que sea válido
+        // 3 - Si no es válido -> Vuelve a autenticar
+        if (
+            !int_token ||
+            new Date() > new Date(int_token.token_expiration_datetime)
+        ) {
+            // Haz autenticación y guárdalo en localStorage
+            int_token = await getNewToken(store.settings.integrations)
+        }
+        // 4 - Una vez tengamos el token -> Buscamos reservas
+        console.log(int_token)
+    }
+
     return (
         <>
             <Head>
@@ -160,6 +181,7 @@ const Admin = ({ user, auth }) => {
                     db,
                     expanded,
                     setExpanded,
+                    refreshBookings,
                 }}
             >
                 <div className="flex h-screen w-screen bg-slate-100 scroll-hidden">

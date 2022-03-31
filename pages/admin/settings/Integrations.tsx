@@ -10,8 +10,9 @@ import { IoTrash } from "react-icons/io5"
 const providers = [
     {
         provider: "sevenrooms",
-        baseUrl: "https://demo.sevenrooms.com/api-ext/2_4/",
-        apiKey: "",
+        baseUrl: "https://api.sevenrooms.com/2_2/",
+        venueID: "",
+        clientID: "",
         logoUrl:
             "https://res.cloudinary.com/dyddijwxv/image/upload/v1647713184/myrapidchef/logo_jpiqdx.png",
     },
@@ -96,22 +97,32 @@ const Integrations = () => {
                                 )}
                             </span>
                             <div className="flex flex-grow justify-end">
-                                <button className="text-4xl text-red-400 bg-red-50 p-2 border-red-400 border-2 rounded-xl" onClick={() => openModal("integrationsDelete", integration)}><IoTrash /></button>
+                                <button
+                                    className="text-4xl text-red-400 bg-red-50 p-2 border-red-400 border-2 rounded-xl"
+                                    onClick={() =>
+                                        openModal(
+                                            "integrationsDelete",
+                                            integration
+                                        )
+                                    }
+                                >
+                                    <IoTrash />
+                                </button>
                             </div>
                         </div>
                         <div className="flex flex-col gap-6">
                             <label className="flex flex-col">
                                 <span className="font-semibold capitalize mb-2">
-                                    UserName
+                                    Venue ID
                                 </span>
                                 <input
                                     type="text"
-                                    value={integration.username}
+                                    value={integration.venueID}
                                     onChange={(e) => {
                                         const newIntegrations = integrations
                                         newIntegrations[i] = {
                                             ...integration,
-                                            username: e.target.value,
+                                            venueID: e.target.value,
                                         }
                                         return setIntegrations([
                                             ...newIntegrations,
@@ -122,16 +133,16 @@ const Integrations = () => {
                             </label>
                             <label className="flex flex-col">
                                 <span className="font-semibold capitalize mb-2">
-                                    ApiKey
+                                    Client ID
                                 </span>
                                 <input
                                     type="text"
-                                    value={integration.apiKey}
+                                    value={integration.clientID}
                                     onChange={(e) => {
                                         const newIntegrations = integrations
                                         newIntegrations[i] = {
                                             ...integration,
-                                            apiKey: e.target.value,
+                                            clientID: e.target.value,
                                         }
                                         return setIntegrations([
                                             ...newIntegrations,

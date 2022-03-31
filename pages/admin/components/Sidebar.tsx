@@ -2,8 +2,8 @@ import React, { useContext } from "react"
 import SidebarIcon from "./SidebarIcon"
 import {
     IoAlbumsOutline,
-    IoNotificationsOutline,
-    IoBarChartOutline,
+    // IoNotificationsOutline,
+    // IoBarChartOutline,
     IoOptionsOutline,
     IoCalendarClearOutline,
 } from "react-icons/io5"
@@ -59,11 +59,11 @@ const Sidebar = () => {
                             setDate(new Date())
                         }}
                     />
-                    <SidebarIcon
+                    {/* <SidebarIcon
                         icon={<IoBarChartOutline />}
                         isActive={route === "charts"}
                         onClick={() => setRoute("charts")}
-                    />
+                    /> */}
                     <SidebarIcon
                         icon={<IoCalendarClearOutline />}
                         isActive={route === "calendar"}
@@ -77,11 +77,11 @@ const Sidebar = () => {
                     isActive={route === "settings"}
                     onClick={() => setRoute("settings")}
                 />
-                <SidebarIcon
+                {/* <SidebarIcon
                     icon={<IoNotificationsOutline />}
                     notifications={2}
                     onClick={() => null}
-                />
+                /> */}
                 <button onClick={() => setRoute("profile")}>
                     <Avatar image={user.photoURL} />
                 </button>

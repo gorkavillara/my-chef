@@ -84,4 +84,6 @@ export interface Integration {
     username?: string
     password?: string
     temp?: boolean
+    clientID?: string
+    venueID?: string
 }

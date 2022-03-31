@@ -15,6 +15,7 @@
     "framer-motion": "^6.2.3",
     "next": "12.0.8",
     "next-pwa": "^5.4.4",
+    "qs": "^6.10.3",
     "react": "17.0.2",
     "react-animated-modal": "^1.1.1",
     "react-canvas-draw": "^1.2.1",
