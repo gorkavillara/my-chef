@@ -10,7 +10,7 @@ export const auth = async (integrations: Integration[]) => {
         client_secret: process.env.SEVEN_ROOMS_SECRET,
     }
     console.log("Llamando...")
-    const resp = await fetch(`https://demo.sevenrooms.com/api-ext/2_4/auth`, {
+    const resp = await fetch(`${process.env.SEVEN_ROOMS_BASE_URL}/auth`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -35,7 +35,7 @@ export const getVenues = async (venue_group_id: string, apiKey: string) => {
     }).toString()
 
     const resp = await fetch(
-        `https://demo.sevenrooms.com/api-ext/2_4/venues?${query}`,
+        `${process.env.SEVEN_ROOMS_BASE_URL}/venues?${query}`,
         {
             method: "GET",
             headers: {
@@ -70,7 +70,7 @@ export const getReservations = async (
     }).toString()
 
     const resp = await fetch(
-        `https://demo.sevenrooms.com/api-ext/2_4/reservations?${query}`,
+        `${process.env.SEVEN_ROOMS_BASE_URL}/reservations?${query}`,
         {
             method: "GET",
             headers: {
@@ -103,7 +103,7 @@ export const getTodayReservations = async (
     }).toString()
 
     const resp = await fetch(
-        `https://demo.sevenrooms.com/api-ext/2_4/reservations?${query}`,
+        `${process.env.SEVEN_ROOMS_BASE_URL}/reservations?${query}`,
         {
             method: "GET",
             headers: {

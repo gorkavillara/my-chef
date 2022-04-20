@@ -73,7 +73,7 @@ const ProfileView = () => {
                     <div className="w-44 h-44 rounded-full bg-white -mt-16 shadow-lg border-white border-2 flex justify-center items-center overflow-hidden">
                         {user.photoURL ? (
                             <ImageInput
-                                visualUrl={user.photoURL}
+                                visualUrl={user?.photoURL}
                                 className="w-full h-full"
                             />
                         ) : (

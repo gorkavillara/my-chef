@@ -83,7 +83,7 @@ const Sidebar = () => {
                     onClick={() => null}
                 /> */}
                 <button onClick={() => setRoute("profile")}>
-                    <Avatar image={user.photoURL} />
+                    <Avatar image={user?.photoURL} />
                 </button>
             </div>
             <button
