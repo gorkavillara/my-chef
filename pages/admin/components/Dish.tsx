@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { MdDraw } from "react-icons/md"
 import { IoText } from "react-icons/io5"
 import { AdminContext } from ".."
 import { Pairing } from "../../../models"
@@ -55,7 +56,9 @@ const Dish = ({ dish, booking, setDish, i }) => {
             <div className="flex items-center gap-1">
                 <button
                     className={`border text-lg flex items-center p-1 rounded-lg ${
-                        dish.notes ? "" : "opacity-25"
+                        dish.notes || dish.handwrittenNotesUrl
+                            ? ""
+                            : "opacity-25"
                     }`}
                     onClick={() => openModal("dishNotes", { booking, dish })}
                 >
@@ -63,29 +66,25 @@ const Dish = ({ dish, booking, setDish, i }) => {
                         <span className="text-left text-xs w-16 truncate text-ellipsis">
                             {dish.notes}
                         </span>
+                    ) : dish.handwrittenNotesUrl ? (
+                        <MdDraw className="text-slate-800" />
                     ) : (
                         <IoText />
                     )}
                 </button>
-                {/* <button
-          className={`border text-lg p-1 rounded-lg ${
-            dish.handwrittenNotes ? "" : "opacity-25"
-          }`}
-          onClick={() => openModal("dishNotes", { booking, dish })}
-        >
-          <IoBrush />
-        </button> */}
             </div>
             <button
                 className="flex gap-1"
                 onClick={() => openModal("dishOptions", { booking, dish })}
             >
                 {dish.wine ? (
-                    booking.pairings?.length > 0 ?
-                    booking.pairings?.map((pairing: Pairing, i: number) => (
-                        <Color key={i} color={pairing.color} />
-                    ))
-                    : <Color color="waiting" />
+                    booking.pairings?.length > 0 ? (
+                        booking.pairings?.map((pairing: Pairing, i: number) => (
+                            <Color key={i} color={pairing.color} />
+                        ))
+                    ) : (
+                        <Color color="waiting" />
+                    )
                 ) : (
                     <Color color="disabled" />
                 )}

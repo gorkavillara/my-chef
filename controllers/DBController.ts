@@ -260,7 +260,7 @@ export const saveDishNotes = async ({
     const newDish = {
         ...dish,
         notes: newNotes,
-        handwrittenNotes: handwrittenNotesUrl,
+        handwrittenNotesUrl,
     }
     const newDishes = booking.menu.dishes.map((d) =>
         d.name === dish.name ? newDish : d

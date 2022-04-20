@@ -44,6 +44,7 @@ export interface Dish {
     juiceStatus?: string
     done?: boolean
     status?: string
+    handwrittenNotesUrl?: string
 }
 
 export interface Product {
