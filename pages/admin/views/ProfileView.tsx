@@ -47,7 +47,7 @@ const ProfileView = () => {
         }
     }
 
-    return (
+    return user ? (
         <div className="min-h-full w-full flex flex-col">
             <div className="flex justify-between">
                 <h1 className="font-semibold text-lg p-6 ml-10">
@@ -73,7 +73,7 @@ const ProfileView = () => {
                     <div className="w-44 h-44 rounded-full bg-white -mt-16 shadow-lg border-white border-2 flex justify-center items-center overflow-hidden">
                         {user.photoURL ? (
                             <ImageInput
-                                visualUrl={user?.photoURL}
+                                visualUrl={user.photoURL}
                                 className="w-full h-full"
                             />
                         ) : (
@@ -84,7 +84,7 @@ const ProfileView = () => {
                 </div>
             </main>
         </div>
-    )
+    ) : null
 }
 
 export default ProfileView
