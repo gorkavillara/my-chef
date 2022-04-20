@@ -10,6 +10,7 @@ import {
     where,
     setDoc,
     Timestamp,
+    writeBatch,
 } from "firebase/firestore"
 import {
     User,
@@ -527,4 +528,54 @@ export const deleteIntegration = async ({
         settings: { ...store.settings, integrations: newIntegrations },
     }
     return newStore
+}
+
+export const importBookings = async ({
+    reservations,
+    store
+}: {
+    reservations: any[],
+    store: Store
+}) => {
+    const newBookings : Booking[] = reservations
+        .filter((reserv) => reserv.status === "CONFIRMED")
+        .map((reserv) => {
+            return {
+                id: reserv.id,
+                allergies: [],
+                name: `${reserv.last_name}, ${reserv.first_name}`,
+                nationality: "",
+                notes: reserv.notes,
+                pax: reserv.max_guests,
+                table: "",
+                time: getDateFromSevenRooms({
+                    date: reserv.date,
+                    time: reserv.arrival_time,
+                }),
+                status: "waiting",
+                platform_id: reserv.id,
+                store_id: store.id
+            }
+        })
+    // Get a new write batch
+    const batch = writeBatch(db)
+
+    newBookings.forEach((booking: Booking) => {
+        batch.set(doc(db, "bookings", booking.id), booking)
+    })
+    
+    // Commit the batch
+    await batch.commit()
+    return newBookings
+}
+
+const getDateFromSevenRooms = ({
+    date,
+    time,
+}: {
+    date: string
+    time: string
+}) => {
+    const fullDate = new Date(date + " " + time)
+    return fullDate
 }

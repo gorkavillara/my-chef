@@ -20,7 +20,7 @@ import {
     where,
     onSnapshot,
     Firestore,
-    enableIndexedDbPersistence
+    enableIndexedDbPersistence,
 } from "firebase/firestore"
 import { db } from "../../firebase/client"
 import {
@@ -28,7 +28,10 @@ import {
     getStoresByUserEmail,
 } from "../../controllers/DBController"
 
-import { getNewToken } from "../../controllers/IntegrationsController"
+import {
+    getNewToken,
+    getTodayReservations,
+} from "../../controllers/IntegrationsController"
 
 enableIndexedDbPersistence(db).catch((err) => {
     if (err.code == "failed-precondition") {
@@ -43,7 +46,7 @@ enableIndexedDbPersistence(db).catch((err) => {
 })
 
 interface ContextInterface {
-    auth?: Auth,
+    auth?: Auth
     route?: string
     bookings?: Booking[]
     setRoute?: Dispatch<SetStateAction<string>>
@@ -59,7 +62,7 @@ interface ContextInterface {
     db?: Firestore
     expanded?: boolean
     setExpanded?: Dispatch<SetStateAction<boolean>>
-    refreshBookings?: React.MouseEventHandler<HTMLButtonElement>
+    refreshBookings?: Function
 }
 
 export const AdminContext = createContext<ContextInterface>({})
@@ -145,7 +148,6 @@ const Admin = ({ user, auth }) => {
     const refreshBookings = async () => {
         // 1 - Chequea si hay algo en localstorage
         var int_token = JSON.parse(localStorage.getItem("int_token"))
-        console.log(int_token)
         // 2 - Si hay, chequea que sea válido
         // 3 - Si no es válido -> Vuelve a autenticar
         if (
@@ -154,9 +156,14 @@ const Admin = ({ user, auth }) => {
         ) {
             // Haz autenticación y guárdalo en localStorage
             int_token = await getNewToken(store.settings.integrations)
+            localStorage.setItem("int_token", JSON.stringify(int_token))
+            console.log("int_token", int_token)
         }
         // 4 - Una vez tengamos el token -> Buscamos reservas
-        console.log(int_token)
+        const { venueID } = store.settings.integrations.find(
+            (i) => i.provider === "sevenrooms"
+        )
+        return await getTodayReservations(date, store, venueID, int_token.token)
     }
 
     return (

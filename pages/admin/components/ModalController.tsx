@@ -20,6 +20,7 @@ import ChangeTable from "./modals/ChangeTable"
 import DishNotesModal from "./modals/DishNotesModal"
 import IntegrationsModal from "./modals/IntegrationsModal"
 import IntegrationDeleteModal from "./modals/IntegrationDeleteModal"
+import ChooseMenu from "./modals/ChooseMenu"
 
 type ModalProps = {
     visible: boolean
@@ -46,6 +47,7 @@ const ModalController = ({
             onClose={onClose}
         >
             {modalContent === "newBooking" && <NewBooking store={data.store} />}
+            {modalContent === "menu" && <ChooseMenu booking={data.booking} />}
             {modalContent === "allergies" && (
                 <AllergiesModal allergies={data.allergies} booking={data} />
             )}

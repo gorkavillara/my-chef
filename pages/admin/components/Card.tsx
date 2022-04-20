@@ -22,14 +22,14 @@ const Card = ({ booking }: { booking: Booking }) => {
 
     useEffect(() => {
         if (!booking) return
-        if (booking.menu.dishes.some((d) => d.status === "preparing")) {
+        if (booking.menu?.dishes.some((d) => d.status === "preparing")) {
             setStart(true)
         } else {
             restartTimer()
         }
     }, [booking])
 
-    const setDish = (i: number, dish: Dish) => {
+    const setDish = async (i: number, dish: Dish) => {
         const newDishes = booking.menu.dishes.map((d, j) =>
             j === i ? dish : d
         )
@@ -48,7 +48,7 @@ const Card = ({ booking }: { booking: Booking }) => {
         setStart(false)
     }
 
-    const changeGreeted = () => {
+    const changeGreeted = async () => {
         let greeted = ""
         if (booking.greeted === "" || !booking.greeted) {
             greeted = "greeted"
@@ -162,37 +162,57 @@ const Card = ({ booking }: { booking: Booking }) => {
                                         <span>{booking.nationality}</span>
                                     </div>
                                 </div>
-                                <div className="border-t">
-                                    <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
-                                        <span className="p-1">
-                                            <GiCrabClaw />
+                                {booking.menu ? (
+                                    <div className="border-t">
+                                        <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
+                                            <span className="p-1">
+                                                <GiCrabClaw />
+                                            </span>
+                                            <button
+                                                className={`${
+                                                    booking.pairings
+                                                        ? booking.pairings
+                                                              ?.length === 0
+                                                            ? "bg-red-100 animate-pulse"
+                                                            : "bg-green-100"
+                                                        : "bg-red-100 animate-pulse"
+                                                } p-1 rounded-lg`}
+                                                onClick={() =>
+                                                    openModal(
+                                                        "pairings",
+                                                        booking
+                                                    )
+                                                }
+                                            >
+                                                <GiWineGlass />
+                                            </button>
+                                        </div>
+                                        {booking.menu.dishes.map((dish, i) => (
+                                            <DishDisplay
+                                                key={i}
+                                                i={i}
+                                                dish={dish}
+                                                setDish={setDish}
+                                                booking={booking}
+                                            />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="border-t p-4 flex flex-col items-center gap-4">
+                                        <span className="text-center">
+                                            There is no menu assigned to this
+                                            booking
                                         </span>
                                         <button
-                                            className={`${
-                                                booking.pairings
-                                                    ? booking.pairings
-                                                          ?.length === 0
-                                                        ? "bg-red-100 animate-pulse"
-                                                        : "bg-green-100"
-                                                    : "bg-red-100 animate-pulse"
-                                            } p-1 rounded-lg`}
+                                            className="btn-primary-green"
                                             onClick={() =>
-                                                openModal("pairings", booking)
+                                                openModal("menu", { booking })
                                             }
                                         >
-                                            <GiWineGlass />
+                                            Choose Menu
                                         </button>
                                     </div>
-                                    {booking.menu.dishes.map((dish, i) => (
-                                        <DishDisplay
-                                            key={i}
-                                            i={i}
-                                            dish={dish}
-                                            setDish={setDish}
-                                            booking={booking}
-                                        />
-                                    ))}
-                                </div>
+                                )}
                                 <div className="flex flex-grow border-t">
                                     <button
                                         className="flex-grow p-2 text-left"

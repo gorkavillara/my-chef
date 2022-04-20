@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react"
+import toast from "react-hot-toast"
 import { IoCaretBack, IoCaretForward, IoRefresh } from "react-icons/io5"
 import { AdminContext } from ".."
 import { Booking } from "../../../models"
@@ -7,7 +8,7 @@ import MottoPhrase from "../components/MottoPhrase"
 
 const TablesView = () => {
     const [filter, setFilter] = useState("all")
-    const [loading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const { bookings, date, setDate, refreshBookings, store } =
         useContext(AdminContext)
     const todayBookings = (booking: Booking) => {
@@ -17,6 +18,12 @@ const TablesView = () => {
             d.getMonth() === date.getMonth() &&
             d.getFullYear() === date.getFullYear()
         )
+    }
+    const refBookings = async () => {
+        setLoading(true)
+        const r = await refreshBookings()
+        toast.success(`Se han encontrado ${r.length} reservas`)
+        setLoading(false)
     }
     return bookings ? (
         <>
@@ -50,7 +57,7 @@ const TablesView = () => {
                         (int) => int.provider === "sevenrooms"
                     ) && (
                         <button
-                            onClick={refreshBookings}
+                            onClick={refBookings}
                             className={`text-blue-500 text-4xl px-4 ${
                                 loading ? "animate-spin" : ""
                             }`}
@@ -58,9 +65,6 @@ const TablesView = () => {
                             <IoRefresh />
                         </button>
                     )}
-                    {/* <button className="text-blue-500 text-4xl px-4">
-                        <IoPrintOutline />
-                    </button> */}
                     <button
                         onClick={() => setFilter("all")}
                         className={`${

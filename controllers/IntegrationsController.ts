@@ -1,8 +1,9 @@
 import axios from "axios"
-import { Integration } from "../models"
+import { Integration, Store } from "../models"
+import { importBookings } from "./DBController"
 
 export const auth = async (integrations: Integration[]) => {
-    const int = integrations.find((i) => i.provider === "sevenrooms")
+    const int = integrations?.find((i) => i.provider === "sevenrooms")
     if (!int) return false
     const formData = {
         client_id: int.clientID,
@@ -24,13 +25,13 @@ export const auth = async (integrations: Integration[]) => {
 export const getNewToken = async (integrations: Integration[]) =>
     axios
         .post("/api/integrations", { action: "auth", integrations })
-        .then((r) => r)
+        .then((r) => r.data.data)
         .catch((e) => console.error(e))
 
 export const getVenues = async (venue_group_id: string, apiKey: string) => {
     const query = new URLSearchParams({
         venue_group_id,
-        limit: "50"
+        limit: "50",
     }).toString()
 
     const resp = await fetch(
@@ -80,4 +81,40 @@ export const getReservations = async (
 
     const data = await resp.text()
     return JSON.parse(data)
+}
+
+export const getTodayReservations = async (
+    date: Date,
+    store: Store,
+    venue_id: string,
+    apiKey: string
+) => {
+    const from_date = `${date.getFullYear()}-${Number(
+        date.getMonth() + 1
+    )}-${date.getDate()}`
+    const to_date = `${date.getFullYear()}-${Number(
+        date.getMonth() + 1
+    )}-${date.getDate()}`
+    const query = new URLSearchParams({
+        venue_id,
+        limit: "50",
+        from_date,
+        to_date,
+    }).toString()
+
+    const resp = await fetch(
+        `https://demo.sevenrooms.com/api-ext/2_4/reservations?${query}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: apiKey,
+            },
+        }
+    )
+
+    const data = await resp.text()
+    const json_data = JSON.parse(data)
+    const reservations = json_data.data.results
+
+    return await importBookings({ reservations, store })
 }

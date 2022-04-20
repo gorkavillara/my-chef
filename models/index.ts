@@ -7,11 +7,12 @@ export interface Booking {
     pax: number
     table: string
     time: any
-    menu: Menu
+    menu?: Menu
     status: string
     handwrittenNotesUrl?: string
     pairings?: Pairing[]
     greeted?: string
+    platform_id?: string
 }
 
 export interface User {
