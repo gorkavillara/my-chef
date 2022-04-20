@@ -16,14 +16,14 @@ const providers = [
         logoUrl:
             "https://res.cloudinary.com/dyddijwxv/image/upload/v1647713184/myrapidchef/logo_jpiqdx.png",
     },
-    {
-        provider: "thefork",
-        baseUrl: "",
-        username: "",
-        password: "",
-        logoUrl:
-            "https://res.cloudinary.com/dyddijwxv/image/upload/v1647713310/myrapidchef/logo_jwkuzr.png",
-    },
+    // {
+    //     provider: "thefork",
+    //     baseUrl: "",
+    //     username: "",
+    //     password: "",
+    //     logoUrl:
+    //         "https://res.cloudinary.com/dyddijwxv/image/upload/v1647713310/myrapidchef/logo_jwkuzr.png",
+    // },
 ]
 
 const Integrations = () => {
