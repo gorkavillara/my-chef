@@ -81,11 +81,13 @@ const Dish = ({ dish, booking, setDish, i }) => {
                 onClick={() => openModal("dishOptions", { booking, dish })}
             >
                 {dish.wine ? (
+                    booking.pairings?.length > 0 ?
                     booking.pairings?.map((pairing: Pairing, i: number) => (
                         <Color key={i} color={pairing.color} />
                     ))
+                    : <Color color="waiting" />
                 ) : (
-                    <Color color={"disabled"} />
+                    <Color color="disabled" />
                 )}
             </button>
         </div>

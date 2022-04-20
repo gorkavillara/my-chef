@@ -13,13 +13,14 @@ import { Booking, Store, User } from "../../models"
 import { initializeBookings } from "../../controllers/BookingsController"
 import ModalController from "./components/ModalController"
 
+import { Auth } from "firebase/auth"
 import {
     query,
     collection,
     where,
     onSnapshot,
     Firestore,
-    enableIndexedDbPersistence,
+    enableIndexedDbPersistence
 } from "firebase/firestore"
 import { db } from "../../firebase/client"
 import {
@@ -42,6 +43,7 @@ enableIndexedDbPersistence(db).catch((err) => {
 })
 
 interface ContextInterface {
+    auth?: Auth,
     route?: string
     bookings?: Booking[]
     setRoute?: Dispatch<SetStateAction<string>>
@@ -166,6 +168,7 @@ const Admin = ({ user, auth }) => {
             </Head>
             <AdminContext.Provider
                 value={{
+                    auth,
                     route,
                     setRoute,
                     bookings,

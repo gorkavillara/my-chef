@@ -1,13 +1,11 @@
 import React, { useContext } from "react"
 import { AdminContext } from ".."
 import useImageInput from "../../../hooks/useImageInput"
-import { getAuth, updateProfile, signOut } from "firebase/auth"
+import { updateProfile, signOut } from "firebase/auth"
 import { toast } from "react-hot-toast"
 
-const auth = getAuth()
-
 const ProfileView = () => {
-    const { user } = useContext(AdminContext)
+    const { user, auth } = useContext(AdminContext)
     const { ImageInput, uploadImage, fileUploaded } = useImageInput()
 
     const saveSettings = async () => {

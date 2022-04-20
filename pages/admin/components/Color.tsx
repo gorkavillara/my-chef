@@ -22,6 +22,7 @@ const Color = ({ color, size = "md", className = "" }) => (
       ${color === "indigo" && "bg-indigo-400"}
       ${color === "black" && "bg-black"}
       ${color === "disabled" && "bg-slate-100"}
+      ${color === "waiting" && "bg-red-200 animate-pulse"}
       ${className}
       `}
     ></div>
