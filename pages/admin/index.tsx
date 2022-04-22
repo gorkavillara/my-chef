@@ -157,7 +157,6 @@ const Admin = ({ user, auth }) => {
             // Haz autenticación y guárdalo en localStorage
             int_token = await getNewToken(store.settings.integrations)
             localStorage.setItem("int_token", JSON.stringify(int_token))
-            console.log("int_token", int_token)
         }
         // 4 - Una vez tengamos el token -> Buscamos reservas
         const { venueID } = store.settings.integrations.find(

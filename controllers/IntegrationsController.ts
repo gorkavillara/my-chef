@@ -7,10 +7,9 @@ export const auth = async (integrations: Integration[]) => {
     if (!int) return false
     const formData = {
         client_id: int.clientID,
-        client_secret: process.env.SEVEN_ROOMS_SECRET,
+        client_secret: process.env.NEXT_PUBLIC_SEVEN_ROOMS_SECRET,
     }
-    console.log("Llamando...")
-    const resp = await fetch(`${process.env.SEVEN_ROOMS_BASE_URL}/auth`, {
+    const resp = await fetch(`${process.env.NEXT_PUBLIC_SEVEN_ROOMS_BASE_URL}/auth`, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -35,7 +34,7 @@ export const getVenues = async (venue_group_id: string, apiKey: string) => {
     }).toString()
 
     const resp = await fetch(
-        `${process.env.SEVEN_ROOMS_BASE_URL}/venues?${query}`,
+        `${process.env.NEXT_PUBLIC_SEVEN_ROOMS_BASE_URL}/venues?${query}`,
         {
             method: "GET",
             headers: {
@@ -70,7 +69,7 @@ export const getReservations = async (
     }).toString()
 
     const resp = await fetch(
-        `${process.env.SEVEN_ROOMS_BASE_URL}/reservations?${query}`,
+        `${process.env.NEXT_PUBLIC_SEVEN_ROOMS_BASE_URL}/reservations?${query}`,
         {
             method: "GET",
             headers: {
@@ -101,9 +100,8 @@ export const getTodayReservations = async (
         from_date,
         to_date,
     }).toString()
-
     const resp = await fetch(
-        `${process.env.SEVEN_ROOMS_BASE_URL}/reservations?${query}`,
+        `${process.env.NEXT_PUBLIC_SEVEN_ROOMS_BASE_URL}/reservations?${query}`,
         {
             method: "GET",
             headers: {

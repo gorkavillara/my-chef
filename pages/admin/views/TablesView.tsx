@@ -21,9 +21,18 @@ const TablesView = () => {
     }
     const refBookings = async () => {
         setLoading(true)
-        const r = await refreshBookings()
-        toast.success(`Se han encontrado ${r.length} reservas`)
-        setLoading(false)
+        toast.promise(refreshBookings(), {
+            loading: "Updating your settings",
+            success: (r: Array<Object>) => {
+                setLoading(false)
+                return `There are ${r.length} bookings found`
+            },
+            error: (e) => {
+                setLoading(false)
+                console.error(e)
+                return "Oops, there was a problem! We could not update your settings 😨"
+            },
+        })
     }
     return bookings ? (
         <>
