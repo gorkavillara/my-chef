@@ -162,7 +162,7 @@ const Admin = ({ user, auth }) => {
         const { venueID } = store.settings.integrations.find(
             (i) => i.provider === "sevenrooms"
         )
-        return await getTodayReservations(date, store, venueID, int_token.token)
+        return await getTodayReservations(bookings, date, store, venueID, int_token.token)
     }
 
     return (

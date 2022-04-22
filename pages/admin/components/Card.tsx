@@ -332,7 +332,7 @@ const Card = ({ booking }: { booking: Booking }) => {
                             </div>
                         </div>
                     )}
-                    {booking.status === "waiting" && (
+                    {(!booking.status || booking.status === "waiting") && (
                         <div className="bg-white rounded-xl shadow-xl overflow-hidden relative flex justify-between flex-shrink-0">
                             <div className="flex p-1">
                                 <div className="flex flex-col">

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Integration, Store } from "../models"
+import { Integration, Store, Booking } from "../models"
 import { importBookings } from "./DBController"
 
 export const auth = async (integrations: Integration[]) => {
@@ -83,6 +83,7 @@ export const getReservations = async (
 }
 
 export const getTodayReservations = async (
+    currentBookings: Booking[],
     date: Date,
     store: Store,
     venue_id: string,
@@ -114,5 +115,5 @@ export const getTodayReservations = async (
     const json_data = JSON.parse(data)
     const reservations = json_data.data.results
 
-    return await importBookings({ reservations, store })
+    return await importBookings({ currentBookings, reservations, store })
 }

@@ -45,7 +45,7 @@ const BookingsDisplay = ({
                                     bookings
                                         .filter(
                                             (booking: Booking) =>
-                                                booking.status === "waiting"
+                                                !booking.status || booking.status === "waiting"
                                         )
                                         .filter(todayBookings)
                                         .map((booking: Booking, i) => (

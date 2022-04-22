@@ -1,14 +1,14 @@
 export interface Booking {
     id?: string
-    allergies?: string[]
     name: string
-    nationality: string
-    notes: string
     pax: number
-    table: string
     time: any
+    allergies?: string[]
+    nationality?: string
+    notes?: string
+    table?: string
     menu?: Menu
-    status: string
+    status?: string
     handwrittenNotesUrl?: string
     pairings?: Pairing[]
     greeted?: string

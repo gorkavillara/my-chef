@@ -531,39 +531,39 @@ export const deleteIntegration = async ({
 }
 
 export const importBookings = async ({
+    currentBookings,
     reservations,
-    store
+    store,
 }: {
-    reservations: any[],
+    currentBookings: Booking[]
+    reservations: any[]
     store: Store
 }) => {
-    const newBookings : Booking[] = reservations
+    const newBookings: Booking[] = reservations
         .filter((reserv) => reserv.status === "CONFIRMED")
         .map((reserv) => {
             return {
                 id: reserv.id,
                 allergies: [],
                 name: `${reserv.last_name}, ${reserv.first_name}`,
-                nationality: "",
-                notes: reserv.notes,
                 pax: reserv.max_guests,
-                table: "",
                 time: getDateFromSevenRooms({
                     date: reserv.date,
                     time: reserv.arrival_time,
                 }),
-                status: "waiting",
-                platform_id: reserv.id,
-                store_id: store.id
+                platform: "sevenrooms",
+                store_id: store.id,
             }
         })
     // Get a new write batch
     const batch = writeBatch(db)
 
     newBookings.forEach((booking: Booking) => {
-        batch.set(doc(db, "bookings", booking.id), booking)
+        currentBookings.some((b) => b.id === booking.id)
+            ? batch.update(doc(db, "bookings", booking.id), { ...booking })
+            : batch.set(doc(db, "bookings", booking.id), { ...booking })
     })
-    
+
     // Commit the batch
     await batch.commit()
     return newBookings
