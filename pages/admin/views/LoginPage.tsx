@@ -2,14 +2,21 @@ import React, { useState, useEffect } from "react"
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    GoogleAuthProvider,
     signInWithPopup,
+    OAuthProvider,
 } from "firebase/auth"
+import ALogo from "../../../utils/svgs/ALogo_white.svg"
 
-const provider = new GoogleAuthProvider()
+const appleProvider = new OAuthProvider("apple.com")
+appleProvider.addScope("email")
+appleProvider.addScope("name")
+appleProvider.setCustomParameters({
+    locale: "en"
+})
 
 import { loginUri2 } from "../../../utils/svgs/login"
 import { IoRocket, IoStar, IoWallet } from "react-icons/io5"
+import Image from "next/image"
 
 const emptyUser = {
     email: "",
@@ -47,15 +54,11 @@ const LoginPage = ({ setUser, auth }) => {
             })
     }
 
-    const googleLogin = async () => {
+    const appleLogin = async () => {
         setLoading(true)
         setErrorCode("")
-        signInWithPopup(auth, provider)
+        signInWithPopup(auth, appleProvider)
             .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                // const credential =
-                //     GoogleAuthProvider.credentialFromResult(result)
-                // const token = credential.accessToken
                 // The signed-in user info.
                 const user = result.user
                 auth.currentUser = result.user
@@ -91,18 +94,19 @@ const LoginPage = ({ setUser, auth }) => {
             })
     }
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-screen">
+        <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-screen">
             <div
                 style={{
                     backgroundImage: `url("${loginUri2}")`,
                     backgroundSize: "cover",
                     backgroundPosition: "bottom",
                 }}
-                className="hidden sm:flex flex-col items-center justify-center gap-8"
+                className="flex flex-col items-center justify-center gap-8"
             >
                 <img
                     src="/logo_blanco_horizontal.png"
                     className={`w-80 ${loading && "animate-bounce"}`}
+                    alt="logo"
                 />
                 <div className="flex gap-12">
                     <div className="w-24 h-24 bg-gradient-to-tr from-yellow-400 to-orange-400 rounded-full flex justify-center items-center text-white text-5xl">
@@ -115,12 +119,12 @@ const LoginPage = ({ setUser, auth }) => {
                         <IoWallet />
                     </div>
                 </div>
-                <div className="w-56 text-center">
+                <div className="hidden sm:block w-full lg:w-56 text-center">
                     <h1 className="text-white font-semibold text-3xl">
                         Start Catering Wisely
                     </h1>
                 </div>
-                <div className="w-64 text-center">
+                <div className="hidden lg:block w-64 text-center">
                     <span className="text-white">
                         A new solution for high-level restaurants looking for
                         the best quality in their service
@@ -134,12 +138,21 @@ const LoginPage = ({ setUser, auth }) => {
                             Welcome to My Rapid Chef
                         </h1>
                         <div className="flex gap-6">
-                            <button
+                            {/* <button
                                 className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4"
                                 onClick={googleLogin}
                             >
                                 <img src={"/GLogo.svg"} alt="GLogo" />
                                 <span>Log In with Google</span>
+                            </button> */}
+                            <button
+                                className="bg-black rounded-lg py-2 px-8 text-white text-lg flex items-center gap-4"
+                                onClick={appleLogin}
+                            >
+                                <div className="w-5 flex items-center">
+                                    <Image src={ALogo} alt="" />
+                                </div>
+                                <span>Sign In with Apple</span>
                             </button>
                         </div>
                         <div className="my-4 flex items-center gap-4 w-full sm:w-96">
@@ -222,12 +235,21 @@ const LoginPage = ({ setUser, auth }) => {
                         </h1>
                         <h1 className="text-xl">Sign Up below</h1>
                         <div className="flex gap-6">
-                            <button
+                            {/* <button
                                 className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4"
                                 onClick={googleLogin}
                             >
                                 <img src={"/GLogo.svg"} alt="GLogo" />
                                 <span>Sign Up with Google</span>
+                            </button> */}
+                            <button
+                                className="bg-black rounded-lg py-2 px-8 text-white text-lg flex items-center gap-4"
+                                onClick={appleLogin}
+                            >
+                                <div className="w-5 flex items-center">
+                                    <Image src={ALogo} alt="" />
+                                </div>
+                                <span>Register with Apple</span>
                             </button>
                         </div>
                         <div className="my-4 flex items-center gap-4 w-full sm:w-96">
