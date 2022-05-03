@@ -7,7 +7,7 @@ import Input from "../forms/Input"
 const ChangeTable = ({ booking }: { booking: Booking }) => {
     const [loading] = useState<boolean>(false)
     const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>(
-        booking.table ? booking.table.split(", ") : []
+        booking && booking.table ? booking.table.split(", ") : []
     )
 
     const { setBookings, bookings, closeModal, store } =
