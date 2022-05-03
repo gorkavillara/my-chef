@@ -11,8 +11,8 @@ const MainDashboard = () => {
     return (
         <div
             className={`transition-all ${
-                expanded ? "ml-20" : "ml-0"
-            } flex-grow bg-slate-100 min-h-full`}
+                expanded ? "sm:ml-20" : "sm:ml-0"
+            } flex-grow bg-slate-100 h-full w-screen`}
         >
             {route === "tables" && <TablesView />}
             {route === "charts" && <ChartsView />}

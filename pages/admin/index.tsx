@@ -193,7 +193,7 @@ const Admin = ({ user, auth }) => {
                     refreshBookings,
                 }}
             >
-                <div className="flex h-screen w-screen bg-slate-100 scroll-hidden">
+                <div className="flex flex-col-reverse sm:flex-row h-full w-full items-stretch scroll-hidden">
                     <Sidebar />
                     <MainDashboard />
                 </div>

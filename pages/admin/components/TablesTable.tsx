@@ -7,7 +7,7 @@ export default function TablesTable({ tables }) {
     const [search, setSearch] = useState("")
     return (
         <div className="bg-white p-8 rounded-md w-full">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col-reverse sm:flex-row items-center justify-between gap-2">
                 <div className="flex bg-gray-50 items-center p-2 rounded-md">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -29,22 +29,20 @@ export default function TablesTable({ tables }) {
                         placeholder="Search..."
                     />
                 </div>
-                <div className="flex justify-between">
-                    <div className="flex gap-4 items-center">
+                    <div className="flex text-sm sm:text-base sm:flex-row gap-4 items-center">
                         <button
                             onClick={() => openModal("tables", { store })}
                             className="btn-primary-green"
                         >
-                            + Add Table
+                            + Table
                         </button>
                         <button
                             onClick={() => openModal("tables-multiple")}
                             className="btn-primary-green"
                         >
-                            + Add Multiple
+                            + Multiple
                         </button>
                     </div>
-                </div>
             </div>
             {tables ? (
                 <div>

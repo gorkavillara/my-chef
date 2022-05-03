@@ -7,7 +7,7 @@ export default function UsersTable({ users }) {
     const [search, setSearch] = useState("")
     return (
         <div className="bg-white p-8 rounded-md w-full">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col-reverse sm:flex-row gap-4 items-center justify-between">
                 <div className="flex bg-gray-50 items-center p-2 rounded-md">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

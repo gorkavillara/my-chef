@@ -22,58 +22,39 @@ const TablesView = () => {
     const refBookings = async () => {
         setLoading(true)
         toast.promise(refreshBookings(), {
-            loading: "Updating your settings",
+            loading: "Updating today's bookings",
             success: (r: Array<Object>) => {
                 setLoading(false)
-                return `There are ${r.length} bookings found`
+                return `We found ${r.length} bookings`
             },
             error: (e) => {
                 setLoading(false)
                 console.error(e)
-                return "Oops, there was a problem! We could not update your settings 😨"
+                return "Oops, there was a problem! We could not update today's bookings 😨"
             },
         })
     }
     return bookings ? (
-        <>
-            <div className="flex items-center justify-between pl-6 py-5">
+        <div className="min-h-full w-full flex flex-col px-4 pb-16 bg-slate-100">
+            <div className="flex items-center flex-col sm:flex-row justify-between sm:pl-6 py-5 gap-2">
                 <div className="flex gap-2 items-center justify-center">
-                    <h1 className="font-semibold text-lg ml-10">Bookings:</h1>
-                    <button
-                        className="bg-slate-300 p-1 rounded hidden"
-                        onClick={() => {
-                            const newDate = date.valueOf() - 3600 * 1000 * 24
-                            setDate(new Date(newDate))
-                        }}
-                    >
-                        <IoCaretBack />
-                    </button>
-                    <h1 className="font-semibold text-lg">
-                        {date.toLocaleDateString("en-GB")}
+                    <h1 className="font-semibold text-lg ml-10">
+                        Bookings: {date.toLocaleDateString("en-GB")}
                     </h1>
-                    <button
-                        className="bg-slate-300 p-1 rounded hidden"
-                        onClick={() => {
-                            const newDate = date.valueOf() + 3600 * 1000 * 24
-                            setDate(new Date(newDate))
-                        }}
-                    >
-                        <IoCaretForward />
-                    </button>
-                </div>
-                <div className="flex items-center gap-2 px-6">
                     {store?.settings.integrations.find(
                         (int) => int.provider === "sevenrooms"
                     ) && (
                         <button
                             onClick={refBookings}
-                            className={`text-blue-500 text-4xl px-4 ${
+                            className={`text-blue-500 text-3xl sm:text-4xl px-4 ${
                                 loading ? "animate-spin" : ""
                             }`}
                         >
                             <IoRefresh />
                         </button>
                     )}
+                </div>
+                <div className="flex items-center gap-2 px-6 text-sm sm:text-base">
                     <button
                         onClick={() => setFilter("all")}
                         className={`${
@@ -126,7 +107,7 @@ const TablesView = () => {
             </div>
             <BookingsDisplay bookings={bookings} filter={filter} />
             <MottoPhrase />
-        </>
+        </div>
     ) : null
 }
 

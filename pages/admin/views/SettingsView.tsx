@@ -9,7 +9,7 @@ import General from "../settings/General"
 import Integrations from "../settings/Integrations"
 
 const NavMenu = ({ route, setRoute }) => (
-    <div className="flex gap-2">
+    <div className="flex gap-2 overflow-x-auto">
         <span
             className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
                 route === "main" ? "z-10" : "opacity-50"

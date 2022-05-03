@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     }, [])
 
     return (
-        <div>
+        <div className="bg-red-100 h-screen w-screen">
             <Head>
                 <title>My Rapid Chef</title>
                 <meta

@@ -27,18 +27,16 @@ const Sidebar = () => {
     const toggleSidebar = () => setExpanded(!expanded)
     return (
         <div
-            className={`fixed transition-all h-full w-20 bg-white flex flex-col py-8 px-2 items-center justify-between ${
-                expanded ? "left-0" : "-left-20"
-            }`}
+        className={`fixed bottom-0 w-full h-20 flex flex-row sm:flex-col z-50 justify-evenly items-center transition-all bg-white sm:h-full sm:w-20 sm:py-8 sm:px-2 sm:justify-between ${expanded ? "sm:left-0" : "sm:-left-20"}`}
         >
-            <div className="flex flex-col items-center">
+            <div className="flex flex-row sm:flex-col items-center gap-4">
                 <button
                     onClick={() => {
                         setRoute("tables")
                         setDate(new Date())
                     }}
                 >
-                    <picture className="mb-8">
+                    <picture className="hidden sm:flex w-16 justify-center items-center sm:mb-8">
                         <Image
                             src="/favicon_color2d_256x256.png"
                             width={256}
@@ -50,7 +48,7 @@ const Sidebar = () => {
                 <CircleButton
                     onClick={() => openModal("newBooking", { store })}
                 />
-                <div className="flex flex-col items-center text-slate-500 gap-6">
+                <div className="flex flex-row sm:flex-col items-center text-slate-500 gap-6">
                     <SidebarIcon
                         icon={<IoAlbumsOutline />}
                         isActive={route === "tables"}
@@ -71,7 +69,7 @@ const Sidebar = () => {
                     />
                 </div>
             </div>
-            <div className="flex flex-col items-center gap-8 text-slate-500">
+            <div className="flex flex-row sm:flex-col items-center gap-8 text-slate-500">
                 <SidebarIcon
                     icon={<IoOptionsOutline />}
                     isActive={route === "settings"}
@@ -87,7 +85,7 @@ const Sidebar = () => {
                 </button>
             </div>
             <button
-                className="absolute bg-white rounded-r-full w-12 h-12 top-4 left-20 flex justify-center gap-0 items-center"
+                className="hidden sm:flex absolute bg-white rounded-r-full w-12 h-12 top-4 left-20 justify-center gap-0 items-center"
                 onClick={toggleSidebar}
             >
                 <span className="text-3xl font-bold text-slate-800">

@@ -65,8 +65,8 @@ const General = () => {
     }
 
     return settings ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="flex flex-col">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+            <label className="col-span-2 sm:col-span-1 flex flex-col">
                 <span className="font-semibold capitalize mb-2">
                     Venue Name
                 </span>
@@ -79,7 +79,7 @@ const General = () => {
                     className="p-2 text-lg border rounded-xl focus:ring ring-green-300 outline-none"
                 />
             </label>
-            <label className="flex flex-col">
+            <label className="col-span-2 sm:col-span-1 flex flex-col">
                 <span className="font-semibold capitalize mb-2 flex gap-2">
                     <span className="w-5">
                         <Image src={michelinSvg} alt="michelin-star" />
