@@ -98,6 +98,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     name="name"
                     placeholder="Name"
                     value={booking.name}
+                    containerClassName="col-span-2 sm:col-span-1"
                     onChange={(e) =>
                         setBooking({ ...booking, name: e.target.value })
                     }
@@ -108,6 +109,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     name="pax"
                     placeholder="Pax"
                     value={booking.pax}
+                    containerClassName="col-span-2 sm:col-span-1"
                     onChange={(e) =>
                         setBooking({ ...booking, pax: e.target.value })
                     }
@@ -119,6 +121,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     placeholder="Nationality"
                     value={booking.nationality}
                     options={nationalities}
+                    containerClassName="col-span-2 sm:col-span-1"
                     onChange={(e) =>
                         setBooking({ ...booking, nationality: e.target.value })
                     }
@@ -130,6 +133,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     placeholder="Menu"
                     value={menuName}
                     options={menus}
+                    containerClassName="col-span-2 sm:col-span-1"
                     onChange={(e) => setMenu(e)}
                 />
                 <Input
@@ -139,6 +143,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     placeholder="Table"
                     value={booking.table}
                     color="blue"
+                    containerClassName="col-span-2 sm:col-span-1"
                     options={store.tables.map((table) => table.name)}
                     onChange={toggleTable}
                 />
@@ -147,6 +152,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     type="datetime"
                     name="time"
                     placeholder="Time"
+                    containerClassName="col-span-2 sm:col-span-1"
                     value={booking.time}
                     onChange={(e) => setBooking({ ...booking, time: e })}
                 />
