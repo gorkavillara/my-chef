@@ -59,11 +59,6 @@ const Integrations = () => {
 
     return integrations ? (
         <>
-            <div className="flex justify-end">
-                <button className="btn-primary-green" onClick={update}>
-                    Update Integrations
-                </button>
-            </div>
             <div className="flex flex-col gap-4 p-8">
                 {integrations.map((integration, i) => (
                     <div
@@ -155,13 +150,21 @@ const Integrations = () => {
                     </div>
                 ))}
                 <button
-                    className="bg-green-400 rounded-xl py-4 text-xl text-white flex gap-4 items-center justify-center"
+                    className="bg-white rounded-xl py-4 text-xl text-green-400 border-2 border-green-400 flex gap-4 items-center justify-center"
                     onClick={() =>
                         openModal("integrations", { integrations, providers })
                     }
                 >
                     <BsPlusCircle className="text-2xl" />
-                    <span>Add Provider</span>
+                    <span>Add New Provider</span>
+                </button>
+                <button
+                    className="bg-green-400 rounded-xl py-4 text-xl text-white flex gap-4 items-center justify-center"
+                    onClick={() =>
+                        openModal("integrations", { integrations, providers })
+                    }
+                >
+                    <span>Update Integrations</span>
                 </button>
             </div>
         </>

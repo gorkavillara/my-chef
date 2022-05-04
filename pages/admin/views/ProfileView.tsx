@@ -3,6 +3,7 @@ import { AdminContext } from ".."
 import useImageInput from "../../../hooks/useImageInput"
 import { updateProfile, signOut } from "firebase/auth"
 import { toast } from "react-hot-toast"
+import { IoPerson } from "react-icons/io5"
 
 const ProfileView = () => {
     const { user, auth } = useContext(AdminContext)
@@ -51,7 +52,7 @@ const ProfileView = () => {
         <div className="min-h-full w-full flex flex-col">
             <div className="flex justify-between">
                 <h1 className="font-semibold text-lg p-6 ml-10">
-                    Edit your Profile
+                    Your Profile
                 </h1>
                 <button
                     onClick={() => signOut(auth)}
@@ -64,21 +65,32 @@ const ProfileView = () => {
                 <div className="w-full h-44 bg-white rounded-t-3xl rounded-l-3xl flex flex-row-reverse items-end">
                     <button
                         onClick={saveSettings}
-                        className="m-4 text-xl bg-green-400 text-white font-semibold px-4 py-2 rounded-lg"
+                        className="hidden m-4 text-xl bg-green-400 text-white font-semibold px-4 py-2 rounded-lg"
                     >
                         Save Settings
                     </button>
                 </div>
-                <div className="flex gap-8 self-start ml-6 items-start">
+                <div className="flex flex-col sm:flex-row gap-8 self-start ml-6 items-start">
                     <div className="w-44 h-44 rounded-full bg-white -mt-16 shadow-lg border-white border-2 flex justify-center items-center overflow-hidden">
-                        {user.photoURL ? (
+                        {/* {user.photoURL ? (
                             <ImageInput
                                 visualUrl={user.photoURL}
                                 className="w-full h-full"
                             />
                         ) : (
                             <ImageInput className="w-full h-full" />
-                        )}
+                        )} */}
+                        <div className="w-full h-full bg-slate-100 cursor-pointer flex justify-center items-center overflow-hidden">
+                            {user.photoURL ? (
+                                <img
+                                    src={user.photoURL}
+                                    alt=""
+                                    className="w-full"
+                                />
+                            ) : (
+                                <IoPerson className="text-7xl text-slate-400" />
+                            )}
+                        </div>
                     </div>
                     <h3 className="mt-4 font-semibold text-xl">{user.email}</h3>
                 </div>

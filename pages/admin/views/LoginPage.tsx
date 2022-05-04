@@ -101,14 +101,14 @@ const LoginPage = ({ setUser, auth }) => {
                     backgroundSize: "cover",
                     backgroundPosition: "bottom",
                 }}
-                className="flex flex-col items-center justify-center gap-8"
+                className="hidden sm:flex flex-col items-center justify-center gap-8"
             >
                 <img
                     src="/logo_blanco_horizontal.png"
                     className={`w-80 ${loading && "animate-bounce"}`}
                     alt="logo"
                 />
-                <div className="flex gap-12">
+                <div className="hidden sm:flex gap-12">
                     <div className="w-24 h-24 bg-gradient-to-tr from-yellow-400 to-orange-400 rounded-full flex justify-center items-center text-white text-5xl">
                         <IoRocket />
                     </div>

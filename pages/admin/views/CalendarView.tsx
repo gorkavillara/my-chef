@@ -5,6 +5,7 @@ import { AdminContext } from ".."
 import { Booking } from "../../../models"
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+const weekdays_sm = ["M", "T", "W", "T", "F", "S", "S"]
 
 const CalendarView = () => {
     const [currentDate, setCurrentDate] = useState(dayjs())
@@ -90,9 +91,14 @@ const CalendarView = () => {
                                     }}
                                 >
                                     {wid === 0 && (
-                                        <span className="absolute top-1 w-full text-center text-slate-400 font-bold uppercase">
-                                            {weekdays[did]}
-                                        </span>
+                                        <>
+                                            <span className="hidden sm:block absolute top-1 w-full text-center text-slate-400 font-bold uppercase">
+                                                {weekdays[did]}
+                                            </span>
+                                            <span className="sm:hidden absolute top-1 w-full text-center text-slate-400 font-bold uppercase">
+                                                {weekdays_sm[did]}
+                                            </span>
+                                        </>
                                     )}
                                     <span
                                         className={`
@@ -145,16 +151,33 @@ const CalendarView = () => {
                                             <div className="w-full text-sm text-center rounded-full bg-blue-200 p-1">
                                                 {bookings.filter((b) =>
                                                     dayBookings(b, week[did])
-                                                ).length === 1
-                                                    ? "1 booking"
-                                                    : `${
-                                                          bookings.filter((b) =>
-                                                              dayBookings(
-                                                                  b,
-                                                                  week[did]
-                                                              )
-                                                          ).length
-                                                      } bookings`}
+                                                ).length === 1 ? (
+                                                    <span>
+                                                        1
+                                                        <span className="hidden sm:block">
+                                                            {" "}
+                                                            booking
+                                                        </span>
+                                                    </span>
+                                                ) : (
+                                                    <span>
+                                                        {
+                                                            bookings.filter(
+                                                                (b) =>
+                                                                    dayBookings(
+                                                                        b,
+                                                                        week[
+                                                                            did
+                                                                        ]
+                                                                    )
+                                                            ).length
+                                                        }
+                                                        <span className="hidden sm:block">
+                                                            {" "}
+                                                            bookings
+                                                        </span>
+                                                    </span>
+                                                )}
                                             </div>
                                         )}
                                     </div>
