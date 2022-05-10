@@ -249,7 +249,7 @@ const LoginPage = ({ setUser, auth }) => {
                                 <div className="w-5 flex items-center">
                                     <Image src={ALogo} alt="" />
                                 </div>
-                                <span>Register with Apple</span>
+                                <span>Sign up with Apple</span>
                             </button>
                         </div>
                         <div className="my-4 flex items-center gap-4 w-full sm:w-96">
