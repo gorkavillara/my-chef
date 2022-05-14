@@ -13,7 +13,7 @@ import {
 
 const minuteThreshold = 4
 
-const Card = ({ booking }: { booking: Booking }) => {
+const Card = ({ booking, expanded, onClick }: { booking: Booking, expanded: boolean, onClick: Function }) => {
     const [watchTime, setWatchTime] = useState(0)
     const [start, setStart] = useState(false)
     const [activePopup, setActivePopup] = useState<boolean>(false)
@@ -22,7 +22,9 @@ const Card = ({ booking }: { booking: Booking }) => {
 
     useEffect(() => {
         if (!booking) return
-        if (booking.menu?.dishes.some((d) => d.status === "preparing")) {
+        if (!booking.menu) return
+        if (!booking.menu.dishes) return
+        if (booking.menu.dishes.some((d) => d.status === "preparing")) {
             setStart(true)
         } else {
             restartTimer()
@@ -162,7 +164,7 @@ const Card = ({ booking }: { booking: Booking }) => {
                                         <span>{booking.nationality}</span>
                                     </div>
                                 </div>
-                                {booking.menu ? (
+                                {booking.menu?.dishes ? (
                                     <div className="border-t">
                                         <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
                                             <span className="p-1">

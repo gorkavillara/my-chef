@@ -7,8 +7,10 @@ const OpenBooking = ({ booking }) => {
 
     const openBooking = async () => {
         closeModal()
+        // HotFix
+        const newBooking = booking.menu.dishes ? booking : { ...booking, menu: {} }
         return await editBookingStatus({
-            booking,
+            booking: newBooking,
             bookings,
             newStatus: "open",
         }).catch((e) => console.error(e))

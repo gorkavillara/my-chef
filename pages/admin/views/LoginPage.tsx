@@ -4,6 +4,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithPopup,
     OAuthProvider,
+    setPersistence,
+    inMemoryPersistence,
 } from "firebase/auth"
 import ALogo from "../../../utils/svgs/ALogo_white.svg"
 
@@ -11,7 +13,7 @@ const appleProvider = new OAuthProvider("apple.com")
 appleProvider.addScope("email")
 appleProvider.addScope("name")
 appleProvider.setCustomParameters({
-    locale: "en"
+    locale: "en",
 })
 
 import { loginUri2 } from "../../../utils/svgs/login"
@@ -39,37 +41,49 @@ const LoginPage = ({ setUser, auth }) => {
         const { email, password } = newUser
         setLoading(true)
         setErrorCode("")
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user
-                setLoading(false)
-                setUser(user)
-                // saveUserInStorage(user);
+        setPersistence(auth, inMemoryPersistence)
+            .then(() => {
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user
+                        setLoading(false)
+                        setUser(user)
+                        // saveUserInStorage(user);
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        setNewUser(emptyUser)
+                        setErrorCode(error.code)
+                        setLoading(false)
+                    })
             })
-            .catch((error) => {
-                console.log(error)
-                setNewUser(emptyUser)
-                setErrorCode(error.code)
-                setLoading(false)
+            .catch((e) => {
+                console.error(e)
             })
     }
 
     const appleLogin = async () => {
         setLoading(true)
         setErrorCode("")
-        signInWithPopup(auth, appleProvider)
-            .then((result) => {
-                // The signed-in user info.
-                const user = result.user
-                auth.currentUser = result.user
-                setLoading(false)
-                setUser(user)
-                // saveUserInStorage(user);
-                // ...
+        setPersistence(auth, inMemoryPersistence)
+            .then(() => {
+                signInWithPopup(auth, appleProvider)
+                    .then((result) => {
+                        // The signed-in user info.
+                        const user = result.user
+                        auth.currentUser = result.user
+                        setLoading(false)
+                        setUser(user)
+                        // saveUserInStorage(user);
+                        // ...
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        setLoading(false)
+                    })
             })
-            .catch((error) => {
-                console.error(error)
-                setLoading(false)
+            .catch((e) => {
+                console.error(e)
             })
     }
 

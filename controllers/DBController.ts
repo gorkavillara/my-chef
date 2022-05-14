@@ -28,12 +28,15 @@ export const registerNewTable = async ({ table, store }) => {
     await updateDoc(storeRef, {
         tables: arrayUnion(table),
     })
-    const newStore = { ...store, tables: [...store.tables, table] }
+    const newStore = { ...store, tables: store.tables ? [...store.tables, table] : [table] }
     return { store: newStore }
 }
 
 export const registerMultipleTables = async ({ tables, store }) => {
-    const newStore = { ...store, tables: [...store.tables, ...tables] }
+    const newStore = {
+        ...store,
+        tables: store.tables ? [...store.tables, ...tables] : [...tables],
+    }
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
 }
@@ -96,6 +99,7 @@ export const updatePairing = async ({ pairing, store }) => {
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
 }
+
 export const deletePairing = async ({ pairing, store }) => {
     const pairings = store.pairings.filter(
         (pair: Pairing) => pair.name !== pairing.name
@@ -176,6 +180,7 @@ export const getStoresByUserEmail = async ({
     )
     return { stores, role: user.role }
 }
+
 export const getBookingsByStore = async ({ id }: { id: string }) => {
     const q = query(collection(db, "bookings"), where("store_id", "==", id))
     const querySnapshot = await getDocs(q)

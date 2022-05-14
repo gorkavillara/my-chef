@@ -27,8 +27,8 @@ export interface Table {
 }
 
 export interface Menu {
-    dishes: Dish[]
-    name: string
+    dishes?: Dish[]
+    name?: string
 }
 
 export interface Dish {

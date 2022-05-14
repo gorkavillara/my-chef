@@ -41,7 +41,7 @@ const TablesView = () => {
                     <h1 className="font-semibold text-lg ml-10">
                         Bookings: {date.toLocaleDateString("en-GB")}
                     </h1>
-                    {store?.settings.integrations.find(
+                    {store?.settings.integrations?.find(
                         (int) => int.provider === "sevenrooms"
                     ) && (
                         <button

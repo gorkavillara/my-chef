@@ -8,7 +8,7 @@ export const initializeBookings = (bookings: Booking[]): Booking[] => {
         const newBook = booking
         const menu = newBook.menu ? newBook.menu : null
         const dishes = menu
-            ? menu.dishes.map((dish) => {
+            ? menu.dishes?.map((dish) => {
                   return {
                       ...dish,
                       sideStatus:

@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { AdminContext } from ".."
 import { Booking } from "../../../models"
 import Card from "./Card"
@@ -11,6 +11,7 @@ const BookingsDisplay = ({
     bookings: object[]
 }) => {
     const { date } = useContext(AdminContext)
+    const [expandedCard, setExpandedCard] = useState(null)
     const todayBookings = (booking: Booking) => {
         const d = new Date(booking.time.seconds * 1000)
         return (
@@ -33,7 +34,7 @@ const BookingsDisplay = ({
                                     )
                                     .filter(todayBookings)
                                     .map((booking: Booking, i) => (
-                                        <Card booking={booking} key={i} />
+                                        <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
                                     ))
                             ) : (
                                 <h1>Cargando...</h1>
@@ -49,7 +50,7 @@ const BookingsDisplay = ({
                                         )
                                         .filter(todayBookings)
                                         .map((booking: Booking, i) => (
-                                            <Card booking={booking} key={i} />
+                                            <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
                                         ))
                                 ) : (
                                     <h1>Cargando</h1>
@@ -69,7 +70,7 @@ const BookingsDisplay = ({
                                 )
                                 .filter(todayBookings)
                                 .map((booking: Booking, i) => (
-                                    <Card booking={booking} key={i} />
+                                    <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
                                 ))
                         ) : (
                             <h1>Cargando</h1>
@@ -86,7 +87,7 @@ const BookingsDisplay = ({
                                 )
                                 .filter(todayBookings)
                                 .map((booking: Booking, i) => (
-                                    <Card booking={booking} key={i} />
+                                    <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
                                 ))
                         ) : (
                             <h1>Cargando</h1>

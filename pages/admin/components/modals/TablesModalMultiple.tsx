@@ -32,8 +32,8 @@ const TablesModalMultiple = () => {
             <label className="flex flex-col gap-2">
                 <span className="text-gray-500">
                     Prefix-name for each table (Eg:{" "}
-                    <span className="font-bold underline">Table</span> 01,{" "}
-                    <span className="font-bold underline">Terrace</span> 01...)
+                    <span className="font-bold">Table</span> 01,{" "}
+                    <span className="font-bold">Terrace</span> 01...)
                 </span>
                 <input
                     className="input-text"
@@ -72,7 +72,7 @@ const TablesModalMultiple = () => {
                 onClick={registerTables}
                 disabled={from >= to || prefix === ""}
             >
-                Añadir Mesas
+                Add Tables
             </button>
         </div>
     )

@@ -8,64 +8,63 @@ import Tables from "../settings/Tables"
 import General from "../settings/General"
 import Integrations from "../settings/Integrations"
 
-const NavMenu = ({ route, setRoute }) => (
+const NavItem = ({ name, notification = false, isSelected, onClick }) => (
+    <button
+        className={`relative px-6 py-3 transition rounded-t-lg cursor-pointer ${
+            isSelected ? "z-10" : "opacity-50"
+        }
+            ${
+                notification
+                    ? "bg-red-300 text-white font-semibold animate-pulse"
+                    : "bg-white"
+            }`}
+        onClick={onClick}
+    >
+        <span>{name}</span>
+    </button>
+)
+
+const NavMenu = ({ store, route, setRoute }) => (
     <div className="flex gap-2 overflow-x-auto">
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "main" ? "z-10" : "opacity-50"
-            }`}
+        <NavItem
+            name="General"
+            isSelected={route === "main"}
             onClick={() => setRoute("main")}
-        >
-            General
-        </span>
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "integrations" ? "z-10" : "opacity-50"
-            }`}
+        />
+        <NavItem
+            name="Integrations"
+            isSelected={route === "integrations"}
             onClick={() => setRoute("integrations")}
-        >
-            Integrations
-        </span>
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "menus" ? "z-10" : "opacity-50"
-            }`}
+        />
+        <NavItem
+            name="Menus"
+            notification={!store.menus || store.menus.length === 0}
+            isSelected={route === "menus"}
             onClick={() => setRoute("menus")}
-        >
-            Menus
-        </span>
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "dishes" ? "z-10" : "opacity-50"
-            }`}
+        />
+        <NavItem
+            name="Dishes"
+            notification={!store.dishes || store.dishes.length === 0}
+            isSelected={route === "dishes"}
             onClick={() => setRoute("dishes")}
-        >
-            Dishes
-        </span>
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "pairings" ? "z-10" : "opacity-50"
-            }`}
+        />
+        <NavItem
+            name="Pairings"
+            notification={!store.pairings || store.pairings.length === 0}
+            isSelected={route === "pairings"}
             onClick={() => setRoute("pairings")}
-        >
-            Pairings
-        </span>
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "tables" ? "z-10" : "opacity-50"
-            }`}
+        />
+        <NavItem
+            name="Tables"
+            notification={!store.tables || store.tables.length === 0}
+            isSelected={route === "tables"}
             onClick={() => setRoute("tables")}
-        >
-            Tables
-        </span>
-        <span
-            className={`px-6 py-3 transition bg-white rounded-t-lg cursor-pointer ${
-                route === "users" ? "z-10" : "opacity-50"
-            }`}
+        />
+        <NavItem
+            name="Users"
+            isSelected={route === "users"}
             onClick={() => setRoute("users")}
-        >
-            Users
-        </span>
+        />
     </div>
 )
 
@@ -77,7 +76,7 @@ const SettingsView = () => {
             <h1 className="font-semibold text-lg p-6 ml-10">Settings</h1>
             {store ? (
                 <main className="flex-grow flex flex-col bg-slate-100 px-6 pb-6">
-                    <NavMenu route={route} setRoute={setRoute} />
+                    <NavMenu store={store} route={route} setRoute={setRoute} />
                     <div className="flex-grow flex flex-col w-full h-full">
                         <div
                             className={`p-6 bg-white flex-grow shadow-lg w-full rounded-b rounded-r ${
