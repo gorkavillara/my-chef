@@ -40,28 +40,35 @@ const DishesModal = ({ editDish = null }) => {
     )
     const registerDish = () => {
         setLoading(true)
-        closeModal()
         if (editDish === null) {
-            registerNewDish({ dish: newDish, store }).then((data) => {
-                setLoading(false)
-                setStore({ ...data.store })
-            })
+            registerNewDish({ dish: newDish, store })
+                .then((data) => {
+                    setStore({ ...data.store })
+                })
+                .finally(() => {
+                    setLoading(false)
+                    closeModal()
+                })
         } else {
-            updateDish({ dish: newDish, store }).then((data) => {
-                setLoading(false)
-                setStore({ ...data.store })
-            })
+            updateDish({ dish: newDish, store })
+                .then((data) => {
+                    setStore({ ...data.store })
+                })
+                .finally(() => {
+                    setLoading(false)
+                    closeModal()
+                })
         }
     }
     const deleteDish = () => {
         setLoading(true)
-        closeModal()
         delDish({ dish: newDish, store })
             .then((data) => {
                 setLoading(false)
                 setStore({ ...data.store })
             })
             .catch((e) => console.error(e))
+            .finally(() => closeModal())
     }
 
     const toggleAllergy = (allergy: string) => {

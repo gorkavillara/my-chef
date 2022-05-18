@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import toast from "react-hot-toast"
-import { IoCaretBack, IoCaretForward, IoRefresh } from "react-icons/io5"
+import { IoRefresh } from "react-icons/io5"
 import { AdminContext } from ".."
 import { Booking } from "../../../models"
 import BookingsDisplay from "../components/BookingsDisplay"
@@ -9,7 +9,7 @@ import MottoPhrase from "../components/MottoPhrase"
 const TablesView = () => {
     const [filter, setFilter] = useState("all")
     const [loading, setLoading] = useState(false)
-    const { bookings, date, setDate, refreshBookings, store } =
+    const { bookings, date, refreshBookings, store } =
         useContext(AdminContext)
     const todayBookings = (booking: Booking) => {
         const d = new Date(booking.time.seconds * 1000)

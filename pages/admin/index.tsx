@@ -107,6 +107,7 @@ const Admin = ({ user, auth }) => {
             docs.forEach((doc) =>
                 storeBookings.push({ ...doc.data(), id: doc.id })
             )
+            console.log(storeBookings)
             setBookings(storeBookings)
         })
         return unsubscribe

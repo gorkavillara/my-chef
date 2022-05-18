@@ -7,6 +7,7 @@ import UsersModal from "./modals/UsersModal"
 import PairingsSettingsModal from "./modals/PairingsSettingsModal"
 import NewBooking from "./modals/NewBooking"
 import NotesModal from "./modals/NotesModal"
+import HandwrittenNotesModal from "./modals/HandwrittenNotesModal"
 import TablesModal from "./modals/TablesModal"
 import TablesModalMultiple from "./modals/TablesModalMultiple"
 import MenusModal from "./modals/MenusModal"
@@ -58,9 +59,25 @@ const ModalController = ({
                     closeModal={onClose}
                 />
             )}
+            {modalContent === "newDishNotes" && (
+                <DishNotesModal
+                    dish={data.dish}
+                    booking={data.booking}
+                    closeModal={onClose}
+                    status="new"
+                />
+            )}
             {modalContent === "dishNotes" && (
                 <DishNotesModal
-                    notes={data.dish.notes}
+                    notes={data.note}
+                    dish={data.dish}
+                    booking={data.booking}
+                    closeModal={onClose}
+                    status="update"
+                />
+            )}
+            {modalContent === "handwrittenNotesModal" && (
+                <HandwrittenNotesModal
                     dish={data.dish}
                     booking={data.booking}
                     closeModal={onClose}

@@ -6,7 +6,7 @@ import { AdminContext } from "../index"
 const MottoPhrase = () => {
     const { store } = useContext(AdminContext)
     return store ? (
-        <div className="bg-blue-50 px-8 pb-8 flex justify-center gap-4">
+        <div className="px-8 pb-8 flex justify-center gap-4">
             <div className="flex gap-2">
                 {store.settings?.michelin_stars > 0 &&
                     Array(store.settings.michelin_stars)

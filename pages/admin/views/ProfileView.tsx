@@ -7,7 +7,7 @@ import { IoPerson } from "react-icons/io5"
 
 const ProfileView = () => {
     const { user, auth } = useContext(AdminContext)
-    const { ImageInput, uploadImage, fileUploaded } = useImageInput()
+    const { uploadImage, fileUploaded } = useImageInput()
 
     const saveSettings = async () => {
         toast.promise(saveData(), {

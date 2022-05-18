@@ -87,6 +87,33 @@ const Input = ({
                     </div>
                 </label>
             )}
+            {type === "chip-select-lg" && (
+                <label
+                    className={`flex flex-col gap-4 mx-6 ${containerClassName}`}
+                >
+                    <span className={`text-lg uppercase ${labelClassName}`}>
+                        {title}
+                    </span>
+                    <div className="flex flex-wrap gap-1">
+                        {options.map((option, i) => (
+                            <button
+                                key={i}
+                                disabled={disabled}
+                                className={`${
+                                    value && value.includes(option)
+                                        ? `bg-${
+                                              color === "" ? "blue" : color
+                                          }-400`
+                                        : "bg-slate-300"
+                                } text-white py-2 px-4 disabled:opacity-25  rounded-full`}
+                                onClick={() => !disabled && onChange(option)}
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>
+                </label>
+            )}
             {type === "textarea" && (
                 <label
                     className={`grid grid-cols-1 md:grid-cols-3 place-items-stretch gap-4 ${containerClassName}`}

@@ -19,7 +19,7 @@ const IntegrationsModal = ({ integrations, providers }) => {
     }
     return store ? (
         <div className="w-full flex flex-col gap-4 text-center items-center">
-            <h1 className="text-lg font-semibold">Select your provider</h1>
+            <h1 className="text-xl font-semibold">Select your provider</h1>
             <div className="w-full flex gap-4">
                 {providers.map((provider: Integration, i: number) => (
                     <button
@@ -50,7 +50,7 @@ const IntegrationsModal = ({ integrations, providers }) => {
                 ))}
             </div>
             <button
-                className="btn-primary-green max-w-lg"
+                className="btn-primary-green py-4 px-6 text-lg max-w-lg"
                 onClick={addProvider}
             >
                 Add Provider

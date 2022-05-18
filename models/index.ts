@@ -45,7 +45,13 @@ export interface Dish {
     juiceStatus?: string
     done?: boolean
     status?: string
+    notes?: Note[]
     handwrittenNotesUrl?: string
+}
+
+export interface Note {
+    text: string
+    tags: string[]
 }
 
 export interface Product {

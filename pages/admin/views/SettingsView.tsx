@@ -37,10 +37,10 @@ const NavMenu = ({ store, route, setRoute }) => (
             onClick={() => setRoute("integrations")}
         />
         <NavItem
-            name="Menus"
-            notification={!store.menus || store.menus.length === 0}
-            isSelected={route === "menus"}
-            onClick={() => setRoute("menus")}
+            name="Pairings"
+            notification={!store.pairings || store.pairings.length === 0}
+            isSelected={route === "pairings"}
+            onClick={() => setRoute("pairings")}
         />
         <NavItem
             name="Dishes"
@@ -49,10 +49,10 @@ const NavMenu = ({ store, route, setRoute }) => (
             onClick={() => setRoute("dishes")}
         />
         <NavItem
-            name="Pairings"
-            notification={!store.pairings || store.pairings.length === 0}
-            isSelected={route === "pairings"}
-            onClick={() => setRoute("pairings")}
+            name="Menus"
+            notification={!store.menus || store.menus.length === 0}
+            isSelected={route === "menus"}
+            onClick={() => setRoute("menus")}
         />
         <NavItem
             name="Tables"

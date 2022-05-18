@@ -21,6 +21,7 @@ import {
     Pairing,
     Settings,
     Integration,
+    Note,
 } from "../models"
 
 export const registerNewTable = async ({ table, store }) => {
@@ -28,7 +29,10 @@ export const registerNewTable = async ({ table, store }) => {
     await updateDoc(storeRef, {
         tables: arrayUnion(table),
     })
-    const newStore = { ...store, tables: store.tables ? [...store.tables, table] : [table] }
+    const newStore = {
+        ...store,
+        tables: store.tables ? [...store.tables, table] : [table],
+    }
     return { store: newStore }
 }
 
@@ -62,7 +66,10 @@ export const registerNewDish = async ({ dish, store }) => {
     await updateDoc(storeRef, {
         dishes: arrayUnion(dish),
     })
-    const newStore = { ...store, dishes: [...store.dishes, dish] }
+    const newStore = {
+        ...store,
+        dishes: store.dishes ? [...store.dishes, dish] : [dish],
+    }
     return { store: newStore }
 }
 
@@ -87,7 +94,10 @@ export const registerNewPairing = async ({ pairing, store }) => {
     await updateDoc(storeRef, {
         pairings: arrayUnion(pairing),
     })
-    const newStore = { ...store, pairings: [...store.pairings, pairing] }
+    const newStore = {
+        ...store,
+        pairings: store.pairings ? [...store.pairings, pairing] : [pairing],
+    }
     return { store: newStore }
 }
 
@@ -143,7 +153,10 @@ export const registerNewMenu = async ({ menu, store }) => {
     await updateDoc(storeRef, {
         menus: arrayUnion(menu),
     })
-    const newStore = { ...store, menus: [...store.menus, menu] }
+    const newStore = {
+        ...store,
+        menus: store.menus ? [...store.menus, menu] : [menu],
+    }
     return { store: newStore }
 }
 
@@ -260,12 +273,66 @@ export const saveDishNotes = async ({
     handwrittenNotesUrl: string
     dish: Dish
     booking: Booking
-    newNotes: string
+    newNotes: Note
 }) => {
     if (handwrittenNotesUrl === "") return false
     const newDish = {
         ...dish,
         notes: newNotes,
+        handwrittenNotesUrl,
+    }
+    const newDishes = booking.menu.dishes.map((d) =>
+        d.name === dish.name ? newDish : d
+    )
+    const newMenu = {
+        ...booking.menu,
+        dishes: newDishes,
+    }
+    const newBooking = {
+        ...booking,
+        menu: newMenu,
+    }
+    await setDoc(doc(db, "bookings", booking.id), newBooking)
+    return { booking: newBooking }
+}
+
+export const updateDishNotes = async ({
+    dish,
+    booking,
+}: {
+    dish: Dish
+    booking: Booking
+}) => {
+    const newDishes = booking.menu.dishes.map((d) =>
+        d.name === dish.name ? dish : d
+    )
+    const newMenu = {
+        ...booking.menu,
+        dishes: newDishes,
+    }
+    const newBooking = {
+        ...booking,
+        menu: newMenu,
+    }
+    await setDoc(doc(db, "bookings", booking.id), newBooking)
+    return { booking: newBooking }
+}
+
+export const saveNewDishNotes = async ({
+    handwrittenNotesUrl,
+    dish,
+    booking,
+    newNotes,
+}: {
+    handwrittenNotesUrl: string
+    dish: Dish
+    booking: Booking
+    newNotes: Note
+}) => {
+    if (handwrittenNotesUrl === "") return false
+    const newDish = {
+        ...dish,
+        notes: [...dish.notes, newNotes],
         handwrittenNotesUrl,
     }
     const newDishes = booking.menu.dishes.map((d) =>

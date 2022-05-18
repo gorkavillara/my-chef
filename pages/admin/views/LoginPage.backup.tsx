@@ -70,6 +70,7 @@ const LoginPage = ({ setUser }) => {
             <img
                 src="/logo_blanco_horizontal.png"
                 className={`w-80 ${loading && "animate-bounce"}`}
+                alt=""
             />
             {route === "login" && (
                 <>

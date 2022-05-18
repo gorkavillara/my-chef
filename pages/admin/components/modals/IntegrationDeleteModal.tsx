@@ -36,18 +36,18 @@ const IntegrationDeleteModal = ({ integration }) => {
     }
     return store ? (
         <div className="w-full flex flex-col gap-4 text-center items-center">
-            <h1 className="text-lg font-semibold">
+            <h1 className="text-xl font-semibold">
                 Are you sure you want to delete {integration.provider} provider?
             </h1>
             <div className="w-full flex gap-4 justify-center">
                 <button
-                    className="bg-green-400 text-white text-lg py-1 px-2 rounded-lg"
+                    className="bg-green-400 text-white text-lg py-4 px-6 rounded-lg"
                     onClick={del}
                 >
                     Yes, delete it
                 </button>
                 <button
-                    className="bg-red-400 text-white text-lg py-1 px-2 rounded-lg"
+                    className="bg-red-400 text-white text-lg py-4 px-6 rounded-lg"
                     onClick={() => closeModal()}
                 >
                     No, keep it

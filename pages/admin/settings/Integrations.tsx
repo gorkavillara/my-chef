@@ -160,9 +160,7 @@ const Integrations = () => {
                 </button>
                 <button
                     className="bg-green-400 rounded-xl py-4 text-xl text-white flex gap-4 items-center justify-center"
-                    onClick={() =>
-                        openModal("integrations", { integrations, providers })
-                    }
+                    onClick={update}
                 >
                     <span>Update Integrations</span>
                 </button>

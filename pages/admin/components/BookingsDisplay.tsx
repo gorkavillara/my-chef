@@ -20,12 +20,16 @@ const BookingsDisplay = ({
             d.getFullYear() === date.getFullYear()
         )
     }
+    const changeExpandedCard = (i: number) => {
+        if (expandedCard === null) return setExpandedCard(i)
+        setExpandedCard(null)
+    }
     return bookings ? (
         bookings.filter(todayBookings).length > 0 ? (
             <>
                 {filter === "all" && (
                     <main className="flex-grow bg-slate-100 px-0 pb-6 gap-4 sm:gap-0">
-                        <div className="flex-grow grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4">
+                        <div className="flex-grow grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative">
                             {bookings ? (
                                 bookings
                                     .filter(
@@ -34,23 +38,38 @@ const BookingsDisplay = ({
                                     )
                                     .filter(todayBookings)
                                     .map((booking: Booking, i) => (
-                                        <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
+                                        <Card
+                                            booking={booking}
+                                            expanded={expandedCard === i}
+                                            onClick={() =>
+                                                changeExpandedCard(i)
+                                            }
+                                            key={i}
+                                        />
                                     ))
                             ) : (
                                 <h1>Cargando...</h1>
                             )}
                         </div>
                         <div className="relative">
-                            <div className="flex overflow-x-auto space-x-8 py-10 pl-6 pr-12">
+                            <div className="flex overflow-x-auto space-x-8 py-10 pl-6 pr-12 relative">
                                 {bookings ? (
                                     bookings
                                         .filter(
                                             (booking: Booking) =>
-                                                !booking.status || booking.status === "waiting"
+                                                !booking.status ||
+                                                booking.status === "waiting"
                                         )
                                         .filter(todayBookings)
                                         .map((booking: Booking, i) => (
-                                            <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
+                                            <Card
+                                                booking={booking}
+                                                expanded={false}
+                                                onClick={() =>
+                                                    changeExpandedCard(i)
+                                                }
+                                                key={i}
+                                            />
                                         ))
                                 ) : (
                                     <h1>Cargando</h1>
@@ -61,7 +80,7 @@ const BookingsDisplay = ({
                     </main>
                 )}
                 {filter === "open" && (
-                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4">
+                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative">
                         {bookings ? (
                             bookings
                                 .filter(
@@ -70,7 +89,14 @@ const BookingsDisplay = ({
                                 )
                                 .filter(todayBookings)
                                 .map((booking: Booking, i) => (
-                                    <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
+                                    <Card
+                                        booking={booking}
+                                        expanded={expandedCard === i}
+                                        onClick={() =>
+                                            changeExpandedCard(i)
+                                        }
+                                        key={i}
+                                    />
                                 ))
                         ) : (
                             <h1>Cargando</h1>
@@ -78,7 +104,7 @@ const BookingsDisplay = ({
                     </main>
                 )}
                 {filter === "closed" && (
-                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4">
+                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative">
                         {bookings ? (
                             bookings
                                 .filter(
@@ -87,12 +113,25 @@ const BookingsDisplay = ({
                                 )
                                 .filter(todayBookings)
                                 .map((booking: Booking, i) => (
-                                    <Card booking={booking} expanded={expandedCard === i} onClick={() => setExpandedCard(i)} key={i} />
+                                    <Card
+                                        booking={booking}
+                                        expanded={expandedCard === i}
+                                        onClick={() =>
+                                            changeExpandedCard(i)
+                                        }
+                                        key={i}
+                                    />
                                 ))
                         ) : (
                             <h1>Cargando</h1>
                         )}
                     </main>
+                )}
+                {expandedCard !== null && (
+                    <div
+                        className="absolute left-0 right-0 z-40 w-full h-full bg-slate-100 opacity-70"
+                        onClick={() => setExpandedCard(null)}
+                    ></div>
                 )}
             </>
         ) : (

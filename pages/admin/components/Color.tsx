@@ -5,7 +5,7 @@ const Color = ({ color, size = "md", className = "" }) => (
         className={`
       ${size === "sm" && "w-1 h-1"}
       ${size === "md" && "w-3 h-3"}
-      ${size === "lg" && "w-6 h-6"}
+      ${size === "lg" && "w-5 h-5"}
       ${size === "xl" && "w-9 h-9"}
       
       rounded-full
