@@ -64,6 +64,10 @@ export interface Pairing {
     color: string
 }
 
+export interface Allergy {
+    name: string
+}
+
 export interface Store {
     id: string
     bookings?: Booking[]
@@ -73,6 +77,7 @@ export interface Store {
     products?: Product[]
     dishes?: Dish[]
     pairings?: Pairing[]
+    allergies?: Allergy[]
 }
 
 export interface Settings {

@@ -2,7 +2,6 @@ import { Booking } from "../models"
 
 export const initializeBookings = (bookings: Booking[]): Booking[] => {
     if (!bookings || bookings.length === 0) return []
-    console.log("inizializado")
     const bkngs: Booking[] = bookings
     let newBookings = bkngs
     bkngs.forEach((booking, i) => {

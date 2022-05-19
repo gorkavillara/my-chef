@@ -3,6 +3,7 @@ import { AdminContext } from ".."
 import Menus from "../settings/Menus"
 import Dishes from "../settings/Dishes"
 import Pairings from "../settings/Pairings"
+import Allergies from "../settings/Allergies"
 import Users from "../settings/Users"
 import Tables from "../settings/Tables"
 import General from "../settings/General"
@@ -41,6 +42,12 @@ const NavMenu = ({ store, route, setRoute }) => (
             notification={!store.pairings || store.pairings.length === 0}
             isSelected={route === "pairings"}
             onClick={() => setRoute("pairings")}
+        />
+        <NavItem
+            name="Allergies"
+            notification={!store.allergies || store.allergies.length === 0}
+            isSelected={route === "allergies"}
+            onClick={() => setRoute("allergies")}
         />
         <NavItem
             name="Dishes"
@@ -129,6 +136,14 @@ const SettingsView = () => {
                                         Pairings
                                     </h1>
                                     <Pairings />
+                                </>
+                            )}
+                            {route === "allergies" && (
+                                <>
+                                    <h1 className="font-semibold text-lg">
+                                        Allergies
+                                    </h1>
+                                    <Allergies />
                                 </>
                             )}
                             {route === "users" && (

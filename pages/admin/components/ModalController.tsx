@@ -5,6 +5,7 @@ import AllergiesModal from "./modals/AllergiesModal"
 import DishesModal from "./modals/DishesModal"
 import UsersModal from "./modals/UsersModal"
 import PairingsSettingsModal from "./modals/PairingsSettingsModal"
+import AllergiesSettingsModal from "./modals/AllergiesSettingsModal"
 import NewBooking from "./modals/NewBooking"
 import NotesModal from "./modals/NotesModal"
 import HandwrittenNotesModal from "./modals/HandwrittenNotesModal"
@@ -104,6 +105,10 @@ const ModalController = ({
             {modalContent === "newPairing" && <PairingsSettingsModal />}
             {modalContent === "editPairing" && (
                 <PairingsSettingsModal editPairing={data} />
+            )}
+            {modalContent === "newAllergy" && <AllergiesSettingsModal />}
+            {modalContent === "editAllergy" && (
+                <AllergiesSettingsModal editAllergy={data} />
             )}
             {modalContent === "integrations" && (
                 <IntegrationsModal integrations={data.integrations} providers={data.providers} />

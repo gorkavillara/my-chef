@@ -8,22 +8,9 @@ import {
 import { Dish } from "../../../../models"
 import Input from "../forms/Input"
 
-const allergies = [
-    "Crustacean",
-    "Fish",
-    "Gluten-free",
-    "Nuts",
-    "Peanuts",
-    "Pescatarian",
-    "Pork",
-    "Pregnant",
-    "Shellfish",
-    "Vegetarian",
-]
-
 const DishOptions = ({ booking, dish }) => {
     const [loading] = useState(false)
-    const { bookings, closeModal, setBookings } = useContext(AdminContext)
+    const { bookings, closeModal, setBookings, store } = useContext(AdminContext)
     const [newDish, setNewDish] = useState<Dish>(dish)
 
     const toggleAllergy = (allergy: string) => {
@@ -74,7 +61,7 @@ const DishOptions = ({ booking, dish }) => {
                         name="allergies"
                         placeholder="allergies"
                         value={newDish.allergies}
-                        options={allergies}
+                        options={store.allergies.map(a => a.name)}
                         onChange={(e: string) => toggleAllergy(e)}
                     />
                     <div className="flex flex-col items-center gap-4 pl-8 border-l">

@@ -112,7 +112,7 @@ const PairingsSettingsModal = ({ editPairing = null }) => {
                         onClick={registerPairing}
                         disabled={newPairing.name === "" || loading}
                     >
-                        {editPairing ? "Update Pairing" : "Add Pairing"}
+                        {editPairing ? "Save Pairing" : "Add Pairing"}
                     </button>
                 </div>
             </div>

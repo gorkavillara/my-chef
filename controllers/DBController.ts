@@ -22,6 +22,7 @@ import {
     Settings,
     Integration,
     Note,
+    Allergy,
 } from "../models"
 
 export const registerNewTable = async ({ table, store }) => {
@@ -115,6 +116,36 @@ export const deletePairing = async ({ pairing, store }) => {
         (pair: Pairing) => pair.name !== pairing.name
     )
     const newStore = { ...store, pairings }
+    await setDoc(doc(db, "stores", store.id), newStore)
+    return { store: newStore }
+}
+
+export const registerNewAllergy = async ({ allergy, store }) => {
+    const storeRef = doc(db, "stores", store.id)
+    await updateDoc(storeRef, {
+        allergies: arrayUnion(allergy),
+    })
+    const newStore = {
+        ...store,
+        allergies: store.allergies ? [...store.allergies, allergy] : [allergy],
+    }
+    return { store: newStore }
+}
+
+export const updateAllergy = async ({ editAllergy, allergy, store }) => {
+    const allergies = store.allergies.map((a: Allergy) =>
+        a.name === editAllergy.name ? allergy : a
+    )
+    const newStore = { ...store, allergies }
+    await setDoc(doc(db, "stores", store.id), newStore)
+    return { store: newStore }
+}
+
+export const deleteAllergy = async ({ allergy, store }) => {
+    const allergies = store.allergies.filter(
+        (all: Allergy) => all.name !== allergy.name
+    )
+    const newStore = { ...store, allergies }
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
 }

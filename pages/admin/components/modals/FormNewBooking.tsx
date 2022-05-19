@@ -7,20 +7,7 @@ import { Store } from "../../../../models"
 import Input from "../forms/Input"
 import Loading from "../Loading"
 
-const allergies = [
-    "Crustacean",
-    "Fish",
-    "Gluten-free",
-    "Nuts",
-    "Peanuts",
-    "Pescatarian",
-    "Pork",
-    "Pregnant",
-    "Shellfish",
-    "Vegetarian",
-]
-
-const nationalities = ["ESP", "ENG", "ITA", "FRA", "EUSK"]
+const nationalities = ["ESP", "ENG", "ITA", "FRA"]
 
 const FormNewBooking = ({ store }: { store: Store }) => {
     const [booking, setBooking] = useState({
@@ -198,7 +185,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     name="allergies"
                     placeholder="allergies"
                     value={booking.allergies}
-                    options={allergies}
+                    options={store.allergies.map(a => a.name)}
                     containerClassName="col-span-2"
                     onChange={(e: string) => toggleAllergy(e)}
                 />

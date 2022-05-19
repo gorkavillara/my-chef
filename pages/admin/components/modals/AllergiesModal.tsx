@@ -5,19 +5,6 @@ import { Booking } from "../../../../models"
 import AllergiesList from "../AllergiesList"
 import Input from "../forms/Input"
 
-const all = [
-    "Crustacean",
-    "Fish",
-    "Gluten-free",
-    "Nuts",
-    "Peanuts",
-    "Pescatarian",
-    "Pork",
-    "Pregnant",
-    "Shellfish",
-    "Vegetarian",
-]
-
 const AllergiesModal = ({
     allergies = [],
     booking,
@@ -26,7 +13,7 @@ const AllergiesModal = ({
     booking: Booking
 }) => {
     const [newAllergies, setNewAllergies] = useState(allergies)
-    const { closeModal, bookings, setBookings } = useContext(AdminContext)
+    const { closeModal, bookings, setBookings, store } = useContext(AdminContext)
 
     const toggleAllergy = (allergy: string) => {
         let all = []
@@ -61,7 +48,7 @@ const AllergiesModal = ({
                     name="Update Allergies"
                     placeholder="allergies"
                     value={newAllergies}
-                    options={all}
+                    options={store.allergies.map(a => a.name)}
                     containerClassName="col-span-2"
                     onChange={(e: string) => toggleAllergy(e)}
                 />

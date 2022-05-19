@@ -9,19 +9,6 @@ import {
 import { Dish } from "../../../../models"
 import Input from "../forms/Input"
 
-const allergies = [
-    "Crustacean",
-    "Fish",
-    "Gluten-free",
-    "Nuts",
-    "Peanuts",
-    "Pescatarian",
-    "Pork",
-    "Pregnant",
-    "Shellfish",
-    "Vegetarian",
-]
-
 const DishesModal = ({ editDish = null }) => {
     const [loading, setLoading] = useState(false)
     const { store, setStore, closeModal } = useContext(AdminContext)
@@ -117,7 +104,7 @@ const DishesModal = ({ editDish = null }) => {
                         name="allergies"
                         placeholder="allergies"
                         value={newDish.allergies}
-                        options={allergies}
+                        options={store.allergies.map(a => a.name)}
                         onChange={(e: string) => toggleAllergy(e)}
                     />
                     <div className="flex flex-col items-center gap-4 pl-8 border-l">
