@@ -56,7 +56,7 @@ const ActiveCard = ({
             .then((data) => setBookings([...data.bookings]))
             .catch((e) => console.log(e))
     }
-    return (
+    return booking ? (
         <>
             <div
                 className="bg-white rounded-xl shadow-xl relative flex flex-col"
@@ -255,7 +255,7 @@ const ActiveCard = ({
                 )}
             </div>
         </>
-    )
+    ) : null
 }
 
 export default ActiveCard

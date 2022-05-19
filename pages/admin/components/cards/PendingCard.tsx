@@ -5,7 +5,7 @@ import { Booking } from "../../../../models"
 const PendingCard = ({ booking }: { booking: Booking }) => {
     const { openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
-    return (
+    return booking ? (
         <div className="bg-white rounded-xl shadow-xl overflow-hidden relative flex justify-between flex-shrink-0">
             <div className="flex p-1">
                 <div className="flex flex-col">
@@ -47,7 +47,7 @@ const PendingCard = ({ booking }: { booking: Booking }) => {
                 Open Table
             </button>
         </div>
-    )
+    ) : null
 }
 
 export default PendingCard

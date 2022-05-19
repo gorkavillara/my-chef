@@ -69,7 +69,7 @@ const DishesModal = ({ editDish = null }) => {
             })
         }
     }
-    return (
+    return store ? (
         <div className="flex flex-col gap-4">
             <h1 className="text-lg font-semibold">
                 {editDish ? "Edit dish" : "Add New Dish"}
@@ -154,7 +154,7 @@ const DishesModal = ({ editDish = null }) => {
                 </div>
             </div>
         </div>
-    )
+    ) : null
 }
 
 export default DishesModal

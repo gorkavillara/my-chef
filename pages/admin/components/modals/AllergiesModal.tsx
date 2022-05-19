@@ -36,7 +36,7 @@ const AllergiesModal = ({
             .catch((e) => console.error(e))
     }
 
-    return (
+    return store ? (
         <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4">
                 <h1 className="font-semibold text-lg">Allergies List</h1>
@@ -60,7 +60,7 @@ const AllergiesModal = ({
                 </button>
             </div>
         </div>
-    )
+    ) : null
 }
 
 export default AllergiesModal

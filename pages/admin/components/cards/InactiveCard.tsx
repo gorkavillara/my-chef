@@ -18,7 +18,7 @@ const InactiveCard = ({
     const { openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
 
-    return (
+    return booking ? (
         <div
             className="bg-white rounded-xl relative flex flex-col"
             onClick={onClick}
@@ -178,7 +178,7 @@ const InactiveCard = ({
                 </div>
             )}
         </div>
-    )
+    ) : null
 }
 
 export default InactiveCard
