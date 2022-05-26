@@ -4,39 +4,46 @@ import Color from "./Color"
 
 const Dish = ({ dish, allergies }) =>
     dish.status === "preparing" ? (
-        <div
-            className={`flex-grow text-lg px-2 rounded-lg flex justify-between items-center text-yellow-700 bg-yellow-200 italic ${
-                dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
-                    ? "text-red-500"
-                    : ""
-            }`}
-        >
-            <span className="line-through">{dish.name}</span>
+        <div className="flex-grow text-lg px-2 rounded-lg flex justify-between items-center text-yellow-700 bg-yellow-200 italic">
+            <span
+                className={`line-through ${
+                    dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
+                        ? "text-red-500"
+                        : ""
+                }`}
+            >
+                {dish.name}
+            </span>
         </div>
     ) : dish.status === "served" ? (
-        <div
-            className={`flex-grow text-lg px-2 rounded-lg flex justify-between items-center text-slate-300 bg-slate-100 italic ${
-                dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
-                    ? "text-red-500"
-                    : ""
-            }`}
-        >
-            <span className="line-double">{dish.name}</span>
+        <div className="flex-grow text-lg px-2 rounded-lg flex justify-between items-center text-slate-300 bg-slate-100 italic">
+            <span
+                className={`line-double ${
+                    dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
+                        ? "text-red-500"
+                        : ""
+                }`}
+            >
+                {dish.name}
+            </span>
         </div>
     ) : (
         <div
-            className={`flex-grow text-lg px-2 rounded-lg flex justify-between items-center text-slate-800 ${
-                dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
-                    ? "text-red-500"
-                    : ""
-            }`}
+            className={`flex-grow text-lg px-2 rounded-lg flex justify-between items-center text-slate-800`}
         >
-            <span>{dish.name}</span>
+            <span
+                className={`${
+                    dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
+                        ? "text-red-500"
+                        : ""
+                }`}
+            >
+                {dish.name}
+            </span>
         </div>
     )
 
 const DishDisplayInactive = ({ dish, booking }) => {
-    // return false ? (
     return dish ? (
         <div className="flex py-1 px-2 gap-4 items-center cursor-pointer">
             <div
