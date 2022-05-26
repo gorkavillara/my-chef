@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
-import { GiCrabClaw, GiWineGlass } from "react-icons/gi"
+import { GiWineGlass } from "react-icons/gi"
+import { BiDish } from "react-icons/bi"
 import { AdminContext } from "../.."
 import { Booking } from "../../../../models"
 import DishDisplayInactive from "../DishDisplayInactive"
@@ -60,7 +61,7 @@ const InactiveCard = ({
                 <div className="border-t">
                     <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
                         <span className="p-1">
-                            <GiCrabClaw />
+                            <BiDish />
                         </span>
                         <div
                             className={`${

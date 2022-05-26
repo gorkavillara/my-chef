@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react"
-import { GiCrabClaw, GiWineGlass } from "react-icons/gi"
+import { GiWineGlass } from "react-icons/gi"
+import { BiDish } from "react-icons/bi"
 import { HiOutlinePlus } from "react-icons/hi"
 import { BsThreeDots } from "react-icons/bs"
 import { AdminContext } from "../.."
@@ -121,7 +122,7 @@ const ActiveCard = ({
                     <div className="border-t">
                         <div className="flex py-2 px-2 gap-4 items-center justify-between text-2xl text-slate-800">
                             <span className="p-2">
-                                <GiCrabClaw />
+                                <BiDish />
                             </span>
                             <button
                                 className={`${
