@@ -15,6 +15,7 @@ const Card = ({
     onClick: any
 }) => {
     const [start, setStart] = useState(false)
+    const [stopped, setStopped] = useState(false)
     const [watchTime, setWatchTime] = useState(0)
     const [timeLimit, setTimeLimit] = useState<number>(0)
     useEffect(() => {
@@ -31,19 +32,23 @@ const Card = ({
     useEffect(() => {
         let interval = null
         if (start) {
-            interval = setInterval(() => {
-                setWatchTime((prevTime) => prevTime + 10)
-            }, 10)
+            if (!stopped) {
+                interval = setInterval(() => {
+                    setWatchTime((prevTime) => prevTime + 10)
+                }, 10)
+            }
         } else {
             clearInterval(interval)
         }
         return () => clearInterval(interval)
-    }, [start])
+    }, [start, stopped])
 
     const restartTimer = () => {
         setWatchTime(0)
         setStart(false)
+        setStopped(false)
     }
+    const toggleStop = () => setStopped(!stopped)
     return (
         <>
             {booking ? (
@@ -55,7 +60,8 @@ const Card = ({
                             zIndex: expanded ? 99 : 1,
                             top: expanded ? "5%" : "",
                             left: expanded ? "10%" : "",
-                            minWidth: expanded ? "80%" : ""
+                            minWidth: expanded ? "80%" : "",
+                            paddingBottom: expanded ? "3rem" : ""
                         }}
                     >
                         {(booking.status === "open" ||
@@ -66,6 +72,8 @@ const Card = ({
                                     watchTime={watchTime}
                                     timeLimit={timeLimit}
                                     setTimeLimit={setTimeLimit}
+                                    toggleStop={toggleStop}
+                                    stopped={stopped}
                                 />
                             ) : (
                                 <InactiveCard
@@ -73,6 +81,7 @@ const Card = ({
                                     onClick={onClick}
                                     watchTime={watchTime}
                                     timeLimit={timeLimit}
+                                    stopped={stopped}
                                 />
                             ))}
                         {(!booking.status || booking.status === "waiting") && (

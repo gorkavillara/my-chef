@@ -47,6 +47,7 @@ export interface Dish {
     status?: string
     notes?: Note[]
     handwrittenNotesUrl?: string
+    timeLimit?: number
 }
 
 export interface Note {

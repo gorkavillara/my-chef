@@ -11,21 +11,32 @@ import {
 import { Booking, Dish } from "../../../../models"
 import AllergiesList from "../AllergiesList"
 import { default as DishDisplay } from "../Dish"
+import Timer from "./Timer"
+
+// const autoSelect: boolean = true
+// const notRandom: boolean = true
 
 const ActiveCard = ({
     booking,
     watchTime,
     timeLimit,
-    setTimeLimit
+    setTimeLimit,
+    toggleStop,
+    stopped,
 }: {
     booking: Booking
     watchTime: number
     timeLimit: number
     setTimeLimit: React.Dispatch<React.SetStateAction<number>>
+    toggleStop: React.Dispatch<React.SetStateAction<void>>
+    stopped: boolean
 }) => {
     const [activePopup, setActivePopup] = useState<boolean>(false)
+    // const [activeDishes, setActiveDishes] = useState<number[]>([])
     const { bookings, setBookings, openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
+
+    // console.log(booking.menu.dishes[booking.menu.dishes.filter(d => d.status === "served").length])
 
     const setDish = async (i: number, dish: Dish) => {
         const newDishes = booking.menu.dishes.map((d, j) =>
@@ -57,11 +68,24 @@ const ActiveCard = ({
             .then((data) => setBookings([...data.bookings]))
             .catch((e) => console.log(e))
     }
+    const changeStatus = async (i: number) => {
+        const dish = booking.menu.dishes[i]
+        let newStatus = dish.status ? dish.status : "waiting"
+        if (!dish.status || dish.status === "waiting") {
+            newStatus = "preparing"
+        } else if (dish.status === "preparing") {
+            newStatus = "served"
+        } else if (dish.status === "served") {
+            newStatus = "waiting"
+        }
+        const newDish = { ...dish, status: newStatus }
+        await setDish(i, newDish)
+        setTimeLimit(newDish.timeLimit ? newDish.timeLimit : 0)
+        return
+    }
     return booking ? (
         <>
-            <div
-                className="bg-white rounded-xl shadow-xl relative flex flex-col"
-            >
+            <div className="bg-white rounded-xl shadow-xl relative flex flex-col">
                 <div
                     className={`${
                         activePopup ? "absolute" : "hidden"
@@ -142,9 +166,10 @@ const ActiveCard = ({
                                 key={i}
                                 i={i}
                                 dish={dish}
-                                setDish={setDish}
-                                setTimeLimit={setTimeLimit}
                                 booking={booking}
+                                stopped={stopped}
+                                toggleStop={toggleStop}
+                                changeStatus={changeStatus}
                             />
                         ))}
                     </div>
@@ -213,7 +238,8 @@ const ActiveCard = ({
                                     openModal("closeBooking", booking)
                                 }
                             >
-                                <HiOutlinePlus className="rotate-45" /> Close Booking
+                                <HiOutlinePlus className="rotate-45" /> Close
+                                Booking
                             </h3>
                         )}
                         {booking.status === "closed" && (
@@ -228,32 +254,12 @@ const ActiveCard = ({
                         )}
                     </div>
                 </div>
-                {watchTime > 700 && (
-                    <div className="absolute w-full -top-6 flex justify-center">
-                        <span
-                            className={`rounded-lg shadow-lg px-4 text-2xl font-semibold w-32 flex justify-center ${
-                                timeLimit === 0 || watchTime < 0.75 * timeLimit * 60000
-                                    ? "bg-white"
-                                    : watchTime < timeLimit * 60000
-                                    ? "bg-yellow-400"
-                                    : "bg-red-400 animate-bounce text-white"
-                            }
-                    `}
-                        >
-                            <span>
-                                {(
-                                    "0" + Math.floor((watchTime / 60000) % 60)
-                                ).slice(-2)}
-                                :
-                            </span>
-                            <span>
-                                {(
-                                    "0" + Math.floor((watchTime / 1000) % 60)
-                                ).slice(-2)}
-                            </span>
-                        </span>
-                    </div>
-                )}
+                <Timer
+                    watchTime={watchTime}
+                    timeLimit={timeLimit}
+                    stopped={stopped}
+                    size="lg"
+                />
             </div>
         </>
     ) : null

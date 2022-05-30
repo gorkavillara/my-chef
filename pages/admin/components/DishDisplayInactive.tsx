@@ -8,7 +8,7 @@ const Dish = ({ dish, allergies }) =>
             <span
                 className={`line-through ${
                     dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
-                        ? "text-red-500"
+                        ? "text-red-700"
                         : ""
                 }`}
             >
@@ -20,7 +20,7 @@ const Dish = ({ dish, allergies }) =>
             <span
                 className={`line-double ${
                     dish.allergies?.some((all) => allergies?.indexOf(all) >= 0)
-                        ? "text-red-500"
+                        ? "text-red-300"
                         : ""
                 }`}
             >

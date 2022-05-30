@@ -4,17 +4,20 @@ import { BiDish } from "react-icons/bi"
 import { AdminContext } from "../.."
 import { Booking } from "../../../../models"
 import DishDisplayInactive from "../DishDisplayInactive"
+import Timer from "./Timer"
 
 const InactiveCard = ({
     booking,
     onClick,
     watchTime,
     timeLimit,
+    stopped,
 }: {
     booking: Booking
     onClick: any
     watchTime: number
     timeLimit: number
+    stopped: boolean
 }) => {
     const { openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
@@ -125,59 +128,11 @@ const InactiveCard = ({
                     </div>
                 )}
             </div>
-            {watchTime > 700 && timeLimit > 0 && (
-                <div className="absolute w-full -top-6 flex justify-center">
-                    <span
-                        className={`rounded-lg shadow-lg px-4 text-2xl font-semibold w-32 flex justify-center ${
-                            watchTime < 0.75 * timeLimit * 60000
-                                ? "bg-white"
-                                : watchTime < timeLimit * 60000
-                                ? "bg-yellow-400"
-                                : "bg-red-400 animate-bounce"
-                        }
-                    `}
-                    >
-                        <span>
-                            {("0" + Math.floor((watchTime / 60000) % 60)).slice(
-                                -2
-                            )}
-                            :
-                        </span>
-                        <span>
-                            {("0" + Math.floor((watchTime / 1000) % 60)).slice(
-                                -2
-                            )}
-                        </span>
-                    </span>
-                </div>
-            )}
-            {watchTime > 700 && (
-                <div className="absolute w-full -top-6 flex justify-center">
-                    <span
-                        className={`rounded-lg shadow-lg px-4 text-2xl font-semibold w-32 flex justify-center ${
-                            timeLimit === 0 ||
-                            watchTime < 0.75 * timeLimit * 60000
-                                ? "bg-white"
-                                : watchTime < timeLimit * 60000
-                                ? "bg-yellow-400"
-                                : "bg-red-400 animate-bounce text-white"
-                        }
-                `}
-                    >
-                        <span>
-                            {("0" + Math.floor((watchTime / 60000) % 60)).slice(
-                                -2
-                            )}
-                            :
-                        </span>
-                        <span>
-                            {("0" + Math.floor((watchTime / 1000) % 60)).slice(
-                                -2
-                            )}
-                        </span>
-                    </span>
-                </div>
-            )}
+            <Timer
+                watchTime={watchTime}
+                timeLimit={timeLimit}
+                stopped={stopped}
+            />
         </div>
     ) : null
 }

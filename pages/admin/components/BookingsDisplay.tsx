@@ -28,7 +28,7 @@ const BookingsDisplay = ({
         bookings.filter(todayBookings).length > 0 ? (
             <>
                 {filter === "all" && (
-                    <main className="flex-grow bg-slate-100 px-0 pb-6 gap-4 sm:gap-0">
+                    <main className="flex-grow bg-slate-100 px-0 pb-6 gap-4 sm:gap-0 h-full">
                         <div className="flex-grow grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative">
                             {bookings ? (
                                 bookings
@@ -80,7 +80,7 @@ const BookingsDisplay = ({
                     </main>
                 )}
                 {filter === "open" && (
-                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative">
+                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative h-full">
                         {bookings ? (
                             bookings
                                 .filter(
@@ -104,7 +104,7 @@ const BookingsDisplay = ({
                     </main>
                 )}
                 {filter === "closed" && (
-                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative">
+                    <main className="flex-grow bg-slate-100 grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 px-6 pb-6 gap-4 relative h-full">
                         {bookings ? (
                             bookings
                                 .filter(

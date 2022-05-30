@@ -1,70 +1,26 @@
 import React, { useContext } from "react"
 import { MdDraw } from "react-icons/md"
 import { IoText } from "react-icons/io5"
-import { FaRestroom } from "react-icons/fa"
 import { AdminContext } from ".."
 import { Note, Pairing } from "../../../models"
 import Color from "./Color"
 
-const Dish = ({ dish, allergies, onClick }) => (
-    <button className="flex-grow" onClick={onClick}>
-        {dish.status === "preparing" ? (
-            <div className="text-2xl px-4 py-2 rounded-2xl flex justify-between items-center text-yellow-700 bg-yellow-200 italic">
-                <span
-                    className={`line-through ${
-                        dish.allergies?.some(
-                            (all) => allergies?.indexOf(all) >= 0
-                        )
-                            ? "text-red-700"
-                            : ""
-                    }`}
-                >
-                    {dish.name}
-                </span>
-            </div>
-        ) : dish.status === "served" ? (
-            <div className="text-2xl px-4 py-2 rounded-2xl flex justify-between items-center text-slate-300 bg-slate-100 italic">
-                <span
-                    className={`line-double ${
-                        dish.allergies?.some(
-                            (all) => allergies?.indexOf(all) >= 0
-                        )
-                            ? "text-red-300"
-                            : ""
-                    }`}
-                >
-                    {dish.name}
-                </span>
-            </div>
-        ) : (
-            <div
-                className={`text-2xl px-4 py-2 rounded-2xl flex justify-between items-center text-slate-800`}
-            >
-                <span
-                    className={`${
-                        dish.allergies?.some(
-                            (all) => allergies?.indexOf(all) >= 0
-                        )
-                            ? "text-red-500"
-                            : ""
-                    }`}
-                >
-                    {dish.name}
-                </span>
-            </div>
-        )}
-    </button>
-)
-
-const DishDisplayActive = ({
-    dish,
-    booking,
-    i,
-    toggleStop,
-    stopped,
-    changeStatus
-}) => {
+const Dish = ({ dish, booking, setDish, setTimeLimit, i }) => {
     const { openModal } = useContext(AdminContext)
+    const changeStatus = () => {
+        let newStatus = dish.status ? dish.status : "waiting"
+        if (!dish.status || dish.status === "waiting") {
+            newStatus = "preparing"
+        } else if (dish.status === "preparing") {
+            newStatus = "served"
+        } else if (dish.status === "served") {
+            newStatus = "waiting"
+        }
+        const newDish = { ...dish, status: newStatus }
+        setDish(i, newDish)
+        setTimeLimit(newDish.timeLimit ? newDish.timeLimit : 0)
+        return
+    }
     return dish ? (
         <div className="flex py-1 px-4 gap-4 items-center cursor-pointer">
             <button
@@ -73,11 +29,31 @@ const DishDisplayActive = ({
                 }`}
                 onClick={() => openModal("dishOptions", { booking, dish })}
             ></button>
-            <Dish
-                dish={dish}
-                allergies={booking.allergies}
-                onClick={() => changeStatus(i)}
-            />
+            <div
+                className={`flex-grow rounded-2xl px-4 py-2 flex justify-between items-center ${
+                    dish.allergies?.some(
+                        (all) => booking.allergies?.indexOf(all) >= 0
+                    )
+                        ? "text-red-500"
+                        : ""
+                }
+        ${dish.status === "preparing" && "text-yellow-700 bg-yellow-200 italic"}
+        ${dish.status === "prepared" && "text-green-700 bg-green-200 italic"}
+        ${dish.status === "served" && "text-slate-300 bg-slate-100 italic"}
+        `}
+                onClick={changeStatus}
+            >
+                <span
+                    className={`text-2xl
+          ${dish.status === "preparing" && "line-through"} 
+          ${
+              (dish.status === "prepared" || dish.status === "served") &&
+              "line-double"
+          }`}
+                >
+                    {dish.name}
+                </span>
+            </div>
             <div className="flex items-center gap-1">
                 {dish.notes &&
                     dish.notes.map((note: Note, i: number) => (
@@ -125,16 +101,6 @@ const DishDisplayActive = ({
                 >
                     <MdDraw className="text-slate-800" />
                 </button>
-                <button
-                    className={`border flex items-center rounded-2xl p-3 text-2xl ${
-                        dish.status === "preparing" && stopped
-                            ? "bg-yellow-200 animate-pulse text-yellow-600"
-                            : "text-slate-800 opacity-25"
-                    }`}
-                    onClick={toggleStop}
-                >
-                    <FaRestroom />
-                </button>
             </div>
             <button
                 className="flex gap-1"
@@ -156,4 +122,4 @@ const DishDisplayActive = ({
     ) : null
 }
 
-export default DishDisplayActive
+export default Dish
