@@ -8,13 +8,13 @@ import {
     editBookingGreeting,
     editBookingMenu,
 } from "../../../../controllers/DBController"
-import { Booking, Dish } from "../../../../models"
+import { Booking, Dish, Menu } from "../../../../models"
 import AllergiesList from "../AllergiesList"
 import { default as DishDisplay } from "../Dish"
 import Timer from "./Timer"
 
-// const autoSelect: boolean = true
-// const notRandom: boolean = true
+const autoSelect: boolean = true
+const notRandom: boolean = true
 
 const ActiveCard = ({
     booking,
@@ -28,27 +28,32 @@ const ActiveCard = ({
     watchTime: number
     timeLimit: number
     setTimeLimit: React.Dispatch<React.SetStateAction<number>>
-    toggleStop: React.Dispatch<React.SetStateAction<void>>
+    toggleStop: React.MouseEventHandler<HTMLButtonElement>
     stopped: boolean
 }) => {
     const [activePopup, setActivePopup] = useState<boolean>(false)
-    // const [activeDishes, setActiveDishes] = useState<number[]>([])
     const { bookings, setBookings, openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
 
     // console.log(booking.menu.dishes[booking.menu.dishes.filter(d => d.status === "served").length])
 
-    const setDish = async (i: number, dish: Dish) => {
+    const setDish = async (i: number, dish: Dish, prepareNext: boolean) => {
         const newDishes = booking.menu.dishes.map((d, j) =>
             j === i ? dish : d
         )
+        if (prepareNext) {
+            newDishes[i + 1].status = "preparing"
+        }
         const newMenu = { ...booking.menu, dishes: newDishes }
         return editBookingMenu({
             booking,
             bookings,
             newMenu,
         })
-            .then((data) => setBookings([...data.bookings]))
+            .then((data) => {
+                setBookings([...data.bookings])
+                return newDishes[i + 1]
+            })
             .catch((e) => console.error(e))
     }
     const changeGreeted = async () => {
@@ -66,7 +71,7 @@ const ActiveCard = ({
             greeted,
         })
             .then((data) => setBookings([...data.bookings]))
-            .catch((e) => console.log(e))
+            .catch((e) => console.error(e))
     }
     const changeStatus = async (i: number) => {
         const dish = booking.menu.dishes[i]
@@ -79,9 +84,25 @@ const ActiveCard = ({
             newStatus = "waiting"
         }
         const newDish = { ...dish, status: newStatus }
-        await setDish(i, newDish)
-        setTimeLimit(newDish.timeLimit ? newDish.timeLimit : 0)
-        return
+        const resDish = await setDish(
+            i,
+            newDish,
+            prepareNext(autoSelect, newStatus, booking.menu, i)
+        )
+        return resDish
+            ? setTimeLimit(resDish.timeLimit ? resDish.timeLimit : 0)
+            : null
+    }
+    const prepareNext = (
+        autoSelect: boolean,
+        newStatus: string,
+        menu: Menu,
+        i: number
+    ) => {
+        if (!autoSelect) return false
+        if (newStatus !== "served") return false
+        if (menu.dishes.length === i + 1) return false
+        return true
     }
     return booking ? (
         <>
@@ -170,6 +191,7 @@ const ActiveCard = ({
                                 stopped={stopped}
                                 toggleStop={toggleStop}
                                 changeStatus={changeStatus}
+                                notRandom={notRandom}
                             />
                         ))}
                     </div>

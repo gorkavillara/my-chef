@@ -61,7 +61,7 @@ const Card = ({
                             top: expanded ? "5%" : "",
                             left: expanded ? "10%" : "",
                             minWidth: expanded ? "80%" : "",
-                            paddingBottom: expanded ? "3rem" : ""
+                            paddingBottom: expanded ? "3rem" : "",
                         }}
                     >
                         {(booking.status === "open" ||
@@ -71,7 +71,10 @@ const Card = ({
                                     booking={booking}
                                     watchTime={watchTime}
                                     timeLimit={timeLimit}
-                                    setTimeLimit={setTimeLimit}
+                                    setTimeLimit={(limit) => {
+                                        setWatchTime(0)
+                                        setTimeLimit(limit)
+                                    }}
                                     toggleStop={toggleStop}
                                     stopped={stopped}
                                 />

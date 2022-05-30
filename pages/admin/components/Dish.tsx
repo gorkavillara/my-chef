@@ -3,7 +3,7 @@ import { MdDraw } from "react-icons/md"
 import { IoText } from "react-icons/io5"
 import { FaRestroom } from "react-icons/fa"
 import { AdminContext } from ".."
-import { Note, Pairing } from "../../../models"
+import { Booking, Dish, Note, Pairing } from "../../../models"
 import Color from "./Color"
 
 const Dish = ({ dish, allergies, onClick }) => (
@@ -62,9 +62,23 @@ const DishDisplayActive = ({
     i,
     toggleStop,
     stopped,
-    changeStatus
+    changeStatus,
+    notRandom = false,
+}: {
+    dish: Dish
+    booking: Booking
+    i: number
+    toggleStop: React.MouseEventHandler<HTMLButtonElement>
+    stopped: boolean
+    changeStatus: Function
+    notRandom?: boolean
 }) => {
     const { openModal } = useContext(AdminContext)
+    const isNext =
+        i === booking.menu.dishes.filter((d) => d.status === "served").length
+    const isActive =
+        i ===
+        booking.menu.dishes.filter((d) => d.status === "served").length - 1
     return dish ? (
         <div className="flex py-1 px-4 gap-4 items-center cursor-pointer">
             <button
@@ -76,7 +90,10 @@ const DishDisplayActive = ({
             <Dish
                 dish={dish}
                 allergies={booking.allergies}
-                onClick={() => changeStatus(i)}
+                onClick={() => {
+                    if (!notRandom) return changeStatus(i)
+                    if (isActive || isNext) return changeStatus(i)
+                }}
             />
             <div className="flex items-center gap-1">
                 {dish.notes &&
