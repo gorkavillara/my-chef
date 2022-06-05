@@ -7,7 +7,7 @@ import StatusButton from "./StatusButton"
 const BookingHead = ({ booking }: { booking: Booking }) => {
     const { openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
-    return (
+    return booking ? (
         <div className="grid grid-cols-3 p-4 gap-4 text-xl">
             <button
                 onClick={() => openModal("changeTable", booking)}
@@ -60,7 +60,7 @@ const BookingHead = ({ booking }: { booking: Booking }) => {
                 onClick={() => openModal("dinnerStatus", booking)}
             />
         </div>
-    )
+    ) : null
 }
 
 export default BookingHead

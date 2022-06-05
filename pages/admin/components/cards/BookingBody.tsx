@@ -19,7 +19,7 @@ const BookingBody = ({
     notRandom?: boolean
 }) => {
     const { openModal } = useContext(AdminContext)
-    return booking.menu?.dishes ? (
+    return booking && booking.menu?.dishes ? (
         <div className="border-t">
             <div className="flex py-2 px-2 gap-4 items-center justify-between text-2xl text-slate-800">
                 <span className="p-2">

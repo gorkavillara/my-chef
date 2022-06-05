@@ -31,7 +31,7 @@ const camelize = (str: string) =>
 const DinnerStatusModal = ({ booking }: { booking: Booking }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [currentStatus, setCurrentStatus] = useState<string>(
-        booking.dinnerStatus ? booking.dinnerStatus : "default"
+        booking && booking.dinnerStatus ? booking.dinnerStatus : "default"
     )
     const { bookings, closeModal } = useContext(AdminContext)
     const isSelected = (status: Status) => currentStatus === status.name
@@ -71,7 +71,8 @@ const DinnerStatusModal = ({ booking }: { booking: Booking }) => {
             >
                 {loading ? (
                     <span className="flex justify-center items-center gap-2">
-                        <AiOutlineLoading3Quarters className="animate-spin" /> Loading
+                        <AiOutlineLoading3Quarters className="animate-spin" />{" "}
+                        Loading
                     </span>
                 ) : (
                     "Save"

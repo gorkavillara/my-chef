@@ -75,10 +75,14 @@ const DishDisplayActive = ({
 }) => {
     const { openModal } = useContext(AdminContext)
     const isNext =
+        booking &&
+        booking.menu &&
         i === booking.menu.dishes.filter((d) => d.status === "served").length
     const isActive =
+        booking &&
+        booking.menu &&
         i ===
-        booking.menu.dishes.filter((d) => d.status === "served").length - 1
+            booking.menu.dishes.filter((d) => d.status === "served").length - 1
     return dish ? (
         <div className="flex py-1 px-4 gap-4 items-center cursor-pointer">
             <button

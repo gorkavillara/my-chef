@@ -16,7 +16,7 @@ const BookingFooter = ({
     changeGreeted: MouseEventHandler
 }) => {
     const { openModal } = useContext(AdminContext)
-    return (
+    return booking ? (
         <div className="flex flex-grow border-t">
             <button
                 className="flex-grow p-4 text-left"
@@ -78,7 +78,7 @@ const BookingFooter = ({
                 )}
             </div>
         </div>
-    )
+    ) : null
 }
 
 export default BookingFooter
