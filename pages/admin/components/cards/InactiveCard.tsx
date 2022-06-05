@@ -28,7 +28,11 @@ const InactiveCard = ({
             onClick={onClick}
         >
             <div className="grid grid-cols-2 p-2">
-                <div className="text-left p-1 col-span-2 flex items-center gap-4">
+                <div className={`
+                    text-left col-span-2 flex items-center gap-4 rounded-lg p-2
+                    ${ booking.dinnerStatus === "arrived" && "bg-yellow-100 text-yellow-600" }
+                    ${ booking.dinnerStatus === "seated" && "bg-green-100 text-green-600" }
+                `}>
                     <span className="font-semibold text-3xl">TABLE: </span>
                     <span>{booking.table}</span>
                 </div>

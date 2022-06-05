@@ -20,6 +20,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
         time: new Date(),
         menu: {},
         status: "waiting",
+        dinnerStatus: "default"
     })
     const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>([])
     const [menuName, setMenuName] = useState<string>("")

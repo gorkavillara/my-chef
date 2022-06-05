@@ -586,6 +586,23 @@ export const setPairings = async ({
     return { bookings: newBookings }
 }
 
+export const setDinnerStatus = async ({
+    booking,
+    bookings,
+    newStatus,
+}: {
+    booking: Booking
+    bookings: Booking[]
+    newStatus: string
+}) => {
+    const newBooking = { ...booking, dinnerStatus: newStatus }
+    await setDoc(doc(db, "bookings", booking.id), newBooking)
+    const newBookings = bookings.map((book) =>
+        book.id === booking.id ? newBooking : book
+    )
+    return { bookings: newBookings }
+}
+
 export const updateSettings = async ({
     store,
     settings,

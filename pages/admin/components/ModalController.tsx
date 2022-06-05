@@ -23,6 +23,7 @@ import DishNotesModal from "./modals/DishNotesModal"
 import IntegrationsModal from "./modals/IntegrationsModal"
 import IntegrationDeleteModal from "./modals/IntegrationDeleteModal"
 import ChooseMenu from "./modals/ChooseMenu"
+import DinnerStatusModal from "./modals/DinnerStatusModal"
 
 type ModalProps = {
     visible: boolean
@@ -101,6 +102,7 @@ const ModalController = ({
                 <DishOptions booking={data.booking} dish={data.dish} />
             )}
             {modalContent === "changeTable" && <ChangeTable booking={data} />}
+            {modalContent === "dinnerStatus" && <DinnerStatusModal booking={data} />}
             {modalContent === "pairings" && <PairingsModal booking={data} />}
             {modalContent === "newPairing" && <PairingsSettingsModal />}
             {modalContent === "editPairing" && (

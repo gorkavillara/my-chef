@@ -2,16 +2,13 @@ import React, { useContext } from "react"
 import { AdminContext } from "../.."
 import { Booking } from "../../../../models"
 import AllergiesList from "../AllergiesList"
+import StatusButton from "./StatusButton"
 
 const BookingHead = ({ booking }: { booking: Booking }) => {
     const { openModal } = useContext(AdminContext)
     const time = booking ? new Date(booking.time.seconds * 1000) : new Date()
     return (
-        <div className="grid grid-cols-2 p-4 text-xl">
-            <label className="p-1">
-                <span className="font-semibold">PAX: </span>
-                <span>{booking.pax}</span>
-            </label>
+        <div className="grid grid-cols-3 p-4 gap-4 text-xl">
             <button
                 onClick={() => openModal("changeTable", booking)}
                 className="text-left p-1"
@@ -21,8 +18,17 @@ const BookingHead = ({ booking }: { booking: Booking }) => {
             </button>
             <label className="p-1 flex gap-1 flex-wrap">
                 <span className="font-semibold">NAME: </span>
-                <span>{booking.name}</span>
+                <span>
+                    {booking.name} - {booking.pax} pax
+                </span>
             </label>
+            <div
+                onClick={() => openModal("nationality", booking)}
+                className="p-1 flex gap-1 flex-wrap"
+            >
+                <span className="font-semibold">NATIONALITY: </span>
+                <span>{booking.nationality}</span>
+            </div>
             <div
                 onClick={() => openModal("allergies", booking)}
                 className="p-1 flex gap-1 flex-wrap"
@@ -49,13 +55,10 @@ const BookingHead = ({ booking }: { booking: Booking }) => {
                     })}
                 </span>
             </div>
-            <div
-                onClick={() => openModal("nationality", booking)}
-                className="p-1 flex gap-1 flex-wrap"
-            >
-                <span className="font-semibold">NATIONALITY: </span>
-                <span>{booking.nationality}</span>
-            </div>
+            <StatusButton
+                status={booking.dinnerStatus ? booking.dinnerStatus : "default"}
+                onClick={() => openModal("dinnerStatus", booking)}
+            />
         </div>
     )
 }
