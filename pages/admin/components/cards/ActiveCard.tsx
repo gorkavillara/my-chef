@@ -31,25 +31,6 @@ const ActiveCard = ({
 }) => {
     const [activePopup, setActivePopup] = useState<boolean>(false)
     const { bookings, setBookings } = useContext(AdminContext)
-    const setDish = async (i: number, dish: Dish, prepareNext: boolean) => {
-        const newDishes = booking.menu.dishes.map((d, j) =>
-            j === i ? dish : d
-        )
-        if (prepareNext) {
-            newDishes[i + 1].status = "preparing"
-        }
-        const newMenu = { ...booking.menu, dishes: newDishes }
-        return editBookingMenu({
-            booking,
-            bookings,
-            newMenu,
-        })
-            .then((data) => {
-                setBookings([...data.bookings])
-                return newDishes[i + 1]
-            })
-            .catch((e) => console.error(e))
-    }
     const changeGreeted = async () => {
         let greeted = ""
         if (booking.greeted === "" || !booking.greeted) {
@@ -67,8 +48,73 @@ const ActiveCard = ({
             .then((data) => setBookings([...data.bookings]))
             .catch((e) => console.error(e))
     }
+
+    const setDishes = (
+        dishes: Dish[],
+        status: string,
+        prepareNext: boolean
+    ) => {
+        const newDishes = booking.menu.dishes.map((d: Dish) =>
+            dishes.find((dish: Dish) => dish.name === d.name)
+                ? {
+                      ...dishes.find((dish: Dish) => dish.name === d.name),
+                      status,
+                  }
+                : d
+        )
+        let newMenu
+        let preparingDish
+        // Si prepareNext -> Chequeamos cuál es el siguiente plato y si forma parte de un grupo lo ponemos a tope
+        if (!prepareNext) {
+            newMenu = { ...booking.menu, dishes: newDishes }
+        } else {
+            const nextIndex =
+                booking.menu.dishes.findIndex(
+                    (d: Dish) => dishes[dishes.length - 1].name === d.name
+                ) + 1
+            if (nextIndex < booking.menu.dishes.length) {
+                preparingDish = booking.menu.dishes[nextIndex]
+                const nextDishes = getGroupedDishes(preparingDish)
+                const newNewDishes = newDishes.map((d: Dish) =>
+                    nextDishes.find((dish: Dish) => dish.name === d.name)
+                        ? {
+                              ...nextDishes.find(
+                                  (dish: Dish) => dish.name === d.name
+                              ),
+                              status: "preparing",
+                          }
+                        : d
+                )
+                newMenu = { ...booking.menu, dishes: newNewDishes }
+            } else {
+                newMenu = { ...booking.menu, dishes: newDishes }
+            }
+        }
+        return editBookingMenu({
+            booking,
+            bookings,
+            newMenu,
+        })
+            .then((data) => {
+                setBookings([...data.bookings])
+                return preparingDish ? preparingDish : null
+            })
+            .catch((e) => console.error(e))
+    }
+
+    const getGroupedDishes = (dish: Dish): Dish[] => {
+        const groupedDishes =
+            dish.groupId && dish.groupId !== 0
+                ? booking.menu.dishes.filter(
+                      (d: Dish) => d.groupId === dish.groupId
+                  )
+                : [dish]
+        return groupedDishes
+    }
     const changeStatus = async (i: number) => {
         const dish = booking.menu.dishes[i]
+        // activeDishes son los dishes (que comparten grupo) que se han pulsado
+        const activeDishes = getGroupedDishes(dish)
         let newStatus = dish.status ? dish.status : "waiting"
         if (!dish.status || dish.status === "waiting") {
             newStatus = "preparing"
@@ -77,14 +123,14 @@ const ActiveCard = ({
         } else if (dish.status === "served") {
             newStatus = "waiting"
         }
-        const newDish = { ...dish, status: newStatus }
-        const resDish = await setDish(
-            i,
-            newDish,
+
+        const nextDish = await setDishes(
+            activeDishes,
+            newStatus,
             prepareNext(autoSelect, newStatus, booking.menu, i)
         )
-        return resDish
-            ? setTimeLimit(resDish.timeLimit ? resDish.timeLimit : 0)
+        return nextDish
+            ? setTimeLimit(nextDish.timeLimit ? nextDish.timeLimit : 0)
             : null
     }
     const prepareNext = (
@@ -100,7 +146,7 @@ const ActiveCard = ({
     }
     return booking ? (
         <>
-            <div className="bg-white rounded-xl shadow-xl relative flex flex-col">
+            <div className="relative flex flex-col rounded-xl bg-white shadow-xl">
                 <CardPopup
                     activePopup={activePopup}
                     setActivePopup={setActivePopup}

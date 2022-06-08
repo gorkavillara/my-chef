@@ -24,6 +24,7 @@ import IntegrationsModal from "./modals/IntegrationsModal"
 import IntegrationDeleteModal from "./modals/IntegrationDeleteModal"
 import ChooseMenu from "./modals/ChooseMenu"
 import DinnerStatusModal from "./modals/DinnerStatusModal"
+import DishGroupsSettingsModal from "./modals/DishGroupsSettingsModal"
 
 type ModalProps = {
     visible: boolean
@@ -104,6 +105,10 @@ const ModalController = ({
             {modalContent === "changeTable" && <ChangeTable booking={data} />}
             {modalContent === "dinnerStatus" && <DinnerStatusModal booking={data} />}
             {modalContent === "pairings" && <PairingsModal booking={data} />}
+            {modalContent === "newDishGroup" && <DishGroupsSettingsModal />}
+            {modalContent === "editDishGroup" && (
+                <DishGroupsSettingsModal editDishGroup={data} />
+            )}
             {modalContent === "newPairing" && <PairingsSettingsModal />}
             {modalContent === "editPairing" && (
                 <PairingsSettingsModal editPairing={data} />

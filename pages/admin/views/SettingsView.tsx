@@ -8,6 +8,7 @@ import Users from "../settings/Users"
 import Tables from "../settings/Tables"
 import General from "../settings/General"
 import Integrations from "../settings/Integrations"
+import DishGroups from "../settings/DishGroups"
 
 const NavItem = ({ name, notification = false, isSelected, onClick }) => (
     <button
@@ -54,6 +55,12 @@ const NavMenu = ({ store, route, setRoute }) => (
             notification={!store.dishes || store.dishes.length === 0}
             isSelected={route === "dishes"}
             onClick={() => setRoute("dishes")}
+        />
+        <NavItem
+            name="DishGroups"
+            notification={!store.groups || store.groups.length === 0}
+            isSelected={route === "groups"}
+            onClick={() => setRoute("groups")}
         />
         <NavItem
             name="Menus"
@@ -128,6 +135,14 @@ const SettingsView = () => {
                                         Dishes
                                     </h1>
                                     <Dishes />
+                                </>
+                            )}
+                            {route === "groups" && (
+                                <>
+                                    <h1 className="font-semibold text-lg">
+                                        Dish Groups
+                                    </h1>
+                                    <DishGroups />
                                 </>
                             )}
                             {route === "pairings" && (

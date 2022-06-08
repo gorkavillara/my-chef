@@ -23,6 +23,7 @@ import {
     Integration,
     Note,
     Allergy,
+    Group,
 } from "../models"
 
 export const registerNewTable = async ({ table, store }) => {
@@ -78,7 +79,16 @@ export const updateDish = async ({ dish, store }) => {
     const dishes = store.dishes.map((d: Dish) =>
         d.name === dish.name ? dish : d
     )
-    const newStore = { ...store, dishes }
+    // Aquí también hay que cambiar los menús donde esté este dish
+    const menus = store.menus.map((m: Menu) => {
+        return {
+            ...m,
+            dishes: m.dishes.map((d: Dish) => 
+                d.name === dish.name ? dish : d
+            )
+        }
+    })
+    const newStore = { ...store, dishes, menus }
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
 }
@@ -116,6 +126,36 @@ export const deletePairing = async ({ pairing, store }) => {
         (pair: Pairing) => pair.name !== pairing.name
     )
     const newStore = { ...store, pairings }
+    await setDoc(doc(db, "stores", store.id), newStore)
+    return { store: newStore }
+}
+
+export const registerNewDishGroup = async ({ group, store }) => {
+    const storeRef = doc(db, "stores", store.id)
+    await updateDoc(storeRef, {
+        groups: store.groups ? arrayUnion(group) : [group],
+    })
+    const newStore = {
+        ...store,
+        groups: store.groups ? [...store.groups, group] : [group],
+    }
+    return { store: newStore }
+}
+
+export const updateDishGroup = async ({ group, store }) => {
+    const groups = store.groups.map((g: Group) =>
+        g.id === group.id ? group : g
+    )
+    const newStore = { ...store, groups }
+    await setDoc(doc(db, "stores", store.id), newStore)
+    return { store: newStore }
+}
+
+export const deleteDishGroup = async ({ group, store }) => {
+    const groups = store.groups.filter(
+        (g: Group) => g.name !== group.name
+    )
+    const newStore = { ...store, groups }
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
 }

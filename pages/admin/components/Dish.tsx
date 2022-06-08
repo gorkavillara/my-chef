@@ -3,13 +3,14 @@ import { MdDraw } from "react-icons/md"
 import { IoText } from "react-icons/io5"
 import { FaRestroom } from "react-icons/fa"
 import { AdminContext } from ".."
-import { Booking, Dish, Note, Pairing } from "../../../models"
+import { Booking, Dish, Group, Note, Pairing } from "../../../models"
 import Color from "./Color"
+import Badge from "./Badge"
 
-const Dish = ({ dish, allergies, onClick }) => (
+const Dish = ({ dish, allergies, onClick, groupName }) => (
     <button className="flex-grow" onClick={onClick}>
         {dish.status === "preparing" ? (
-            <div className="text-2xl px-4 py-2 rounded-2xl flex justify-between items-center text-yellow-700 bg-yellow-200 italic">
+            <div className="flex items-center justify-between rounded-2xl bg-yellow-200 px-4 py-2 text-2xl italic text-yellow-700">
                 <span
                     className={`line-through ${
                         dish.allergies?.some(
@@ -23,7 +24,7 @@ const Dish = ({ dish, allergies, onClick }) => (
                 </span>
             </div>
         ) : dish.status === "served" ? (
-            <div className="text-2xl px-4 py-2 rounded-2xl flex justify-between items-center text-slate-300 bg-slate-100 italic">
+            <div className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-2 text-2xl italic text-slate-300">
                 <span
                     className={`line-double ${
                         dish.allergies?.some(
@@ -38,7 +39,7 @@ const Dish = ({ dish, allergies, onClick }) => (
             </div>
         ) : (
             <div
-                className={`text-2xl px-4 py-2 rounded-2xl flex justify-between items-center text-slate-800`}
+                className={`flex items-center justify-between rounded-2xl px-4 py-2 text-2xl text-slate-800`}
             >
                 <span
                     className={`${
@@ -51,6 +52,9 @@ const Dish = ({ dish, allergies, onClick }) => (
                 >
                     {dish.name}
                 </span>
+                {groupName && (
+                    <Badge text={groupName} color="slate" size="base" />
+                )}
             </div>
         )}
     </button>
@@ -73,7 +77,7 @@ const DishDisplayActive = ({
     changeStatus: Function
     notRandom?: boolean
 }) => {
-    const { openModal } = useContext(AdminContext)
+    const { openModal, store } = useContext(AdminContext)
     const isNext =
         booking &&
         booking.menu &&
@@ -84,9 +88,9 @@ const DishDisplayActive = ({
         i ===
             booking.menu.dishes.filter((d) => d.status === "served").length - 1
     return dish ? (
-        <div className="flex py-1 px-4 gap-4 items-center cursor-pointer">
+        <div className="flex cursor-pointer items-center gap-4 py-1 px-4">
             <button
-                className={`w-4 h-4 rounded-full ${
+                className={`h-4 w-4 rounded-full ${
                     dish.side ? "bg-green-500" : "bg-slate-100"
                 }`}
                 onClick={() => openModal("dishOptions", { booking, dish })}
@@ -98,18 +102,24 @@ const DishDisplayActive = ({
                     if (!notRandom) return changeStatus(i)
                     if (isActive || isNext) return changeStatus(i)
                 }}
+                groupName={
+                    dish.groupId
+                        ? store.groups.find((g: Group) => g.id === dish.groupId)
+                              ?.name
+                        : null
+                }
             />
             <div className="flex items-center gap-1">
                 {dish.notes &&
                     dish.notes.map((note: Note, i: number) => (
                         <button
                             key={i}
-                            className="border flex items-center rounded-2xl p-3 text-2xl"
+                            className="flex items-center rounded-2xl border p-3 text-2xl"
                             onClick={() =>
                                 openModal("dishNotes", { booking, dish, note })
                             }
                         >
-                            <span className="text-left w-24 text-lg truncate text-ellipsis">
+                            <span className="w-24 truncate text-ellipsis text-left text-lg">
                                 {note.text}
                             </span>
                             {note.tags.length > 0 && (
@@ -117,7 +127,7 @@ const DishDisplayActive = ({
                                     {note.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="text-sm bg-blue-400 text-white rounded-full py-1 px-2"
+                                            className="rounded-full bg-blue-400 py-1 px-2 text-sm text-white"
                                         >
                                             {tag}
                                         </span>
@@ -128,7 +138,7 @@ const DishDisplayActive = ({
                     ))}
                 {!dish.notes || dish.notes.length <= 3 ? (
                     <button
-                        className="border flex items-center rounded-2xl p-3 text-2xl opacity-25"
+                        className="flex items-center rounded-2xl border p-3 text-2xl opacity-25"
                         onClick={() =>
                             openModal("newDishNotes", { booking, dish })
                         }
@@ -137,7 +147,7 @@ const DishDisplayActive = ({
                     </button>
                 ) : null}
                 <button
-                    className={`border flex items-center rounded-2xl p-3 text-2xl ${
+                    className={`flex items-center rounded-2xl border p-3 text-2xl ${
                         dish.handwrittenNotesUrl ? "" : "opacity-25"
                     }`}
                     onClick={() =>
@@ -147,9 +157,9 @@ const DishDisplayActive = ({
                     <MdDraw className="text-slate-800" />
                 </button>
                 <button
-                    className={`border flex items-center rounded-2xl p-3 text-2xl ${
+                    className={`flex items-center rounded-2xl border p-3 text-2xl ${
                         dish.status === "preparing" && stopped
-                            ? "bg-yellow-200 animate-pulse text-yellow-600"
+                            ? "animate-pulse bg-yellow-200 text-yellow-600"
                             : "text-slate-800 opacity-25"
                     }`}
                     onClick={toggleStop}

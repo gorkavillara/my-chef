@@ -6,7 +6,7 @@ import {
     updateDish,
     deleteDish as delDish,
 } from "../../../../controllers/DBController"
-import { Dish } from "../../../../models"
+import { Dish, Group } from "../../../../models"
 import Input from "../forms/Input"
 
 const DishesModal = ({ editDish = null }) => {
@@ -69,6 +69,14 @@ const DishesModal = ({ editDish = null }) => {
             })
         }
     }
+
+    const addGroup = (e: any) =>
+        setNewDish({
+            ...newDish,
+            groupId: store.groups.find((g: Group) => g.name === e.target.value)
+                .id,
+        })
+
     return store ? (
         <div className="flex flex-col gap-4">
             <h1 className="text-lg font-semibold">
@@ -97,6 +105,20 @@ const DishesModal = ({ editDish = null }) => {
                         setNewDish({ ...newDish, description: e.target.value })
                     }
                 />
+                <Input
+                    type="select"
+                    name="group"
+                    placeholder="Group"
+                    value={
+                        store.groups.find(
+                            (g: Group) => g.id === newDish.groupId
+                        )?.name || ""
+                    }
+                    options={store.groups.map((g: Group) => g.name)}
+                    containerClassName="col-span-2"
+                    disabled={loading}
+                    onChange={addGroup}
+                />
                 <div className="flex items-center gap-4 px-6">
                     <Input
                         disabled={loading}
@@ -104,10 +126,10 @@ const DishesModal = ({ editDish = null }) => {
                         name="allergies"
                         placeholder="allergies"
                         value={newDish.allergies}
-                        options={store.allergies.map(a => a.name)}
+                        options={store.allergies.map((a) => a.name)}
                         onChange={(e: string) => toggleAllergy(e)}
                     />
-                    <div className="flex flex-col items-center gap-4 pl-8 border-l">
+                    <div className="flex flex-col items-center gap-4 border-l pl-8">
                         <Input
                             type="toggle"
                             name="side"
@@ -130,7 +152,7 @@ const DishesModal = ({ editDish = null }) => {
                         />
                     </div>
                 </div>
-                <div className="flex justify-center gap-2 mx-6">
+                <div className="mx-6 flex justify-center gap-2">
                     {editDish && (
                         <button
                             className="btn-secondary-red"

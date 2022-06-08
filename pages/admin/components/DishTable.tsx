@@ -1,16 +1,17 @@
 import { useContext, useState } from "react"
 import { AdminContext } from ".."
-import { Dish } from "../../../models"
+import { Dish, Group } from "../../../models"
 import AllergiesList from "./AllergiesList"
+import Badge from "./Badge"
 import CompanionList from "./CompanionList"
 
 export default function DishTable({ dishes }) {
-    const { openModal } = useContext(AdminContext)
+    const { openModal, store } = useContext(AdminContext)
     const [search, setSearch] = useState("")
     return (
-        <div className="bg-white p-8 rounded-md w-full">
+        <div className="w-full rounded-md bg-white p-8">
             <div className="flex items-center justify-between">
-                <div className="flex bg-gray-50 items-center p-2 rounded-md">
+                <div className="flex items-center rounded-md bg-gray-50 p-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 text-gray-400"
@@ -24,14 +25,14 @@ export default function DishTable({ dishes }) {
                         />
                     </svg>
                     <input
-                        className="bg-gray-50 outline-none ml-1 block "
+                        className="ml-1 block bg-gray-50 outline-none "
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Search..."
                     />
                 </div>
-                <div className="lg:ml-40 ml-10 space-x-8">
+                <div className="ml-10 space-x-8 lg:ml-40">
                     <button
                         className="btn-primary-green"
                         onClick={() => openModal("newDish")}
@@ -42,18 +43,21 @@ export default function DishTable({ dishes }) {
             </div>
             {dishes ? (
                 <div>
-                    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                        <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                    <div className="-mx-4 overflow-x-auto px-4 py-4 sm:-mx-8 sm:px-8">
+                        <div className="inline-block min-w-full overflow-hidden rounded-lg shadow">
                             <table className="min-w-full leading-normal">
                                 <thead>
                                     <tr>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <th className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                             Name
                                         </th>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <th className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                             Allergies
                                         </th>
-                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        <th className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                            Group
+                                        </th>
+                                        <th className="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                             Companions
                                         </th>
                                     </tr>
@@ -71,18 +75,18 @@ export default function DishTable({ dishes }) {
                                                 onClick={() =>
                                                     openModal("editDish", dish)
                                                 }
-                                                className="cursor-pointer hover:bg-slate-50 transition"
+                                                className="cursor-pointer transition hover:bg-slate-50"
                                             >
-                                                <td className="px-5 py-4 border-b border-gray-200">
+                                                <td className="border-b border-gray-200 px-5 py-4">
                                                     <div className="flex items-center">
                                                         <div className="ml-3">
-                                                            <p className="text-gray-900 whitespace-no-wrap">
+                                                            <p className="whitespace-no-wrap text-gray-900">
                                                                 {dish.name}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-5 py-4 border-b border-gray-200 text-sm">
+                                                <td className="border-b border-gray-200 px-5 py-4 text-sm">
                                                     {dish.allergies.length >
                                                     0 ? (
                                                         <AllergiesList
@@ -95,7 +99,25 @@ export default function DishTable({ dishes }) {
                                                         "-"
                                                     )}
                                                 </td>
-                                                <td className="px-5 py-4 border-b border-gray-200 text-sm">
+                                                <td className="border-b border-gray-200 px-5 py-4 text-sm">
+                                                    {dish.groupId &&
+                                                    dish.groupId !== 0 ? (
+                                                        <Badge
+                                                            text={
+                                                                store.groups.find(
+                                                                    (
+                                                                        g: Group
+                                                                    ) =>
+                                                                        g.id ===
+                                                                        dish.groupId
+                                                                )?.name
+                                                            }
+                                                            size="sm"
+                                                            color="slate"
+                                                        />
+                                                    ) : null}
+                                                </td>
+                                                <td className="border-b border-gray-200 px-5 py-4 text-sm">
                                                     <CompanionList
                                                         dish={dish}
                                                     />

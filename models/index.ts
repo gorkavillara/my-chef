@@ -49,6 +49,7 @@ export interface Dish {
     notes?: Note[]
     handwrittenNotesUrl?: string
     timeLimit?: number
+    groupId?: number
 }
 
 export interface Note {
@@ -80,6 +81,12 @@ export interface Store {
     dishes?: Dish[]
     pairings?: Pairing[]
     allergies?: Allergy[]
+    groups?: Group[]
+}
+
+export interface Group {
+    id: number
+    name: string
 }
 
 export interface Settings {
