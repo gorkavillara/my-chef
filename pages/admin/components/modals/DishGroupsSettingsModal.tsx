@@ -13,7 +13,7 @@ const DishGroupsSettingsModal = ({ editDishGroup = null }) => {
     const [loading, setLoading] = useState(false)
     const { store, setStore, closeModal } = useContext(AdminContext)
     const getNewId = () =>
-        store && store.groups
+        store && store.groups && store.groups.length > 0
             ? store.groups.reduce(
                   (max: number, group: Group) =>
                       group.id > max ? group.id : max,

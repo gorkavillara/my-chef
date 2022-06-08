@@ -83,9 +83,9 @@ export const updateDish = async ({ dish, store }) => {
     const menus = store.menus.map((m: Menu) => {
         return {
             ...m,
-            dishes: m.dishes.map((d: Dish) => 
+            dishes: m.dishes.map((d: Dish) =>
                 d.name === dish.name ? dish : d
-            )
+            ),
         }
     })
     const newStore = { ...store, dishes, menus }
@@ -152,10 +152,19 @@ export const updateDishGroup = async ({ group, store }) => {
 }
 
 export const deleteDishGroup = async ({ group, store }) => {
-    const groups = store.groups.filter(
-        (g: Group) => g.name !== group.name
+    const groups = store.groups.filter((g: Group) => g.name !== group.name)
+    const dishes = store.dishes.map((dish: Dish) =>
+        dish.groupId === group.id ? { ...dish, groupId: 0 } : dish
     )
-    const newStore = { ...store, groups }
+    const menus = store.menus.map((menu: Menu) => {
+        return {
+            ...menu,
+            dishes: menu.dishes.map((dish: Dish) =>
+                dish.groupId === group.id ? { ...dish, groupId: 0 } : dish
+            ),
+        }
+    })
+    const newStore = { ...store, groups, dishes, menus }
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
 }
