@@ -62,8 +62,8 @@ const ActiveCard = ({
                   }
                 : d
         )
-        let newMenu
-        let preparingDish
+        let newMenu: Menu
+        let preparingDish: Dish
         // Si prepareNext -> Chequeamos cuál es el siguiente plato y si forma parte de un grupo lo ponemos a tope
         if (!prepareNext) {
             newMenu = { ...booking.menu, dishes: newDishes }

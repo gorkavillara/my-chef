@@ -50,6 +50,7 @@ export interface Dish {
     handwrittenNotesUrl?: string
     timeLimit?: number
     groupId?: number
+    pairings?: Pairing[]
 }
 
 export interface Note {

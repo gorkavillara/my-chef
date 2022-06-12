@@ -171,14 +171,10 @@ const DishDisplayActive = ({
                 className="flex gap-1"
                 onClick={() => openModal("dishOptions", { booking, dish })}
             >
-                {dish.wine ? (
-                    booking.pairings?.length > 0 ? (
-                        booking.pairings?.map((pairing: Pairing, i: number) => (
-                            <Color size="lg" key={i} color={pairing.color} />
-                        ))
-                    ) : (
-                        <Color size="lg" color="waiting" />
-                    )
+                {dish.pairings && dish.pairings?.length > 0 ? (
+                    dish.pairings?.map((pairing: Pairing, i: number) => (
+                        <Color size="lg" key={i} color={pairing.color} />
+                    ))
                 ) : (
                     <Color size="lg" color="disabled" />
                 )}

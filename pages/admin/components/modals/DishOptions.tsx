@@ -5,12 +5,14 @@ import {
     deleteBookingDish,
     updateBookingDish,
 } from "../../../../controllers/DBController"
-import { Dish } from "../../../../models"
+import { Dish, Pairing } from "../../../../models"
+import Color from "../Color"
 import Input from "../forms/Input"
 
 const DishOptions = ({ booking, dish }) => {
     const [loading] = useState(false)
-    const { bookings, closeModal, setBookings, store } = useContext(AdminContext)
+    const { bookings, closeModal, setBookings, store } =
+        useContext(AdminContext)
     const [newDish, setNewDish] = useState<Dish>(dish)
 
     const toggleAllergy = (allergy: string) => {
@@ -50,6 +52,31 @@ const DishOptions = ({ booking, dish }) => {
             .catch((e) => console.error(e))
     }
 
+    const togglePairing = (pairingName: string) => {
+        if (newDish.pairings?.some((p: Pairing) => p.name === pairingName)) {
+            const pairings = newDish.pairings.filter(
+                (p: Pairing) => p.name !== pairingName
+            )
+            setNewDish({ ...newDish, pairings })
+        } else {
+            setNewDish({
+                ...newDish,
+                pairings: newDish.pairings
+                    ? [
+                          ...newDish.pairings,
+                          store.pairings.find(
+                              (p: Pairing) => p.name === pairingName
+                          ),
+                      ]
+                    : [
+                          store.pairings.find(
+                              (p: Pairing) => p.name === pairingName
+                          ),
+                      ],
+            })
+        }
+    }
+
     return newDish ? (
         <div className="flex flex-col gap-4">
             <h1 className="text-lg font-semibold">Edit Dish {dish.name}</h1>
@@ -61,10 +88,10 @@ const DishOptions = ({ booking, dish }) => {
                         name="allergies"
                         placeholder="allergies"
                         value={newDish.allergies}
-                        options={store.allergies.map(a => a.name)}
+                        options={store.allergies.map((a) => a.name)}
                         onChange={(e: string) => toggleAllergy(e)}
                     />
-                    <div className="flex flex-col items-center gap-4 pl-8 border-l">
+                    <div className="flex flex-col items-center gap-4 border-l pl-8">
                         <Input
                             type="toggle"
                             name="side"
@@ -75,19 +102,32 @@ const DishOptions = ({ booking, dish }) => {
                                 setNewDish({ ...newDish, side: !newDish.side })
                             }
                         />
-                        <Input
-                            type="toggle"
-                            name="wine"
-                            placeholder="Wine"
-                            value={newDish.wine}
-                            disabled={loading}
-                            onChange={() =>
-                                setNewDish({ ...newDish, wine: !newDish.wine })
-                            }
-                        />
                     </div>
                 </div>
-                <div className="flex justify-center gap-2 mx-6">
+                <div className="flex flex-col gap-4 px-6">
+                    <span className="text-lg uppercase">Pairings</span>
+                    <div className="flex flex-wrap gap-2">
+                        {store.pairings.map((p: Pairing) => (
+                            <button
+                                className={`flex items-center gap-4 rounded-lg border-2 py-3 px-6 text-lg disabled:opacity-25 ${
+                                    newDish.pairings?.some(
+                                        (pairing: Pairing) =>
+                                            p.name === pairing.name
+                                    )
+                                        ? "border-green-400 bg-green-200"
+                                        : "border-slate-100 bg-slate-50"
+                                }`}
+                                key={p.name}
+                                onClick={() => togglePairing(p.name)}
+                                disabled={loading}
+                            >
+                                <span>{p.name}</span>
+                                <Color color={p.color} />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div className="mx-6 flex justify-center gap-2">
                     <button
                         className="btn-secondary-red"
                         onClick={() =>

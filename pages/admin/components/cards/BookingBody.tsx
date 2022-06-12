@@ -21,22 +21,13 @@ const BookingBody = ({
     const { openModal } = useContext(AdminContext)
     return booking && booking.menu?.dishes ? (
         <div className="border-t">
-            <div className="flex py-2 px-2 gap-4 items-center justify-between text-2xl text-slate-800">
+            <div className="flex items-center justify-between gap-4 py-2 px-2 text-3xl text-slate-800">
                 <span className="p-2">
                     <BiDish />
                 </span>
-                <button
-                    className={`${
-                        booking.pairings
-                            ? booking.pairings?.length === 0
-                                ? "bg-red-100 animate-pulse"
-                                : "bg-green-100"
-                            : "bg-red-100 animate-pulse"
-                    } p-2 rounded-lg`}
-                    onClick={() => openModal("pairings", booking)}
-                >
+                <span className="p-2">
                     <GiWineGlass />
-                </button>
+                </span>
             </div>
             {booking.menu.dishes.map((dish, i) => (
                 <DishDisplay
@@ -52,7 +43,7 @@ const BookingBody = ({
             ))}
         </div>
     ) : (
-        <div className="border-t p-4 flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 border-t p-4">
             <span className="text-center">
                 There is no menu assigned to this booking
             </span>

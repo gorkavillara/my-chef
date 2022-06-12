@@ -109,7 +109,7 @@ const General = () => {
                 </label>
             </div>
             <div className="col-span-2 flex justify-end">
-                <button className="btn-primary-green text-lg py-3 px-6" onClick={update}>
+                <button className="btn-primary-green" onClick={update}>
                     Update Settings
                 </button>
             </div>

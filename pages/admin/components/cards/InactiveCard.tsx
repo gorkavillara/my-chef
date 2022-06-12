@@ -24,25 +24,33 @@ const InactiveCard = ({
 
     return booking ? (
         <div
-            className="bg-white rounded-xl relative flex flex-col"
+            className="relative flex flex-col rounded-xl bg-white"
             onClick={onClick}
         >
             <div className="grid grid-cols-2 p-2">
-                <div className={`
-                    text-left col-span-2 flex items-center gap-4 rounded-lg p-2
-                    ${ booking.dinnerStatus === "arrived" && "bg-yellow-100 text-yellow-600" }
-                    ${ booking.dinnerStatus === "seated" && "bg-green-100 text-green-600" }
-                `}>
-                    <span className="font-semibold text-3xl">TABLE: </span>
+                <div
+                    className={`
+                    col-span-2 flex items-center gap-4 rounded-lg p-2 text-left
+                    ${
+                        booking.dinnerStatus === "arrived" &&
+                        "bg-yellow-100 text-yellow-600"
+                    }
+                    ${
+                        booking.dinnerStatus === "seated" &&
+                        "bg-green-100 text-green-600"
+                    }
+                `}
+                >
+                    <span className="text-3xl font-semibold">TABLE: </span>
                     <span>{booking.table}</span>
                 </div>
-                <div className="p-1 flex gap-1 flex-wrap">
+                <div className="flex flex-wrap gap-1 p-1">
                     <span className="font-semibold">NAME: </span>
                     <span>{booking.name}</span>
                 </div>
-                <div className="p-1 flex gap-1 flex-wrap items-center">
+                <div className="flex flex-wrap items-center gap-1 p-1">
                     <span className="font-semibold">ALLERG:</span>
-                    <span className="w-5 h-5 rounded-full text-sm bg-red-400 text-white flex justify-center items-center p-1">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-400 p-1 text-sm text-white">
                         <span>
                             {booking.allergies
                                 ? booking.allergies.length
@@ -50,7 +58,7 @@ const InactiveCard = ({
                         </span>
                     </span>
                 </div>
-                <div className="p-1 flex gap-1 flex-wrap">
+                <div className="flex flex-wrap gap-1 p-1">
                     <span className="font-semibold">TIME: </span>
                     <span>
                         {time.toLocaleTimeString("es-ES", {
@@ -59,28 +67,20 @@ const InactiveCard = ({
                         })}
                     </span>
                 </div>
-                <div className="p-1 flex gap-1 flex-wrap">
+                <div className="flex flex-wrap gap-1 p-1">
                     <span className="font-semibold">NATION: </span>
                     <span>{booking.nationality}</span>
                 </div>
             </div>
             {booking.menu?.dishes ? (
                 <div className="border-t">
-                    <div className="flex py-1 px-2 gap-4 items-center justify-between text-lg text-slate-800">
+                    <div className="flex items-center justify-between gap-4 py-1 px-2 text-lg text-slate-800">
                         <span className="p-1">
                             <BiDish />
                         </span>
-                        <div
-                            className={`${
-                                booking.pairings
-                                    ? booking.pairings?.length === 0
-                                        ? "bg-red-100"
-                                        : "bg-green-100"
-                                    : "bg-red-100"
-                            } p-1 rounded-lg`}
-                        >
+                        <span className="p-1">
                             <GiWineGlass />
-                        </div>
+                        </span>
                     </div>
                     {booking.menu.dishes.map((dish, i) => (
                         <DishDisplayInactive
@@ -91,7 +91,7 @@ const InactiveCard = ({
                     ))}
                 </div>
             ) : (
-                <div className="border-t p-4 flex flex-col items-center gap-4">
+                <div className="flex flex-col items-center gap-4 border-t p-4">
                     <span className="text-center">
                         There is no menu assigned to this booking
                     </span>
@@ -104,13 +104,13 @@ const InactiveCard = ({
                 </div>
             )}
             <div className="flex flex-grow border-t">
-                <div className="flex-grow p-2 text-left items-center flex">
+                <div className="flex flex-grow items-center p-2 text-left">
                     <h1 className="text-sm font-semibold">Notes</h1>
                     <span className="text-sm">{booking.notes}</span>
                 </div>
                 {booking.status === "open" && (
                     <div
-                        className={`p-2 flex rounded-br-xl transition items-center outline-none 
+                        className={`flex items-center rounded-br-xl p-2 outline-none transition 
                   ${
                       !booking.greeted || booking.greeted === ""
                           ? "border-l text-red-500"
@@ -118,17 +118,17 @@ const InactiveCard = ({
                   }
                   ${
                       booking.greeted === "greeting"
-                          ? "border-l text-yellow-600 bg-yellow-100"
+                          ? "border-l bg-yellow-100 text-yellow-600"
                           : ""
                   }
                   ${
                       booking.greeted === "greeted"
-                          ? "text-white bg-green-400 line-through"
+                          ? "bg-green-400 text-white line-through"
                           : ""
                   }
                       `}
                     >
-                        <h1 className="text-sm font-semibold py-4">Welcome</h1>
+                        <h1 className="py-4 text-sm font-semibold">Welcome</h1>
                     </div>
                 )}
             </div>

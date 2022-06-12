@@ -6,7 +6,8 @@ import {
     updateDish,
     deleteDish as delDish,
 } from "../../../../controllers/DBController"
-import { Dish, Group } from "../../../../models"
+import { Allergy, Dish, Group, Pairing } from "../../../../models"
+import Color from "../Color"
 import Input from "../forms/Input"
 
 const DishesModal = ({ editDish = null }) => {
@@ -70,6 +71,31 @@ const DishesModal = ({ editDish = null }) => {
         }
     }
 
+    const togglePairing = (pairingName: string) => {
+        if (newDish.pairings?.some((p: Pairing) => p.name === pairingName)) {
+            const pairings = newDish.pairings.filter(
+                (p: Pairing) => p.name !== pairingName
+            )
+            setNewDish({ ...newDish, pairings })
+        } else {
+            setNewDish({
+                ...newDish,
+                pairings: newDish.pairings
+                    ? [
+                          ...newDish.pairings,
+                          store.pairings.find(
+                              (p: Pairing) => p.name === pairingName
+                          ),
+                      ]
+                    : [
+                          store.pairings.find(
+                              (p: Pairing) => p.name === pairingName
+                          ),
+                      ],
+            })
+        }
+    }
+
     const addGroup = (e: any) =>
         setNewDish({
             ...newDish,
@@ -119,14 +145,14 @@ const DishesModal = ({ editDish = null }) => {
                     disabled={loading}
                     onChange={addGroup}
                 />
-                <div className="flex items-center gap-4 px-6">
+                <div className="flex items-center gap-4">
                     <Input
                         disabled={loading}
                         type="chip-select"
                         name="allergies"
                         placeholder="allergies"
                         value={newDish.allergies}
-                        options={store.allergies.map((a) => a.name)}
+                        options={store.allergies.map((a: Allergy) => a.name)}
                         onChange={(e: string) => toggleAllergy(e)}
                     />
                     <div className="flex flex-col items-center gap-4 border-l pl-8">
@@ -140,7 +166,7 @@ const DishesModal = ({ editDish = null }) => {
                                 setNewDish({ ...newDish, side: !newDish.side })
                             }
                         />
-                        <Input
+                        {/* <Input
                             type="toggle"
                             name="wine"
                             placeholder="Wine"
@@ -149,7 +175,30 @@ const DishesModal = ({ editDish = null }) => {
                             onChange={() =>
                                 setNewDish({ ...newDish, wine: !newDish.wine })
                             }
-                        />
+                        /> */}
+                    </div>
+                </div>
+                <div className="flex flex-col px-6 gap-4">
+                    <span className="text-lg uppercase">Pairings</span>
+                    <div>
+                        {store.pairings.map((p: Pairing) => (
+                            <button
+                                className={`flex items-center gap-4 rounded-lg border-2 py-3 px-6 text-lg disabled:opacity-25 ${
+                                    newDish.pairings?.some(
+                                        (pairing: Pairing) =>
+                                            p.name === pairing.name
+                                    )
+                                        ? "border-green-400 bg-green-200"
+                                        : "border-slate-100 bg-slate-50"
+                                }`}
+                                key={p.name}
+                                onClick={() => togglePairing(p.name)}
+                                disabled={loading}
+                            >
+                                <span>{p.name}</span>
+                                <Color color={p.color} />
+                            </button>
+                        ))}
                     </div>
                 </div>
                 <div className="mx-6 flex justify-center gap-2">
