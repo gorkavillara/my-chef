@@ -5,15 +5,16 @@ import Image from "next/image"
 import michelinSvg from "../../../utils/svgs/michelin-star.svg"
 import { Settings } from "../../../models"
 import { updateSettings } from "../../../controllers/DBController"
+import Input from "../components/forms/Input"
 
 const StarRender = ({ amount }) => {
     return (
-        <span className="flex gap-2 items-center">
+        <span className="flex items-center gap-2">
             {amount > 0
                 ? Array(amount)
                       .fill(0)
                       .map((_, i) => (
-                          <span key={i} className="w-5 flex items-center">
+                          <span key={i} className="flex w-5 items-center">
                               <Image src={michelinSvg} alt="michelin-star" />
                           </span>
                       ))
@@ -24,13 +25,13 @@ const StarRender = ({ amount }) => {
 
 const StarSelector = ({ michelin_stars, setStars }) => {
     return (
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
             {[0, 1, 2, 3].map((num) => (
                 <button
                     key={num}
-                    className={`py-3 px-4 rounded-lg border ${
+                    className={`rounded-lg border py-3 px-4 ${
                         num === michelin_stars &&
-                        "border-green-500 border-2 bg-green-50"
+                        "border-2 border-green-500 bg-green-50"
                     }`}
                     onClick={() => setStars(num)}
                 >
@@ -60,14 +61,14 @@ const General = () => {
                 console.error(e)
                 setSettings(store.settings)
                 return "Oops, there was a problem! We could not update your settings 😨"
-            }
+            },
         })
     }
 
     return settings ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-            <label className="col-span-2 sm:col-span-1 flex flex-col">
-                <span className="font-semibold capitalize mb-2">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">
+            <label className="col-span-2 flex flex-col sm:col-span-1">
+                <span className="mb-2 font-semibold capitalize">
                     Venue Name
                 </span>
                 <input
@@ -76,11 +77,11 @@ const General = () => {
                     onChange={(e) =>
                         setSettings({ ...settings, name: e.target.value })
                     }
-                    className="p-2 text-lg border rounded-xl focus:ring ring-green-300 outline-none"
+                    className="rounded-xl border p-2 text-lg outline-none ring-green-300 focus:ring"
                 />
             </label>
-            <label className="col-span-2 sm:col-span-1 flex flex-col">
-                <span className="font-semibold capitalize mb-2 flex gap-2">
+            <label className="col-span-2 flex flex-col sm:col-span-1">
+                <span className="mb-2 flex gap-2 font-semibold capitalize">
                     <span className="w-5">
                         <Image src={michelinSvg} alt="michelin-star" />
                     </span>{" "}
@@ -95,7 +96,7 @@ const General = () => {
             </label>
             <div className="col-span-2">
                 <label className="flex flex-col">
-                    <span className="font-semibold capitalize mb-2">
+                    <span className="mb-2 font-semibold capitalize">
                         Your Motto Phrase
                     </span>
                     <input
@@ -104,9 +105,34 @@ const General = () => {
                         onChange={(e) =>
                             setSettings({ ...settings, motto: e.target.value })
                         }
-                        className="p-2 text-lg border rounded-xl focus:ring ring-green-300 outline-none"
+                        className="rounded-xl border p-2 text-lg outline-none ring-green-300 focus:ring"
                     />
                 </label>
+            </div>
+            <h3 className="text-2xl">App Settings</h3>
+            <div className="col-span-2 flex flex-col gap-4">
+                <Input
+                    type="toggle"
+                    name="auto select"
+                    value={settings.autoSelect ? settings.autoSelect : false}
+                    onChange={() =>
+                        setSettings({
+                            ...settings,
+                            autoSelect: !settings.autoSelect,
+                        })
+                    }
+                />
+                <Input
+                    type="toggle"
+                    name="random dish selection"
+                    value={settings.randomSelection}
+                    onChange={() =>
+                        setSettings({
+                            ...settings,
+                            randomSelection: !settings.randomSelection,
+                        })
+                    }
+                />
             </div>
             <div className="col-span-2 flex justify-end">
                 <button className="btn-primary-green" onClick={update}>

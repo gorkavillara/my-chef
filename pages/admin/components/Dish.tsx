@@ -22,6 +22,9 @@ const Dish = ({ dish, allergies, onClick, groupName }) => (
                 >
                     {dish.name}
                 </span>
+                {groupName && (
+                    <Badge text={groupName} color="slate" size="base" opacity={50} />
+                )}
             </div>
         ) : dish.status === "served" ? (
             <div className="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-2 text-2xl italic text-slate-300">
@@ -36,6 +39,9 @@ const Dish = ({ dish, allergies, onClick, groupName }) => (
                 >
                     {dish.name}
                 </span>
+                {groupName && (
+                    <Badge text={groupName} color="slate" size="base" opacity={25} />
+                )}
             </div>
         ) : (
             <div

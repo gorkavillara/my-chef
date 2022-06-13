@@ -97,6 +97,8 @@ export interface Settings {
     michelin_stars?: number
     motto?: string
     integrations?: Integration[]
+    autoSelect: boolean
+    randomSelection: boolean
 }
 
 export interface Integration {
