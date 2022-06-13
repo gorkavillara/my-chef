@@ -1,6 +1,5 @@
 import React from "react"
-import { Pairing } from "../../../models"
-import Color from "./Color"
+import InactivePairings from "./cards/InactivePairings"
 
 const Dish = ({ dish, allergies }) =>
     dish.status === "preparing" ? (
@@ -80,15 +79,7 @@ const DishDisplayInactive = ({ dish, booking }) => {
                     )}
                 </>
             )}
-            <div className="flex gap-1">
-                {dish.pairings && dish.pairings?.length > 0 ? (
-                    dish.pairings?.map((pairing: Pairing, i: number) => (
-                        <Color key={i} color={pairing.color} />
-                    ))
-                ) : (
-                    <Color color="disabled" />
-                )}
-            </div>
+            <InactivePairings booking={booking} dish={dish} />
         </div>
     ) : null
 }

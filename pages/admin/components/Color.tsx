@@ -1,6 +1,12 @@
 import React from "react"
 
-const Color = ({ color, size = "md", className = "" }) => (
+interface ColorInterface {
+  color: string
+  size?: "sm" | "md" | "lg" | "xl"
+  className?: string
+}
+
+const Color = ({ color, size = "md", className = "" } : ColorInterface) => (
     <div
         className={`
       ${size === "sm" && "w-1 h-1"}

@@ -3,9 +3,9 @@ import { MdDraw } from "react-icons/md"
 import { IoText } from "react-icons/io5"
 import { FaRestroom } from "react-icons/fa"
 import { AdminContext } from ".."
-import { Booking, Dish, Group, Note, Pairing } from "../../../models"
-import Color from "./Color"
+import { Booking, Dish, Group, Note } from "../../../models"
 import Badge from "./Badge"
+import ActivePairings from "./cards/ActivePairings"
 
 const Dish = ({ dish, allergies, onClick, groupName }) => (
     <button className="flex-grow" onClick={onClick}>
@@ -167,18 +167,11 @@ const DishDisplayActive = ({
                     <FaRestroom />
                 </button>
             </div>
-            <button
-                className="flex gap-1"
-                onClick={() => openModal("dishOptions", { booking, dish })}
-            >
-                {dish.pairings && dish.pairings?.length > 0 ? (
-                    dish.pairings?.map((pairing: Pairing, i: number) => (
-                        <Color size="lg" key={i} color={pairing.color} />
-                    ))
-                ) : (
-                    <Color size="lg" color="disabled" />
-                )}
-            </button>
+            <ActivePairings
+                booking={booking}
+                dish={dish}
+                openModal={openModal}
+            />
         </div>
     ) : null
 }

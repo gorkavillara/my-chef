@@ -25,9 +25,18 @@ const BookingBody = ({
                 <span className="p-2">
                     <BiDish />
                 </span>
-                <span className="p-2">
+                <button
+                    className={`${
+                        booking.pairings
+                            ? booking.pairings?.length === 0
+                                ? "bg-red-100 animate-pulse"
+                                : "bg-green-100"
+                            : "bg-red-100 animate-pulse"
+                    } p-2 rounded-lg`}
+                    onClick={() => openModal("pairings", booking)}
+                >
                     <GiWineGlass />
-                </span>
+                </button>
             </div>
             {booking.menu.dishes.map((dish, i) => (
                 <DishDisplay
