@@ -9,12 +9,12 @@ const InactivePairings = ({
     booking: Booking
     dish: Dish
 }) => {
-    const activePairings = booking.pairings?.filter((bookPairing: Pairing) =>
+    const activePairings = booking && booking.pairings?.filter((bookPairing: Pairing) =>
         dish.pairings?.some(
             (dishPairing: Pairing) => bookPairing.name === dishPairing.name
         )
     )
-    return (
+    return booking && (
         <span
             className="flex gap-1"
         >

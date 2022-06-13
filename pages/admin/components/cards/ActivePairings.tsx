@@ -11,12 +11,12 @@ const ActivePairings = ({
     dish: Dish
     openModal: Function
 }) => {
-    const activePairings = booking.pairings?.filter((bookPairing: Pairing) =>
+    const activePairings = booking && booking.pairings?.filter((bookPairing: Pairing) =>
         dish.pairings?.some(
             (dishPairing: Pairing) => bookPairing.name === dishPairing.name
         )
     )
-    return (
+    return booking && (
         <button
             className="flex gap-1"
             onClick={() => openModal("dishOptions", { booking, dish })}

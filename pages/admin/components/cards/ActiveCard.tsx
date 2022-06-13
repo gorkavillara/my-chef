@@ -11,9 +11,6 @@ import CardPopup from "./CardPopup"
 import BookingFooter from "./BookingFooter"
 import BookingBody from "./BookingBody"
 
-const autoSelect: boolean = true
-const notRandom: boolean = true
-
 const ActiveCard = ({
     booking,
     watchTime,
@@ -30,7 +27,7 @@ const ActiveCard = ({
     stopped: boolean
 }) => {
     const [activePopup, setActivePopup] = useState<boolean>(false)
-    const { bookings, setBookings } = useContext(AdminContext)
+    const { store, bookings, setBookings } = useContext(AdminContext)
     const changeGreeted = async () => {
         let greeted = ""
         if (booking.greeted === "" || !booking.greeted) {
@@ -127,7 +124,7 @@ const ActiveCard = ({
         const nextDish = await setDishes(
             activeDishes,
             newStatus,
-            prepareNext(autoSelect, newStatus, booking.menu, i)
+            prepareNext(store.settings.autoSelect, newStatus, booking.menu, i)
         )
         return nextDish
             ? setTimeLimit(nextDish.timeLimit ? nextDish.timeLimit : 0)
@@ -157,7 +154,7 @@ const ActiveCard = ({
                     stopped={stopped}
                     toggleStop={toggleStop}
                     changeStatus={changeStatus}
-                    notRandom={notRandom}
+                    notRandom={!store.settings.randomSelection}
                 />
                 <BookingFooter
                     booking={booking}
