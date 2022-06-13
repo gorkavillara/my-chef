@@ -73,7 +73,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
         if (booking.name === "") return false
         // if (booking.table === "") return false
         if (booking.pax === 0) return false
-        if (booking.nationality === "") return false
+        // if (booking.nationality === "") return false
         // if (booking.time === "") return false;
         return true
     }
