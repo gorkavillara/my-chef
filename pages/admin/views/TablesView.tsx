@@ -59,8 +59,8 @@ const TablesView = () => {
                         onClick={() => setFilter("all")}
                         className={`${
                             filter === "all"
-                                ? "btn-primary-blue"
-                                : "btn-secondary-blue"
+                                ? "btn-primary-blue px-4 py-1"
+                                : "btn-secondary-blue px-4 py-1"
                         }`}
                     >
                         All ({bookings.filter(todayBookings).length})
@@ -69,8 +69,8 @@ const TablesView = () => {
                         onClick={() => setFilter("open")}
                         className={`${
                             filter === "open"
-                                ? "btn-primary-blue"
-                                : "btn-secondary-blue"
+                                ? "btn-primary-blue px-4 py-1"
+                                : "btn-secondary-blue px-4 py-1"
                         }`}
                     >
                         Open (
@@ -88,8 +88,8 @@ const TablesView = () => {
                         onClick={() => setFilter("closed")}
                         className={`${
                             filter === "closed"
-                                ? "btn-primary-blue"
-                                : "btn-secondary-blue"
+                                ? "btn-primary-blue px-4 py-1"
+                                : "btn-secondary-blue px-4 py-1"
                         }`}
                     >
                         Closed (
