@@ -99,8 +99,9 @@ const DishesModal = ({ editDish = null }) => {
     const addGroup = (e: any) =>
         setNewDish({
             ...newDish,
-            groupId: store.groups.find((g: Group) => g.name === e.target.value)
-                .id,
+            groupId: e.target.value
+                ? store.groups.find((g: Group) => g.name === e.target.value).id
+                : 0,
         })
 
     return store ? (
@@ -178,7 +179,7 @@ const DishesModal = ({ editDish = null }) => {
                         /> */}
                     </div>
                 </div>
-                <div className="flex flex-col px-6 gap-4">
+                <div className="flex flex-col gap-4 px-6">
                     <span className="text-lg uppercase">Pairings</span>
                     <div>
                         {store.pairings.map((p: Pairing) => (
