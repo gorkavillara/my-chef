@@ -63,7 +63,10 @@ const TablesView = () => {
                                 : "btn-secondary-blue px-4 py-1"
                         }`}
                     >
-                        All ({bookings.filter(todayBookings).length})
+                        All ({bookings.filter(todayBookings).filter(
+                                    (booking: Booking) =>
+                                        booking.status !== "deleted"
+                                ).length})
                     </button>
                     <button
                         onClick={() => setFilter("open")}

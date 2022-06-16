@@ -8,7 +8,7 @@ export interface Booking {
     notes?: string
     table?: string
     menu?: Menu
-    status?: 'open' | 'waiting' | 'closed'
+    status?: 'open' | 'waiting' | 'closed' | 'deleted'
     dinnerStatus?: 'default' | 'arrived' | 'seated'
     handwrittenNotesUrl?: string
     pairings?: Pairing[]

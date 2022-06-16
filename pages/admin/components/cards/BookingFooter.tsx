@@ -1,14 +1,19 @@
-import React, { useContext, Dispatch, SetStateAction, MouseEventHandler } from "react"
+import React, {
+    useContext,
+    Dispatch,
+    SetStateAction,
+    MouseEventHandler,
+} from "react"
 import { AdminContext } from "../.."
 import { Booking } from "../../../../models"
-import { HiOutlinePlus } from "react-icons/hi"
+import { HiOutlinePlus, HiTrash } from "react-icons/hi"
 import { BsThreeDots } from "react-icons/bs"
 
 const BookingFooter = ({
     booking,
     activePopup,
     setActivePopup,
-    changeGreeted
+    changeGreeted,
 }: {
     booking: Booking
     activePopup: boolean
@@ -28,29 +33,29 @@ const BookingFooter = ({
             {booking.status === "open" && (
                 <button
                     onClick={changeGreeted}
-                    className={`p-4 flex rounded-br-xl transition items-center outline-none 
+                    className={`flex items-center rounded-br-xl p-4 outline-none transition 
                   ${
                       !booking.greeted || booking.greeted === ""
-                          ? "border-l text-red-500 bg-red-100 animate-pulse"
+                          ? "animate-pulse border-l bg-red-100 text-red-500"
                           : ""
                   }
                   ${
                       booking.greeted === "greeting"
-                          ? "border-l text-yellow-600 bg-yellow-100"
+                          ? "border-l bg-yellow-100 text-yellow-600"
                           : ""
                   }
                   ${
                       booking.greeted === "greeted"
-                          ? "text-white bg-green-400 line-through"
+                          ? "bg-green-400 text-white line-through"
                           : ""
                   }
                       `}
                 >
-                    <h1 className="text-xl font-semibold py-4">Welcome</h1>
+                    <h1 className="py-4 text-xl font-semibold">Welcome</h1>
                 </button>
             )}
             <button
-                className="absolute right-0 top-1 w-8 h-8 cursor-pointer transition flex justify-center items-center text-slate-800 hover:bg-gray-400 hover:text-white rounded-full z-50"
+                className="absolute right-0 top-1 z-50 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-slate-800 transition hover:bg-gray-400 hover:text-white"
                 onClick={() => setActivePopup(!activePopup)}
             >
                 <BsThreeDots className="rotate-90 text-xl opacity-25" />
@@ -58,23 +63,31 @@ const BookingFooter = ({
             <div
                 className={`absolute top-8 right-2 transition ${
                     !activePopup && "scale-0"
-                } bg-gray-100 flex flex-col rounded shadow overflow-hidden z-50`}
+                } z-50 flex flex-col overflow-hidden rounded bg-gray-100 shadow`}
             >
                 {booking.status === "open" && (
                     <h3
-                        className="bg-red-500 text-white px-6 cursor-pointer flex gap-2 items-center py-2"
+                        className="flex cursor-pointer items-center gap-2 bg-red-500 px-6 py-2 text-white"
                         onClick={() => openModal("closeBooking", booking)}
                     >
                         <HiOutlinePlus className="rotate-45" /> Close Booking
                     </h3>
                 )}
                 {booking.status === "closed" && (
-                    <h3
-                        className="text-green-600 hover:bg-green-600 hover:text-white px-6 cursor-pointer flex gap-2 items-center py-2"
-                        onClick={() => openModal("openBooking", booking)}
-                    >
-                        <HiOutlinePlus /> Reopen Booking
-                    </h3>
+                    <div className="">
+                        <button
+                            className="flex cursor-pointer items-center gap-2 px-6 py-2 text-green-600 hover:bg-green-600 hover:text-white"
+                            onClick={() => openModal("openBooking", booking)}
+                        >
+                            <HiOutlinePlus /> Reopen Booking
+                        </button>
+                        <button
+                            className="flex cursor-pointer items-center gap-2 bg-red-600 px-6 py-2 text-white"
+                            onClick={() => openModal("deleteBooking", booking)}
+                        >
+                            <HiTrash /> Delete Permanently
+                        </button>
+                    </div>
                 )}
             </div>
         </div>

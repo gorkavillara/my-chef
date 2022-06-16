@@ -13,6 +13,7 @@ import TablesModal from "./modals/TablesModal"
 import TablesModalMultiple from "./modals/TablesModalMultiple"
 import MenusModal from "./modals/MenusModal"
 import CloseBooking from "./modals/CloseBooking"
+import DeleteBooking from "./modals/DeleteBooking"
 import OpenBooking from "./modals/OpenBooking"
 import PairingsModal from "./modals/PairingsModal"
 import Time from "./modals/Time"
@@ -97,6 +98,7 @@ const ModalController = ({
             {modalContent === "editMenu" && <MenusModal editMenu={data} />}
             {modalContent === "closeBooking" && <CloseBooking booking={data} />}
             {modalContent === "openBooking" && <OpenBooking booking={data} />}
+            {modalContent === "deleteBooking" && <DeleteBooking booking={data} />}
             {modalContent === "time" && <Time booking={data} />}
             {modalContent === "nationality" && <Nationality booking={data} />}
             {modalContent === "dishOptions" && (
