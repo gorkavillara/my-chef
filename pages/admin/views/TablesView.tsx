@@ -9,8 +9,7 @@ import MottoPhrase from "../components/MottoPhrase"
 const TablesView = () => {
     const [filter, setFilter] = useState("all")
     const [loading, setLoading] = useState(false)
-    const { bookings, date, refreshBookings, store } =
-        useContext(AdminContext)
+    const { bookings, date, refreshBookings, store } = useContext(AdminContext)
     const todayBookings = (booking: Booking) => {
         const d = new Date(booking.time.seconds * 1000)
         return (
@@ -35,10 +34,10 @@ const TablesView = () => {
         })
     }
     return bookings ? (
-        <div className="min-h-full w-full flex flex-col px-4 pb-16 bg-slate-100">
-            <div className="flex items-center flex-col sm:flex-row justify-between sm:pl-6 py-5 gap-2">
-                <div className="flex gap-2 items-center justify-center">
-                    <h1 className="font-semibold text-lg ml-10">
+        <div className="flex min-h-full w-full flex-col bg-slate-100 px-4 pb-16">
+            <div className="flex flex-col items-center justify-between gap-2 py-5 sm:flex-row sm:pl-6">
+                <div className="flex items-center justify-center gap-2">
+                    <h1 className="ml-10 text-lg font-semibold">
                         Bookings: {date.toLocaleDateString("en-GB")}
                     </h1>
                     {store?.settings.integrations?.find(
@@ -46,7 +45,7 @@ const TablesView = () => {
                     ) && (
                         <button
                             onClick={refBookings}
-                            className={`text-blue-500 text-3xl sm:text-4xl px-4 ${
+                            className={`px-4 text-3xl text-blue-500 sm:text-4xl ${
                                 loading ? "animate-spin" : ""
                             }`}
                         >
@@ -63,10 +62,16 @@ const TablesView = () => {
                                 : "btn-secondary-blue px-4 py-1"
                         }`}
                     >
-                        All ({bookings.filter(todayBookings).filter(
+                        All (
+                        {
+                            bookings
+                                .filter(todayBookings)
+                                .filter(
                                     (booking: Booking) =>
                                         booking.status !== "deleted"
-                                ).length})
+                                ).length
+                        }
+                        )
                     </button>
                     <button
                         onClick={() => setFilter("open")}

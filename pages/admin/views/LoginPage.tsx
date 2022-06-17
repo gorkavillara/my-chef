@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react"
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    signInWithPopup,
     OAuthProvider,
     setPersistence,
     inMemoryPersistence,
 } from "firebase/auth"
-import ALogo from "../../../utils/svgs/ALogo_white.svg"
 
 const appleProvider = new OAuthProvider("apple.com")
 appleProvider.addScope("email")
@@ -18,7 +16,6 @@ appleProvider.setCustomParameters({
 
 import { loginUri2 } from "../../../utils/svgs/login"
 import { IoRocket, IoStar, IoWallet } from "react-icons/io5"
-import Image from "next/image"
 
 const emptyUser = {
     email: "",
@@ -54,31 +51,6 @@ const LoginPage = ({ setUser, auth }) => {
                         console.log(error)
                         setNewUser(emptyUser)
                         setErrorCode(error.code)
-                        setLoading(false)
-                    })
-            })
-            .catch((e) => {
-                console.error(e)
-            })
-    }
-
-    const appleLogin = async () => {
-        setLoading(true)
-        setErrorCode("")
-        setPersistence(auth, inMemoryPersistence)
-            .then(() => {
-                signInWithPopup(auth, appleProvider)
-                    .then((result) => {
-                        // The signed-in user info.
-                        const user = result.user
-                        auth.currentUser = result.user
-                        setLoading(false)
-                        setUser(user)
-                        // saveUserInStorage(user);
-                        // ...
-                    })
-                    .catch((error) => {
-                        console.error(error)
                         setLoading(false)
                     })
             })
@@ -147,35 +119,11 @@ const LoginPage = ({ setUser, auth }) => {
             </div>
             <div className="flex bg-white flex-col justify-center items-center gap-8 px-6 sm:px-12">
                 {route === "login" && (
-                    <div className="max-w-xl flex flex-col justify-center items-center gap-8">
+                    <div className="max-w-xl flex flex-col justify-center items-center gap-12">
                         <h1 className="text-4xl font-bold text-center">
                             Welcome to My Rapid Chef
                         </h1>
-                        <div className="flex gap-6">
-                            {/* <button
-                                className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4"
-                                onClick={googleLogin}
-                            >
-                                <img src={"/GLogo.svg"} alt="GLogo" />
-                                <span>Log In with Google</span>
-                            </button> */}
-                            <button
-                                className="bg-black rounded-lg py-2 px-8 text-white text-lg flex items-center gap-4"
-                                onClick={appleLogin}
-                            >
-                                <div className="w-5 flex items-center">
-                                    <Image src={ALogo} alt="" />
-                                </div>
-                                <span>Sign In with Apple</span>
-                            </button>
-                        </div>
-                        <div className="my-4 flex items-center gap-4 w-full sm:w-96">
-                            <div className="border-t border-slate-200 flex-grow"></div>
-                            <span className="text-slate-400">
-                                or do it via email
-                            </span>
-                            <div className="border-t border-slate-200 flex-grow"></div>
-                        </div>
+                        <h1 className="text-xl">Log Yourself In Below</h1>
                         <label className="flex flex-col gap-2 w-full items-center">
                             <span className="label-input w-full">Email</span>
                             <input
@@ -248,31 +196,6 @@ const LoginPage = ({ setUser, auth }) => {
                             Welcome to My Rapid Chef
                         </h1>
                         <h1 className="text-xl">Sign Up below</h1>
-                        <div className="flex gap-6">
-                            {/* <button
-                                className="bg-gray-200 rounded-lg p-3 text-slate-800 flex items-center gap-4"
-                                onClick={googleLogin}
-                            >
-                                <img src={"/GLogo.svg"} alt="GLogo" />
-                                <span>Sign Up with Google</span>
-                            </button> */}
-                            <button
-                                className="bg-black rounded-lg py-2 px-8 text-white text-lg flex items-center gap-4"
-                                onClick={appleLogin}
-                            >
-                                <div className="w-5 flex items-center">
-                                    <Image src={ALogo} alt="" />
-                                </div>
-                                <span>Sign up with Apple</span>
-                            </button>
-                        </div>
-                        <div className="my-4 flex items-center gap-4 w-full sm:w-96">
-                            <div className="border-t border-slate-200 flex-grow"></div>
-                            <span className="text-slate-400">
-                                or do it via email
-                            </span>
-                            <div className="border-t border-slate-200 flex-grow"></div>
-                        </div>
                         <label className="flex flex-col gap-2 w-full items-center">
                             <span className="label-input w-full">Email</span>
                             <input
