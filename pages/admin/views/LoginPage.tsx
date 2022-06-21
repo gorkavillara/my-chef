@@ -80,51 +80,51 @@ const LoginPage = ({ setUser, auth }) => {
             })
     }
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-screen">
+        <div className="grid h-screen w-screen grid-cols-1 lg:grid-cols-2">
             <div
                 style={{
                     backgroundImage: `url("${loginUri2}")`,
                     backgroundSize: "cover",
                     backgroundPosition: "bottom",
                 }}
-                className="hidden sm:flex flex-col items-center justify-center gap-8"
+                className="hidden flex-col items-center justify-center gap-8 sm:flex"
             >
                 <img
                     src="/logo_blanco_horizontal.png"
                     className={`w-80 ${loading && "animate-bounce"}`}
                     alt="logo"
                 />
-                <div className="hidden sm:flex gap-12">
-                    <div className="w-24 h-24 bg-gradient-to-tr from-yellow-400 to-orange-400 rounded-full flex justify-center items-center text-white text-5xl">
+                <div className="hidden gap-12 sm:flex">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 to-orange-400 text-5xl text-white">
                         <IoRocket />
                     </div>
-                    <div className="w-24 h-24 bg-gradient-to-tr from-blue-400 to-teal-400 rounded-full flex justify-center items-center text-white text-5xl">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-tr from-blue-400 to-teal-400 text-5xl text-white">
                         <IoStar />
                     </div>
-                    <div className="w-24 h-24 bg-gradient-to-tr from-purple-400 to-pink-400 rounded-full flex justify-center items-center text-white text-5xl">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-tr from-purple-400 to-pink-400 text-5xl text-white">
                         <IoWallet />
                     </div>
                 </div>
-                <div className="hidden sm:block w-full lg:w-56 text-center">
-                    <h1 className="text-white font-semibold text-3xl">
+                <div className="hidden w-full text-center sm:block lg:w-56">
+                    <h1 className="text-3xl font-semibold text-white">
                         Start Catering Wisely
                     </h1>
                 </div>
-                <div className="hidden lg:block w-64 text-center">
+                <div className="hidden w-64 text-center lg:block">
                     <span className="text-white">
                         A new solution for high-level restaurants looking for
                         the best quality in their service
                     </span>
                 </div>
             </div>
-            <div className="flex bg-white flex-col justify-center items-center gap-8 px-6 sm:px-12">
+            <div className="flex flex-col items-center justify-center gap-8 bg-white px-6 sm:px-12">
                 {route === "login" && (
-                    <div className="max-w-xl flex flex-col justify-center items-center gap-12">
-                        <h1 className="text-4xl font-bold text-center">
+                    <div className="flex max-w-xl flex-col items-center justify-center gap-12">
+                        <h1 className="text-center text-4xl font-bold">
                             Welcome to My Rapid Chef
                         </h1>
                         <h1 className="text-xl">Log Yourself In Below</h1>
-                        <label className="flex flex-col gap-2 w-full items-center">
+                        <label className="flex w-full flex-col items-center gap-2">
                             <span className="label-input w-full">Email</span>
                             <input
                                 type="text"
@@ -142,10 +142,10 @@ const LoginPage = ({ setUser, auth }) => {
                                     })
                                 }
                                 disabled={loading}
-                                className="w-full input-text"
+                                className="input-text w-full"
                             />
                         </label>
-                        <label className="flex flex-col gap-2 w-full items-center">
+                        <label className="flex w-full flex-col items-center gap-2">
                             <span className="label-input w-full">Password</span>
                             <input
                                 type="password"
@@ -163,22 +163,22 @@ const LoginPage = ({ setUser, auth }) => {
                                     login()
                                 }
                                 disabled={loading}
-                                className="w-full input-text"
+                                className="input-text w-full"
                             />
                         </label>
                         {errorCode === "auth/invalid-email" && (
-                            <p className="text-red-500 text-center bg-white bg-opacity-30 py-2 px-4 rounded-lg">
+                            <p className="rounded-lg bg-white bg-opacity-30 py-2 px-4 text-center text-red-500">
                                 There is no user with this email address
                             </p>
                         )}
                         {errorCode === "auth/wrong-password" && (
-                            <p className="text-red-500 text-center bg-white bg-opacity-30 py-2 px-4 rounded-lg">
+                            <p className="rounded-lg bg-white bg-opacity-30 py-2 px-4 text-center text-red-500">
                                 The password for this email is wrong
                             </p>
                         )}
                         <button
                             onClick={login}
-                            className="w-full btn-primary-green py-2 rounded"
+                            className="btn-primary-green w-full rounded py-2"
                         >
                             Submit
                         </button>
@@ -191,12 +191,12 @@ const LoginPage = ({ setUser, auth }) => {
                     </div>
                 )}
                 {route === "signup" && (
-                    <div className="max-w-xl flex flex-col justify-center items-center gap-8">
-                        <h1 className="text-4xl font-bold text-center">
+                    <div className="flex max-w-xl flex-col items-center justify-center gap-8">
+                        <h1 className="text-center text-4xl font-bold">
                             Welcome to My Rapid Chef
                         </h1>
                         <h1 className="text-xl">Sign Up below</h1>
-                        <label className="flex flex-col gap-2 w-full items-center">
+                        <label className="flex w-full flex-col items-center gap-2">
                             <span className="label-input w-full">Email</span>
                             <input
                                 type="text"
@@ -214,10 +214,10 @@ const LoginPage = ({ setUser, auth }) => {
                                     registerUser()
                                 }
                                 disabled={loading}
-                                className="w-full input-text"
+                                className="input-text w-full"
                             />
                         </label>
-                        <label className="flex flex-col gap-2 w-full items-center">
+                        <label className="flex w-full flex-col items-center gap-2">
                             <span className="label-input w-full">Password</span>
                             <input
                                 type="password"
@@ -235,10 +235,10 @@ const LoginPage = ({ setUser, auth }) => {
                                     registerUser()
                                 }
                                 disabled={loading}
-                                className="w-full input-text"
+                                className="input-text w-full"
                             />
                         </label>
-                        <label className="flex flex-col gap-2 w-full items-center">
+                        <label className="flex w-full flex-col items-center gap-2">
                             <span className="label-input w-full">
                                 Confirm Password
                             </span>
@@ -258,17 +258,17 @@ const LoginPage = ({ setUser, auth }) => {
                                     registerUser()
                                 }
                                 disabled={loading}
-                                className="w-full input-text"
+                                className="input-text w-full"
                             />
                         </label>
                         {errorCode === "register-error" && (
-                            <p className="text-red-500 text-center bg-white bg-opacity-30 py-2 px-4 rounded-lg">
+                            <p className="rounded-lg bg-white bg-opacity-30 py-2 px-4 text-center text-red-500">
                                 There has been an error, please try again later.
                             </p>
                         )}
                         <button
                             onClick={registerUser}
-                            className="w-full btn-primary-green py-2 rounded"
+                            className="btn-primary-green w-full rounded py-2"
                         >
                             Create New User
                         </button>

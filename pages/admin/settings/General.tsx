@@ -43,7 +43,7 @@ const StarSelector = ({ michelin_stars, setStars }) => {
 }
 
 const General = () => {
-    const { store, setStore } = useContext(AdminContext)
+    const { store, setStore, device_id } = useContext(AdminContext)
     const [settings, setSettings] = useState<Settings>()
     useEffect(() => {
         if (!store) return
@@ -134,7 +134,8 @@ const General = () => {
                     }
                 />
             </div>
-            <div className="col-span-2 flex justify-end">
+            <div className="col-span-2 flex justify-between">
+                <span>Device id: {device_id}</span>
                 <button className="btn-primary-green" onClick={update}>
                     Update Settings
                 </button>

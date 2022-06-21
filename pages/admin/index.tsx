@@ -63,12 +63,21 @@ interface ContextInterface {
     expanded?: boolean
     setExpanded?: Dispatch<SetStateAction<boolean>>
     refreshBookings?: Function
+    device_id?: string | string[]
 }
 
 export const AdminContext = createContext<ContextInterface>({})
 
 //eslint-disable-next-line
-const Admin = ({ user, auth }) => {
+const Admin = ({
+    user,
+    auth,
+    device_id,
+}: {
+    user: User
+    auth: Auth
+    device_id: string | string[]
+}) => {
     const [route, setRoute] = useState<string>("tables")
     const [bookings, setBookings] = useState<Booking[]>([])
     const [activeModal, setActiveModal] = useState<boolean>(false)
@@ -141,9 +150,7 @@ const Admin = ({ user, auth }) => {
         setModalData(data)
         setActiveModal(true)
     }
-    const closeModal = () => {
-        setActiveModal(false)
-    }
+    const closeModal = () => setActiveModal(false)
 
     const refreshBookings = async () => {
         // 1 - Chequea si hay algo en localstorage
@@ -162,7 +169,13 @@ const Admin = ({ user, auth }) => {
         const { venueID } = store.settings.integrations.find(
             (i) => i.provider === "sevenrooms"
         )
-        return await getTodayReservations(bookings, date, store, venueID, int_token.token)
+        return await getTodayReservations(
+            bookings,
+            date,
+            store,
+            venueID,
+            int_token.token
+        )
     }
 
     return (
@@ -191,9 +204,10 @@ const Admin = ({ user, auth }) => {
                     expanded,
                     setExpanded,
                     refreshBookings,
+                    device_id
                 }}
             >
-                <div className="flex flex-col-reverse sm:flex-row h-full w-full items-stretch scroll-hidden">
+                <div className="scroll-hidden flex h-full w-full flex-col-reverse items-stretch sm:flex-row">
                     <Sidebar />
                     <MainDashboard />
                 </div>
