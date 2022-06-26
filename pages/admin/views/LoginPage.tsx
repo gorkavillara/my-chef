@@ -54,9 +54,7 @@ const LoginPage = ({ setUser, auth }) => {
                         setLoading(false)
                     })
             })
-            .catch((e) => {
-                console.error(e)
-            })
+            .catch((e) => console.error(e))
     }
 
     const registerUser = async () => {

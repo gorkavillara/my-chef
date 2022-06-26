@@ -20,7 +20,7 @@ const FormNewBooking = ({ store }: { store: Store }) => {
         time: new Date(),
         menu: {},
         status: "waiting",
-        dinnerStatus: "default"
+        dinnerStatus: "default",
     })
     const [selectedTablesArray, setSelectedTablesArray] = useState<string[]>([])
     const [menuName, setMenuName] = useState<string>("")
@@ -84,8 +84,8 @@ const FormNewBooking = ({ store }: { store: Store }) => {
     }
 
     return store ? (
-        <div className="flex flex-col flex-grow justify-between">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex flex-grow flex-col justify-between">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                     disabled={loading}
                     type="text"
@@ -132,8 +132,8 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                         onChange={(e) => setMenu(e)}
                     />
                 ) : (
-                    <div className="w-full h-full flex flex-col gap-2 items-center justify-center p-4">
-                        <h3 className="font-semibold text-center text-slate-700 italic">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4">
+                        <h3 className="text-center font-semibold italic text-slate-700">
                             There are no eligible menus, please create one in
                             Settings Menu
                         </h3>
@@ -146,20 +146,35 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     </div>
                 )}
                 {store.tables?.length > 0 ? (
-                    <Input
-                        disabled={loading}
-                        type="chip-select"
-                        name="table"
-                        placeholder="Table"
-                        value={booking.table}
-                        color="blue"
-                        containerClassName="col-span-2 sm:col-span-1"
-                        options={store.tables.map((table) => table.name)}
-                        onChange={toggleTable}
-                    />
+                    <label className="col-span-2 mx-6 flex flex-col gap-4 sm:col-span-1">
+                        <span className="uppercase">Table</span>
+                        <div className="flex flex-wrap gap-1">
+                            {store.tables
+                                .map((table) => table.name)
+                                .map((table) => (
+                                    <button
+                                        key={table}
+                                        disabled={loading}
+                                        className={`${
+                                            booking.table &&
+                                            booking.table
+                                                .split(", ")
+                                                .includes(table)
+                                                ? `bg-blue-400`
+                                                : "bg-slate-300"
+                                        } rounded-full py-1 px-2 text-white  disabled:opacity-25`}
+                                        onClick={() =>
+                                            !loading && toggleTable(table)
+                                        }
+                                    >
+                                        {table}
+                                    </button>
+                                ))}
+                        </div>
+                    </label>
                 ) : (
-                    <div className="w-full h-full flex flex-col gap-2 items-center justify-center p-4">
-                        <h3 className="font-semibold text-center text-slate-700 italic">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4">
+                        <h3 className="text-center font-semibold italic text-slate-700">
                             There are no eligible tables, please create one in
                             Settings Menu
                         </h3>
@@ -186,13 +201,13 @@ const FormNewBooking = ({ store }: { store: Store }) => {
                     name="allergies"
                     placeholder="allergies"
                     value={booking.allergies}
-                    options={store.allergies.map(a => a.name)}
+                    options={store.allergies.map((a) => a.name)}
                     containerClassName="col-span-2"
                     onChange={(e: string) => toggleAllergy(e)}
                 />
             </div>
             <button
-                className="m-6 btn-primary-green"
+                className="btn-primary-green m-6"
                 onClick={submitNewBooking}
                 disabled={!isCompleted() || loading}
             >
