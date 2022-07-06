@@ -170,7 +170,7 @@ const Input = ({
                     <DatePicker
                         selected={value}
                         onChange={onChange}
-                        showTimeSelect
+                        showTimeInput
                         timeIntervals={15}
                         disabled={disabled}
                         dateFormat="MMMM d, yyyy h:mm aa"

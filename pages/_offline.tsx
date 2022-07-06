@@ -30,7 +30,7 @@ const Offline: NextPage = () => {
                 <link rel="manifest" href="/manifest.json" />
             </Head>
             {user ? (
-                <Admin user={user} auth={auth} />
+                <Admin device_id="" user={user} auth={auth} />
             ) : (
                 <LoginPage setUser={setUser} auth={auth} />
             )}
