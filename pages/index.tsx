@@ -1,13 +1,12 @@
 import type { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Admin from "./admin"
-import LoginPage from "./admin/views/LoginPage"
 
 import { firebaseConfig } from "../firebase/client"
 import { initializeApp } from "firebase/app"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { getAuth, signInAnonymously } from "firebase/auth"
 
 import { Toaster } from "react-hot-toast"
 
@@ -16,15 +15,19 @@ const auth = getAuth(app)
 
 const Home: NextPage = () => {
     const router = useRouter()
-    const { device_id } = router.query
-    const [user, setUser] = useState(null)
+    const { device_id } =
+        process.env.NODE_ENV === "development"
+            ? { device_id: "gorkavillara@gmail.com" }
+            : router.query
 
     useEffect(() => {
-        onAuthStateChanged(auth, (us) => setUser(us))
+        signInAnonymously(auth)
+            .then((r) => r)
+            .catch((e) => console.error(e))
     }, [])
 
     return device_id ? (
-        <div className="bg-red-100 h-screen w-screen">
+        <div className="h-screen w-screen bg-red-100">
             <Head>
                 <title>My Rapid Chef</title>
                 <meta
@@ -34,12 +37,8 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon_256x256.png" />
                 <link rel="manifest" href="/manifest.json" />
             </Head>
-            {user ? (
-                <Admin user={user} auth={auth} device_id={device_id} />
-            ) : (
-                <LoginPage setUser={setUser} auth={auth} />
-            )}
-            <div><Toaster/></div>
+            <Admin auth={auth} device_id={device_id} />
+            <Toaster />
         </div>
     ) : null
 }

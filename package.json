@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint-fix": "eslint --fix ./pages"
+    "lint-fix": "eslint --fix ./pages",
+    "deploy-ios": "deploy-ios.bat"
   },
   "dependencies": {
     "axios": "^0.25.0",

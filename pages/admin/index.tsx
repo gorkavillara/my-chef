@@ -9,23 +9,21 @@ import React, {
 import Head from "next/head"
 import MainDashboard from "./views/MainDashboard"
 import Sidebar from "./components/Sidebar"
-import { Booking, Store, User } from "../../models"
+import { Account, Booking, Store, User } from "../../models"
 import { initializeBookings } from "../../controllers/BookingsController"
 import ModalController from "./components/ModalController"
 
 import { Auth } from "firebase/auth"
 import {
-    query,
-    collection,
-    where,
-    onSnapshot,
     Firestore,
     enableIndexedDbPersistence,
+    DocumentData,
 } from "firebase/firestore"
 import { db } from "../../firebase/client"
 import {
+    getAccountByDeviceId,
     getBookingsByStore,
-    getStoresByUserEmail,
+    getStoreByAccount,
 } from "../../controllers/DBController"
 
 import {
@@ -53,7 +51,7 @@ interface ContextInterface {
     setBookings?: Dispatch<SetStateAction<object[]>>
     openModal?: Function
     closeModal?: Function
-    store?: Store
+    store?: Store | DocumentData
     setStore?: Dispatch<SetStateAction<Store>>
     date?: Date
     setDate?: Dispatch<SetStateAction<Date>>
@@ -70,20 +68,19 @@ export const AdminContext = createContext<ContextInterface>({})
 
 //eslint-disable-next-line
 const Admin = ({
-    user,
     auth,
     device_id,
 }: {
-    user: User
     auth: Auth
     device_id: string | string[]
 }) => {
+    const [account, setAccount] = useState<DocumentData | undefined>()
     const [route, setRoute] = useState<string>("tables")
     const [bookings, setBookings] = useState<Booking[]>([])
     const [activeModal, setActiveModal] = useState<boolean>(false)
     const [modalContent, setModalContent] = useState<string>("")
     const [modalData, setModalData] = useState<object>({})
-    const [store, setStore] = useState<Store>()
+    const [store, setStore] = useState<DocumentData | Store>()
     const [date, setDate] = useState<Date>(new Date())
     const [activeRole, setActiveRole] = useState<string>("")
     const [expanded, setExpanded] = useState(false)
@@ -107,35 +104,23 @@ const Admin = ({
 
     useEffect(() => {
         if (!store) return
-        const qRef = query(
-            collection(db, "bookings"),
-            where("store_id", "==", store.id)
-        )
-        const unsubscribe = onSnapshot(qRef, (docs) => {
-            let storeBookings = []
-            docs.forEach((doc) =>
-                storeBookings.push({ ...doc.data(), id: doc.id })
-            )
-            setBookings(storeBookings)
-        })
-        return unsubscribe
+        setActiveRole("owner")
     }, [store])
 
     useEffect(() => {
-        if (!store) return
-        if (!user) return
-        const us = store.settings.users.find((us) => user.email === us.email)
-        setActiveRole(us.role)
-    }, [store, user])
+        // getStoreByDeviceId
+        if (!device_id) return
+        getAccountByDeviceId({ device_id })
+            .then((acc: DocumentData) => setAccount(acc))
+            .catch((e) => console.error(e))
+    }, [device_id])
 
     useEffect(() => {
-        if (!user) return
-        getStoresByUserEmail({ userEmail: user.email })
-            .then((data: { stores: Store[]; role: string }) =>
-                setStore(data.stores[0])
-            )
+        if (!account) return
+        getStoreByAccount({ account })
+            .then((rStore: DocumentData) => setStore(rStore))
             .catch((e) => console.error(e))
-    }, [user])
+    }, [account])
 
     useEffect(() => {
         if (!store) return
@@ -198,13 +183,12 @@ const Admin = ({
                     setStore,
                     date,
                     setDate,
-                    user,
                     activeRole,
                     db,
                     expanded,
                     setExpanded,
                     refreshBookings,
-                    device_id
+                    device_id,
                 }}
             >
                 <div className="scroll-hidden flex h-full w-full flex-col-reverse items-stretch sm:flex-row">

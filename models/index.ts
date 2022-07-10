@@ -23,6 +23,14 @@ export interface User {
     photoURL: string
 }
 
+export interface Account {
+    id: string
+    deviceId: string
+    email: string
+    subscription: string
+    storeId: string
+}
+
 export interface Table {
     name: string
 }
@@ -73,7 +81,7 @@ export interface Allergy {
 }
 
 export interface Store {
-    id: string
+    id?: string
     bookings?: Booking[]
     menus?: Menu[]
     settings?: Settings

@@ -11,6 +11,8 @@ import {
     setDoc,
     Timestamp,
     writeBatch,
+    getDoc,
+    DocumentData,
 } from "firebase/firestore"
 import {
     User,
@@ -24,6 +26,7 @@ import {
     Note,
     Allergy,
     Group,
+    Account,
 } from "../models"
 
 export const registerNewTable = async ({ table, store }) => {
@@ -254,6 +257,32 @@ export const deleteMenu = async ({ menu, store }) => {
     const newStore = { ...store, menus }
     await setDoc(doc(db, "stores", store.id), newStore)
     return { store: newStore }
+}
+
+export const getAccountByDeviceId = async ({
+    device_id,
+}: {
+    device_id: string | string[]
+}) => {
+    const accountsRef = collection(db, "accounts")
+    const accountsSnap = await getDocs(accountsRef)
+    const account = accountsSnap.docs
+        .map((item) => item.data())
+        .find((ac: Account) => ac.deviceId === device_id)
+    if (!account) return
+    return account
+}
+
+export const getStoreByAccount = async ({
+    account,
+}: {
+    account: Account | DocumentData
+}) => {
+    const storeRef = doc(db, "stores", account.storeId)
+    const storeSnap = await getDoc(storeRef)
+    if (!storeSnap.exists()) return
+    const store = { ...storeSnap.data(), id: account.storeId }
+    return store
 }
 
 export const getStoresByUserEmail = async ({
